@@ -72,7 +72,7 @@ def generate_neighbors(schedule, shifts=(-1, 1)):
     return neighbors
 
 
-def savn_optimise(initial_schedule, max_iters=500):
+def savn_optimise(initial_schedule, max_iters=200):
     current = copy.deepcopy(initial_schedule)
     current_score = evaluate_schedule(current)
 
