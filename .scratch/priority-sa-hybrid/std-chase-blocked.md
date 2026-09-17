@@ -34,14 +34,17 @@ the std-chase result. This script does **not** call
 
 ## Search performed
 
-- Worktree `/workspace` — no `heavy_maintenance_forecast.xlsx`
-- `origin/main` @ `f9459f4` — file never committed
-- `origin/cursor/min16-instance-mismatch-e86d` — only a labelled regenerated proxy under `.scratch/`
+- `/workspace/heavy_maintenance_forecast.xlsx` exists=False
+- `/workspace/regenerated_heavy_maintenance_forecast.xlsx` exists=False
+- `/workspace/.scratch/priority-sa-hybrid/regenerated_heavy_maintenance_forecast.xlsx` exists=False
+
+- `origin/main` @ `f9459f4` — `heavy_maintenance_forecast.xlsx` was never committed
+- `origin/cursor/min16-instance-mismatch-e86d` — labelled regenerated proxy only
 - `origin/cursor/min19-infeasibility-report-1858` — report only, no workbook
-- GitHub code search for `savn_priority_sa.py` / `basin_hopping_optimise` — no hits on main
+- GitHub code search for `savn_priority_sa.py` / `basin_hopping_optimise` — absent on main
 
 Classification: `MISSING`
-Reason: the real workbook is not present.
+Reason: /workspace/heavy_maintenance_forecast.xlsx is not present.
 
 ## What the parent should run locally
 

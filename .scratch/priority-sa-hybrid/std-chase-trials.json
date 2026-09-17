@@ -1,12 +1,26 @@
 {
-  "generated_at": null,
-  "searched_paths": [],
+  "generated_at": "2026-09-17T06:40:44.542016+00:00",
+  "searched_paths": [
+    {
+      "path": "/workspace/heavy_maintenance_forecast.xlsx",
+      "exists": false
+    },
+    {
+      "path": "/workspace/regenerated_heavy_maintenance_forecast.xlsx",
+      "exists": false
+    },
+    {
+      "path": "/workspace/.scratch/priority-sa-hybrid/regenerated_heavy_maintenance_forecast.xlsx",
+      "exists": false
+    }
+  ],
   "instance_class": "MISSING",
-  "reason": "heavy_maintenance_forecast.xlsx is not present. Placeholder written before the chase runner refresh.",
+  "reason": "/workspace/heavy_maintenance_forecast.xlsx is not present.",
   "fingerprint": null,
   "trials": [],
   "best": null,
   "best_real": null,
+  "best_score_tuple": null,
   "beat_1_405740": null,
   "label": null
 }

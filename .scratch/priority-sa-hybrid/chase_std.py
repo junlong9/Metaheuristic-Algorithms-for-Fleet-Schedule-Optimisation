@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import time
 from datetime import datetime, timezone
@@ -316,6 +315,12 @@ def write_blocked_markdown(path, payload):
         f"- `{item['path']}` exists={item['exists']}"
         for item in payload["searched_paths"]
     )
+    extra_search = payload.get("extra_search_notes") or (
+        "- `origin/main` @ `f9459f4` — `heavy_maintenance_forecast.xlsx` was never committed\n"
+        "- `origin/cursor/min16-instance-mismatch-e86d` — labelled regenerated proxy only\n"
+        "- `origin/cursor/min19-infeasibility-report-1858` — report only, no workbook\n"
+        "- GitHub code search for `savn_priority_sa.py` / `basin_hopping_optimise` — absent on main"
+    )
     text = f"""# Std chase blocked: real min-18 workbook is not in this environment
 
 The lowest availability standard deviation that simulated annealing can
@@ -353,6 +358,8 @@ the std-chase result. This script does **not** call
 ## Search performed
 
 {searched}
+
+{extra_search}
 
 Classification: `{payload['instance_class']}`
 Reason: {payload['reason']}
@@ -429,7 +436,17 @@ def write_report(path, payload):
             "workbook."
         )
 
-    fingerprint = payload.get("fingerprint") or {}
+    fingerprint = payload.get("fingerprint")
+    fingerprint_json = json.dumps(fingerprint, indent=2) if fingerprint else "null"
+    expected_real = (
+        "Expected REAL fingerprint: original min ~15, polish min 18, "
+        "24 aircraft, 278 events, horizon 4480, base 2026-01-21, "
+        f"avg {REAL_AVG}."
+    )
+    if payload.get("best_score_tuple"):
+        best_tuple_text = str(tuple(payload["best_score_tuple"]))
+    else:
+        best_tuple_text = "not obtained"
     text = f"""# Priority SA std chase
 
 Generated: {payload['generated_at']}
@@ -439,11 +456,16 @@ Reason: {payload.get('reason', '')}
 ## Workbook fingerprint
 
 ```json
-{json.dumps(fingerprint, indent=2)}
+{fingerprint_json}
 ```
+
+{expected_real}
 
 Local published targets (REAL file only): hill-climb std {LOCAL_HILLCLIMB_STD},
 basin-hop std {LOCAL_BASIN_STD}, avg {REAL_AVG}.
+
+If original min is not ~15 or polish min is 16 not 18, the file is the
+seed-42 regenerated proxy (ceiling 16). Those stds are not the answer.
 
 ## Trials
 
@@ -453,11 +475,19 @@ basin-hop std {LOCAL_BASIN_STD}, avg {REAL_AVG}.
 
 {best_block}
 
+Exact printed best_score tuple: `{best_tuple_text}`.
+
 ## How to reproduce locally
 
 ```bash
 python .scratch/priority-sa-hybrid/chase_std.py
 ```
+
+`savn_priority_sa.py` on this branch is the recreated local snapshot:
+staged Metropolis `accept_candidate`, first-level feasible neighbours,
+`select_escape_candidate`, classic `savn_optimise`, tabu `greedy_polish`,
+and `basin_hopping_optimise` (15 cycles from best-so-far, one forced
+floor-drop, 30 plateau moves, T=1.5, seed 99, polish 400).
 """
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text)
@@ -488,6 +518,7 @@ def main():
         "trials": [],
         "best": None,
         "best_real": None,
+        "best_score_tuple": None,
         "beat_1_405740": None,
         "label": None,
     }
@@ -570,6 +601,7 @@ def main():
         write_json(TRIALS_PATH, payload)
 
     payload["best"] = best_row
+    payload["best_score_tuple"] = best_row["best_score"] if best_row else None
     if instance == "REAL":
         payload["best_real"] = best_row
         payload["beat_1_405740"] = bool(
