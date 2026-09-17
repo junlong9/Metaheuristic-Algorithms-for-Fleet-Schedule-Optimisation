@@ -1,0 +1,20 @@
+{
+  "generated_path": ".scratch/priority-sa-hybrid/regenerated_heavy_maintenance_forecast.xlsx",
+  "generator": "generate_extended_dataset.py",
+  "fleet_size": 24,
+  "existing_template_aircraft": 10,
+  "n_events": 279,
+  "check_counts": {"A": 143, "B": 72, "C": 40, "D": 24},
+  "horizon_days": 4503,
+  "base_date": "2026-01-15 00:00:00",
+  "generator_calendar_min": 12.0,
+  "generator_calendar_mean": 21.66057977630678,
+  "optimiser_initial_score": [12.0, -2.158184537675301, 21.690497335701597],
+  "optimiser_hillclimb_best": [16.0, -1.4951485551728732, 21.690497335701597],
+  "hillclimb_seconds": 10.929,
+  "hillclimb_min_path": "12 → 13 → 14 → 15 → 16",
+  "published_local_baseline": [18.0, -1.4139714343833762, 21.713010488730195],
+  "prev_study_warmstart": [16.0, -1.4951485551728732, 21.690497335701597],
+  "prev_study_best_of_146": [16.0, -1.4799243660442156, 21.690497335701597],
+  "note": "Hill-climb best matches previous cloud study warm-start exactly. Mean 21.690497 != local 21.713010, so this is a different instance."
+}
