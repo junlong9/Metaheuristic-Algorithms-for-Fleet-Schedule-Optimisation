@@ -10,13 +10,9 @@ This markdown sibling records the same facts as `2026-09-17-min19-infeasibility.
 
 A minimum daily fleet availability of 19 is not feasible on the current heavy-maintenance instance under the current constraints. The instance admits a hard floor ceiling of 18. The recorded hill-climb already attains that ceiling.
 
-The conclusion does not come from search failure. It follows from a forced-core argument on first D-checks. Each first D must start in a 70-day legal window and lasts 126 days, so every first D occupies a 56-day core `[due, due + 56)` regardless of start. On the user’s local forecast workbook, six first-D cores coincide on day indices 2676–2681 (20–25 May 2033). The six aircraft are Aircraft 11, 14, 15, 19, 24 and Blue-8. On those days at least six aircraft are in the hangar, so availability is at most 18. No feasible start vector can produce a minimum of 19.
+The bound is a forced-core result, not a search failure. Each first D must start in a 70-day legal window and lasts 126 days, so it occupies a 56-day core `[due, due + 56)` regardless of start. On the user’s local forecast workbook, six first-D cores coincide on day indices 2676–2681 (20–25 May 2033): Aircraft 11, 14, 15, 19, 24 and Blue-8. Availability on those days is at most 18. No feasible start vector can produce a minimum of 19.
 
-Total hangar load does not explain the bound. The workbook contains 10,248 hangar-days over 4,480 days on a 24-aircraft fleet, which is an average of 2.287 aircraft down and an average availability of 21.713. That average is well inside a five-down budget. The obstruction is a local pile-up of first D-checks, not average capacity.
-
-The unoptimised start has minimum 15 (standard deviation 1.950; 20 days at the floor). A frozen hill-climb reaches minimum 18 (standard deviation 1.413971). A local basin-hop also reaches minimum 18, with standard deviation 1.405740. Matching the forced ceiling means the search has already hit the bound.
-
-This report uses measurements from the user’s unpublished local workbook. It does not claim a fresh optimiser run in the cloud, and it does not claim that any run produced a minimum of 19.
+Average hangar load does not block 19. The workbook contains 10,248 hangar-days over 4,480 days on a 24-aircraft fleet (average 2.287 down; average availability 21.713), well inside a five-down budget. The unoptimised start is minimum 15 (standard deviation 1.950; 20 days at the floor). The frozen hill-climb is minimum 18 (standard deviation 1.413971). A local basin-hop is also minimum 18 (standard deviation 1.405740). Matching the ceiling means the search has already hit the bound. Figures are from the user’s unpublished local workbook. This report does not claim a fresh cloud optimiser run, and it does not claim that any run printed 19.
 
 ## 2. Problem and objective
 
@@ -57,11 +53,11 @@ The figures in this section were measured on the user’s unpublished local work
 
 **Table 2. Recorded scores on the local instance**
 
-| Source | Minimum availability | Standard deviation | Other recorded detail |
+| Source | Minimum | Standard deviation | Note |
 | --- | --- | --- | --- |
 | Unoptimised start | 15 | 1.950 | 20 days at the floor |
 | Frozen hill-climb | 18 | 1.413971 | Attains the forced-core ceiling |
-| Local basin-hop | 18 | 1.405740 | Other 18-optimum; lower standard deviation |
+| Local basin-hop | 18 | 1.405740 | Other 18-optimum |
 
 Average load is about 2.3 aircraft down. A minimum of 19 would allow five aircraft down every day. Total hangar-days therefore do not block 19. If the bound were an average-capacity shortage, the 10,248 hangar-days would already exceed 5 × 4,480 hangar-days. They do not. The obstruction must be a concentration of occupancy, not the integral of occupancy.
 
@@ -86,11 +82,16 @@ This was measured on the user’s workbook using both reconstructed dues (`first
 
 The forced first-D peak is 6, on 6 days: day indices 2676–2681 (20–25 May 2033). Therefore availability is at most 18 on those days. A minimum of 19 is impossible.
 
-**Table 3. Aircraft on the forced first-D peak**
+**Table 3. Aircraft whose first-D forced cores cover days 2676–2681 (20–25 May 2033). Forced first-D peak = 6; availability ceiling = 18.**
 
-| Day indices | Calendar dates | Forced first-D peak | Availability ceiling | Aircraft on those cores |
-| --- | --- | --- | --- | --- |
-| 2676–2681 | 20–25 May 2033 | 6 | 18 | Aircraft 11, 14, 15, 19, 24, Blue-8 |
+| Aircraft | Contribution on the peak days |
+| --- | --- |
+| Aircraft 11 | First-D forced core |
+| Aircraft 14 | First-D forced core |
+| Aircraft 15 | First-D forced core |
+| Aircraft 19 | First-D forced core |
+| Aircraft 24 | First-D forced core |
+| Blue-8 | First-D forced core |
 
 Forced first-C cores are the analogous 14-day intersections (`84 − 70 = 14`). Their peak is 4. Combining forced C and D cores does not raise the forced peak above 6. The binding constraint is the D pile-up.
 
