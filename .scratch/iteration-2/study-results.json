@@ -1,0 +1,302 @@
+{
+  "decision": {
+    "tuned": {
+      "worst_day": 18,
+      "smoothness": 1.3918604434267567,
+      "average": 21.713010488730195,
+      "seconds": 115.6,
+      "timed_out": false,
+      "name": "tuned-baseline"
+    },
+    "candidate": [
+      {
+        "worst_day": 18,
+        "smoothness": 1.3894533312816402,
+        "average": 21.713010488730195,
+        "seconds": 285.5,
+        "timed_out": false,
+        "name": "candidate-seed-1",
+        "seed": 1
+      },
+      {
+        "worst_day": 18,
+        "smoothness": 1.3904166762076178,
+        "average": 21.713010488730195,
+        "seconds": 318.4,
+        "timed_out": true,
+        "name": "candidate-seed-2",
+        "seed": 2
+      },
+      {
+        "worst_day": 18,
+        "smoothness": 1.390898098463556,
+        "average": 21.713010488730195,
+        "seconds": 306.3,
+        "timed_out": true,
+        "name": "candidate-seed-3",
+        "seed": 3
+      }
+    ],
+    "tightened": [
+      {
+        "worst_day": 18,
+        "smoothness": 1.3918604434267567,
+        "average": 21.713010488730195,
+        "seconds": 56.4,
+        "timed_out": false,
+        "name": "tightened-seed-1",
+        "seed": 1
+      },
+      {
+        "worst_day": 18,
+        "smoothness": 1.3918604434267567,
+        "average": 21.713010488730195,
+        "seconds": 63.5,
+        "timed_out": false,
+        "name": "tightened-seed-2",
+        "seed": 2
+      },
+      {
+        "worst_day": 18,
+        "smoothness": 1.3918604434267567,
+        "average": 21.713010488730195,
+        "seconds": 106.3,
+        "timed_out": false,
+        "name": "tightened-seed-3",
+        "seed": 3
+      }
+    ],
+    "judgement": {
+      "keep": false,
+      "median_smoothness": 1.3904166762076178,
+      "spread": 0.0014447671819157737,
+      "median_seconds": 306.3,
+      "holds_worst_day": true
+    }
+  },
+  "stagger": [
+    {
+      "name": "start-as-loaded",
+      "kind": "as-loaded",
+      "start": {
+        "worst_day": 15,
+        "smoothness": 1.9497670360504062,
+        "average": 21.713010488730195,
+        "seconds": 0.0,
+        "timed_out": false,
+        "name": "start-as-loaded",
+        "kind": "as-loaded"
+      },
+      "tuned": {
+        "worst_day": 18,
+        "smoothness": 1.3918604434267567,
+        "average": 21.713010488730195,
+        "seconds": 63.3,
+        "timed_out": false,
+        "name": "tuned-from-as-loaded"
+      },
+      "candidate": {
+        "worst_day": 18,
+        "smoothness": 1.3894533312816402,
+        "average": 21.713010488730195,
+        "seconds": 306.8,
+        "timed_out": true,
+        "name": "candidate-from-as-loaded",
+        "seed": 1
+      }
+    },
+    {
+      "name": "start-bunched",
+      "kind": "bunched",
+      "start": {
+        "worst_day": 15,
+        "smoothness": 1.9554815115695645,
+        "average": 21.713010488730195,
+        "seconds": 0.0,
+        "timed_out": false,
+        "name": "start-bunched",
+        "kind": "bunched"
+      },
+      "tuned": {
+        "worst_day": 18,
+        "smoothness": 1.4046287087806129,
+        "average": 21.713010488730195,
+        "seconds": 47.8,
+        "timed_out": false,
+        "name": "tuned-from-bunched"
+      },
+      "candidate": {
+        "worst_day": 18,
+        "smoothness": 1.4012883007067527,
+        "average": 21.713010488730195,
+        "seconds": 169.5,
+        "timed_out": false,
+        "name": "candidate-from-bunched",
+        "seed": 1
+      }
+    },
+    {
+      "name": "start-spread",
+      "kind": "spread",
+      "start": {
+        "worst_day": 15,
+        "smoothness": 1.9781743429174279,
+        "average": 21.713010488730195,
+        "seconds": 0.0,
+        "timed_out": false,
+        "name": "start-spread",
+        "kind": "spread"
+      },
+      "tuned": {
+        "worst_day": 18,
+        "smoothness": 1.4172819497493274,
+        "average": 21.713010488730195,
+        "seconds": 93.2,
+        "timed_out": false,
+        "name": "tuned-from-spread"
+      },
+      "candidate": {
+        "worst_day": 18,
+        "smoothness": 1.4160217136505355,
+        "average": 21.713010488730195,
+        "seconds": 224.5,
+        "timed_out": false,
+        "name": "candidate-from-spread",
+        "seed": 1
+      }
+    }
+  ],
+  "constraints": [
+    {
+      "name": "scenario-loose",
+      "scenario": "loose",
+      "breaches": [],
+      "feasible": true,
+      "tuned": {
+        "worst_day": 18,
+        "smoothness": 1.50673052883468,
+        "average": 21.713010488730195,
+        "seconds": 16.5,
+        "timed_out": false
+      },
+      "tuned_breaches": []
+    },
+    {
+      "name": "scenario-medium",
+      "scenario": "medium",
+      "breaches": [],
+      "feasible": true,
+      "tuned": {
+        "worst_day": 18,
+        "smoothness": 1.7179449513083176,
+        "average": 21.713010488730195,
+        "seconds": 3.3,
+        "timed_out": false
+      },
+      "tuned_breaches": []
+    },
+    {
+      "name": "scenario-tight",
+      "scenario": "tight",
+      "breaches": [
+        "busy period days 2653-2682 worst-day availability 15 is below 16",
+        "busy period days 2793-2822 worst-day availability 15 is below 16",
+        "dependency group Blue-6, Blue-7, Blue-8, Blue-9 falls to 2 available",
+        "dependency group Aircraft 11, Aircraft 12, Aircraft 13, Aircraft 16 falls to 2 available"
+      ],
+      "feasible": false
+    }
+  ],
+  "sweep": [
+    {
+      "worst_day": 18,
+      "smoothness": 1.3892927088505198,
+      "average": 21.713010488730195,
+      "seconds": 142.8,
+      "timed_out": false,
+      "name": "escape_temperature_1.0-seed-99",
+      "seed": 99,
+      "variant": "escape_temperature_1.0"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.391218954082498,
+      "average": 21.713010488730195,
+      "seconds": 164.3,
+      "timed_out": false,
+      "name": "escape_temperature_2.0-seed-99",
+      "seed": 99,
+      "variant": "escape_temperature_2.0"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.391218954082498,
+      "average": 21.713010488730195,
+      "seconds": 308.3,
+      "timed_out": true,
+      "name": "escape_cycles_8-seed-99",
+      "seed": 99,
+      "variant": "escape_cycles_8"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.3918604434267567,
+      "average": 21.713010488730195,
+      "seconds": 311.6,
+      "timed_out": true,
+      "name": "escape_cycles_25-seed-99",
+      "seed": 99,
+      "variant": "escape_cycles_25"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.3896139351467656,
+      "average": 21.713010488730195,
+      "seconds": 191.3,
+      "timed_out": false,
+      "name": "plateau_moves_15-seed-99",
+      "seed": 99,
+      "variant": "plateau_moves_15"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.3918604434267567,
+      "average": 21.713010488730195,
+      "seconds": 379.3,
+      "timed_out": true,
+      "name": "plateau_moves_45-seed-99",
+      "seed": 99,
+      "variant": "plateau_moves_45"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.3961827872724233,
+      "average": 21.713010488730195,
+      "seconds": 416.5,
+      "timed_out": true,
+      "name": "polish_iterations_200-seed-99",
+      "seed": 99,
+      "variant": "polish_iterations_200"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.3918604434267567,
+      "average": 21.713010488730195,
+      "seconds": 721.3,
+      "timed_out": true,
+      "name": "polish_iterations_800-seed-99",
+      "seed": 99,
+      "variant": "polish_iterations_800"
+    },
+    {
+      "worst_day": 18,
+      "smoothness": 1.403993053313642,
+      "average": 21.713010488730195,
+      "seconds": 301.7,
+      "timed_out": true,
+      "name": "escape_temperature_1.0-seed-1",
+      "seed": 1,
+      "variant": "escape_temperature_1.0"
+    }
+  ]
+}
