@@ -1,0 +1,58 @@
+{
+  "scenarios": [
+    {
+      "name": "loose",
+      "displacement_limit_days": 70,
+      "busy_periods": [
+        {"start": "2033-04-27", "end": "2033-05-26", "minimum_availability": 15},
+        {"start": "2033-09-14", "end": "2033-10-13", "minimum_availability": 15}
+      ],
+      "dependency_groups": [
+        {
+          "aircraft": ["Blue-6", "Blue-7", "Blue-8", "Blue-9"],
+          "minimum_available": 2
+        },
+        {
+          "aircraft": ["Aircraft 11", "Aircraft 12", "Aircraft 13", "Aircraft 16"],
+          "minimum_available": 2
+        }
+      ]
+    },
+    {
+      "name": "medium",
+      "displacement_limit_days": 42,
+      "busy_periods": [
+        {"start": "2033-04-27", "end": "2033-05-26", "minimum_availability": 15},
+        {"start": "2033-09-14", "end": "2033-10-13", "minimum_availability": 15}
+      ],
+      "dependency_groups": [
+        {
+          "aircraft": ["Blue-6", "Blue-7", "Blue-8", "Blue-9"],
+          "minimum_available": 2
+        },
+        {
+          "aircraft": ["Aircraft 11", "Aircraft 12", "Aircraft 13", "Aircraft 16"],
+          "minimum_available": 2
+        }
+      ]
+    },
+    {
+      "name": "tight",
+      "displacement_limit_days": 21,
+      "busy_periods": [
+        {"start": "2033-04-27", "end": "2033-05-26", "minimum_availability": 16},
+        {"start": "2033-09-14", "end": "2033-10-13", "minimum_availability": 16}
+      ],
+      "dependency_groups": [
+        {
+          "aircraft": ["Blue-6", "Blue-7", "Blue-8", "Blue-9"],
+          "minimum_available": 3
+        },
+        {
+          "aircraft": ["Aircraft 11", "Aircraft 12", "Aircraft 13", "Aircraft 16"],
+          "minimum_available": 3
+        }
+      ]
+    }
+  ]
+}
