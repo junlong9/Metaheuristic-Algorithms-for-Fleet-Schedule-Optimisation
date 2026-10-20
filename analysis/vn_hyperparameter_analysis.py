@@ -25,6 +25,7 @@ import csv
 import hashlib
 import json
 import os
+import shutil
 import sys
 import tempfile
 import time
@@ -805,47 +806,238 @@ def build_report(
     document.styles["Normal"].font.size = Pt(11)
     document.add_heading("VN priority hyperparameter analysis", 0)
     shared = payload["recommendations"]["shared"]
+    strategy_labels = {
+        strategy.key: strategy.label
+        for strategy in STRATEGIES
+    }
+    shared_label = strategy_labels[shared["strategy_key"]]
+    trials = payload["trials"]
+    ties = []
+    for dataset in DATASET_KEYS:
+        for strategy in STRATEGIES:
+            rows = {
+                item["max_iters"]: item
+                for item in trials
+                if item["dataset"] == dataset
+                and item["strategy_key"] == strategy.key
+            }
+            if (
+                400 in rows
+                and 800 in rows
+                and rows[400]["lexicographic_score"]
+                == rows[800]["lexicographic_score"]
+            ):
+                ties.append(f"{rows[400]['dataset_label']} / {strategy.label}")
+    tie_examples = "; ".join(ties)
+    exhausted_count = sum(
+        item["stop_reason"] == "local_exhaustion"
+        for item in trials
+    )
+    capped_count = len(trials) - exhausted_count
+    observed_times = [item["elapsed_seconds"] for item in trials]
 
     section_text = {
         "Purpose and recommendation": (
-            "This report compares a deliberately small set of settings for the "
-            "deterministic priority-based optimiser. The shared recommendation "
-            f'is {shared["strategy_key"]} with max_iters={shared["max_iters"]}. '
-            "Each configuration has one observed run; no repeated-run or "
-            "statistical claim is made."
+            (
+                "This study asks a practical configuration question: which "
+                "variable-neighbourhood shift ladder and iteration budget should "
+                "the project use for its priority-based heavy-maintenance "
+                "optimiser? It compares four deliberately grounded ladders at "
+                "200, 400 and 800 outer-loop iterations on three saved forecast "
+                "states. The optimiser, maintenance rules and selection policy "
+                "are unchanged, so the comparison isolates only those two "
+                "hyperparameters."
+            ),
+            (
+                f"The cross-dataset recommendation is {shared_label} with "
+                f"max_iters={shared['max_iters']}. This is a practical choice, "
+                "not a claim that one run proved universal superiority. Several "
+                "400- and 800-iteration results are exactly tied on the complete "
+                "lexicographic quality score. In those cases 400 is selected by "
+                "the approved lower-budget tie-break, because spending the extra "
+                "iterations did not improve the endpoint. Each timing is one "
+                "observed run, while quality is deterministic for the fixed "
+                "inputs."
+            ),
         ),
         "Method and datasets": (
-            "The same four strategies and three budgets are applied once to "
-            "the original, moderate-stagger, and wide-stagger forecasts. "
-            "Scores use the common forecast dates and the production "
-            "lexicographic objective."
+            (
+                "The matrix contains 36 trials: three datasets multiplied by "
+                "four ordered shift strategies and three iteration budgets. "
+                "Every trial begins from a fresh deep copy of its dataset. The "
+                "quality window is 21 January 2026 through 18 January 2038, "
+                "inclusive. Events outside that reporting window remain in the "
+                "full model so that overlaps, sequence rules and due-date resets "
+                "are still checked across the complete maintenance horizon."
+            ),
+            (
+                "The original workbook supplies the unstaggered starting point. "
+                "The moderate- and wide-stagger workbooks are loaded with their "
+                "saved opening due clocks and sequence positions; reconstructing "
+                "those values from the spreadsheets alone would describe a "
+                "different maintenance state. Checks already commenced before "
+                "the reporting window are frozen. After each search, the endpoint "
+                "is replayed through the production rule validator and its daily "
+                "availability is independently rebuilt from aircraft occupancy "
+                "masks."
+            ),
+            (
+                "Quality is ordered lexicographically: maximise minimum fleet "
+                "availability first, then minimise population standard deviation, "
+                "then maximise mean availability. A gain in smoothness or mean "
+                "cannot compensate for losing one aircraft from the minimum. "
+                "Within each dataset, exact score ties share a competition rank. "
+                "Runtime only resolves ties after quality, rank and budget rules; "
+                "it never outranks schedule quality."
+            ),
         ),
         "Parameter choices": (
-            "The earlier tuned baseline is kept separate from the current live "
-            "seven-level ladder. Selection remains the first priority level "
-            "with improving candidates, followed by its best candidate."
+            (
+                "The earlier tuned baseline uses four half-step neighbourhoods, "
+                "ending with (-3, -1, 1, 3). The current live ladder instead uses "
+                "seven symmetric pairs from ±56 down to ±1. Dense pairs adds ±21 "
+                "while retaining a paired structure, and the fourth strategy adds "
+                "an initial ±42 level to the earlier baseline. These alternatives "
+                "test whether broad first moves, denser intermediate moves or the "
+                "historical mixed-width levels help the deterministic search."
+            ),
+            (
+                "At each outer pass, the search examines shift sets in their "
+                "listed order. Within one shift set it inspects maintenance "
+                "priority levels from worst availability upward, stops at the "
+                "first level containing an improving candidate, and accepts that "
+                "level's best lexicographic candidate. Only one move can be "
+                "accepted per pass. A pass with no improvement records local "
+                "exhaustion; otherwise the run stops when its iteration budget "
+                "is consumed."
+            ),
+            (
+                "The 200 budget is a deliberately short run, 400 is the live "
+                "default, and 800 is a convergence check. There are no random "
+                "seeds, selection-policy variants or repeated quality runs. This "
+                "keeps the experiment interpretable: endpoint differences come "
+                "from the ordered shifts and available number of passes rather "
+                "than from changing several optimiser mechanisms at once."
+            ),
         ),
         "Cross-dataset comparison": (
-            "Ranks are calculated within each dataset. Differences between "
-            "datasets describe different starting maintenance states and are "
-            "not optimiser gains."
+            (
+                "The ranked-quality chart separates the three datasets because "
+                "their starting states differ. The wide-stagger data reaches the "
+                "highest minimum availability, followed by moderate stagger and "
+                "then the original forecast. That ordering must not be described "
+                "as an optimiser gain: staggering changed the input maintenance "
+                "state before this experiment began. The fair comparison is among "
+                "configurations within each panel, using the displayed minimum "
+                "and horizontal standard-deviation position together."
+            ),
+            (
+                f"Across all datasets, the selected shared setting is "
+                f"{shared_label} at 400 iterations. Its ranks provide the best "
+                "approved compromise when one operational setting is required. "
+                "The original dataset nevertheless has a different dataset-level "
+                "winner, showing why a single recommendation should be framed as "
+                "a robust shared choice rather than the winner of every panel. "
+                "Dataset-specific settings remain reasonable when separate "
+                "configuration and governance are acceptable."
+            ),
+            (
+                f"Exact 400/800 ties occurred for: {tie_examples}. These matches "
+                "cover the full score tuple, not merely the minimum availability. "
+                "The 400 configurations therefore win through the lower-budget "
+                "tie-break whenever all earlier quality and rank criteria remain "
+                "equal. This rule avoids presenting an unchanged 800-iteration "
+                "endpoint as additional evidence of quality."
+            ),
         ),
         "Runtime and convergence": (
-            "Runtime is one observed search duration and excludes loading, "
-            "validation, charting, and report construction. Local exhaustion "
-            "means a complete outer pass found no improving move."
+            (
+                f"Of the 36 searches, {exhausted_count} ended by local exhaustion "
+                f"and {capped_count} reached their iteration cap. Local exhaustion "
+                "means an entire outer pass found no improving candidate under "
+                "any configured shift set. The convergence chart should therefore "
+                "be read with both accepted moves and the 'local' annotations: a "
+                "flat line caused by exhaustion is different from a run that "
+                "simply stopped at its budget."
+            ),
+            (
+                f"Observed search times ranged from {min(observed_times):.2f} to "
+                f"{max(observed_times):.2f} seconds in this environment. Each bar "
+                "is one observed run; it excludes workbook loading, validation, "
+                "charting and report construction. The values are useful for "
+                "describing practical scale, but they are not averages and do not "
+                "support variance, confidence or significance claims. Machine "
+                "load could change a later timing without changing the "
+                "deterministic endpoint."
+            ),
+            (
+                "The exact 400/800 quality ties are the clearest convergence "
+                "signal in this small study. Where both budgets finish at the same "
+                "score and endpoint, 800 adds work without a measured quality "
+                "return. Some 200-iteration runs remain capped and rank lower, so "
+                "200 is not a safe general replacement. Together these observations "
+                "support 400 as a balanced default while preserving 800 as a "
+                "diagnostic budget for future materially different datasets."
+            ),
         ),
         "Limitations": (
-            "The experiment covers three related forecasts and four grounded "
-            "shift strategies. It does not establish global optimality and "
-            "does not enforce the saved loose, medium, or tight operational "
-            "scenarios during search."
+            (
+                "This is a descriptive benchmark over three related forecast "
+                "states, not a statistical experiment over independent samples. "
+                "Determinism justifies one quality run per configuration, but one "
+                "observed runtime cannot quantify timing variability. The matrix "
+                "also covers four motivated ladders rather than every possible "
+                "shift sequence, so the selected setting is the best practical "
+                "choice among those tested and is not proof of a global optimum."
+            ),
+            (
+                "The objective summarises daily fleet availability through its "
+                "minimum, population standard deviation and mean. It does not "
+                "represent every operational preference. In particular, the saved "
+                "loose, medium and tight operational scenarios are not enforced "
+                "inside this optimiser. Those scenarios must be assessed "
+                "separately before an optimised schedule is adopted. Dataset "
+                "differences likewise reflect different opening states and cannot "
+                "be attributed solely to the optimiser."
+            ),
+            (
+                "Rule compliance is strong within the implemented maintenance "
+                "model: legal windows, same-aircraft overlap, check sequence and "
+                "due resets are replayed, and availability is independently "
+                "reconstructed. It does not guarantee that source assumptions are "
+                "complete or that unmodelled engineering and resource constraints "
+                "will be satisfied. Recommendations should therefore be reviewed "
+                "with domain owners rather than applied as an automatic production "
+                "change."
+            ),
         ),
         "Practical recommendation and reproduction": (
-            "Use the shared recommendation when one setting is required across "
-            "all three forecasts; use the rank-one dataset result when settings "
-            "may differ. Reproduce with: "
-            "python3 analysis/vn_hyperparameter_analysis.py"
+            (
+                f"When one setting must serve all three forecasts, use "
+                f"{shared_label} with max_iters={shared['max_iters']}. The choice "
+                "keeps the live wide-to-fine search behaviour and avoids paying "
+                "for 800 iterations where 400 and 800 are exactly tied. If each "
+                "dataset may be configured separately, use its rank-one result "
+                "from the preceding sections, while retaining the same validation "
+                "and change-control process."
+            ),
+            (
+                "Treat 400 as a default rather than a permanent constant. Rerun "
+                "this deterministic matrix when maintenance rules, fleet size, "
+                "opening clocks, reporting dates or the production selection "
+                "policy materially change. Keep runtime secondary to quality, and "
+                "retain the endpoint hashes so that repeated runs can confirm "
+                "deterministic equality. Do not infer extra confidence by "
+                "repeating unchanged deterministic quality runs."
+            ),
+            (
+                "From the repository root, reproduce the study with: python3 "
+                "analysis/vn_hyperparameter_analysis.py. The command loads the "
+                "three approved inputs, runs the exact 36-trial matrix, validates "
+                "all endpoints, and publishes JSON, CSV, three charts and this "
+                "report only after the complete set succeeds. The production "
+                "optimiser and source workbooks are not rewritten."
+            ),
         ),
     }
     dataset_sections = {
@@ -861,14 +1053,52 @@ def build_report(
         if heading in dataset_sections:
             dataset = dataset_sections[heading]
             best = _best_for_dataset(payload, dataset)
+            same_strategy_800 = next(
+                (
+                    item
+                    for item in trials
+                    if item["dataset"] == dataset
+                    and item["strategy_key"] == best["strategy_key"]
+                    and item["max_iters"] == 800
+                ),
+                None,
+            )
+            exact_800_tie = (
+                same_strategy_800 is not None
+                and same_strategy_800["lexicographic_score"]
+                == best["lexicographic_score"]
+            )
             document.add_paragraph(
-                "The strongest measured configuration is "
-                f'{best["strategy_label"]} at max_iters={best["max_iters"]}. '
-                f'It reaches minimum availability {best["min_availability"]}, '
-                f'standard deviation {best["availability_std"]:.6f}, and mean '
-                f'availability {best["mean_availability"]:.6f}. It accepted '
-                f'{best["accepted_moves"]} moves and ended by '
-                f'{best["stop_reason"].replace("_", " ")}.'
+                f"For {best['dataset_label']}, the reported winner is "
+                f"{best['strategy_label']} at max_iters={best['max_iters']}. "
+                f"It records minimum availability {best['min_availability']}, "
+                f"population standard deviation {best['availability_std']:.6f}, "
+                f"and mean availability {best['mean_availability']:.6f}. The "
+                "minimum is considered first, so lower-ranked rows with a smoother "
+                "profile cannot displace it if they lose minimum availability."
+            )
+            document.add_paragraph(
+                f"The run accepted {best['accepted_moves']} moves over "
+                f"{best['outer_passes']} outer passes and stopped by "
+                f"{best['stop_reason'].replace('_', ' ')}. "
+                + (
+                    "Its 800-iteration counterpart has the exact same "
+                    "lexicographic score. The 400 result is therefore selected by "
+                    "the lower-budget tie-break, not because 400 produced a "
+                    "singularly stronger endpoint."
+                    if exact_800_tie
+                    else
+                    "No exact 800-iteration tie applies to this selected row; its "
+                    "rank follows directly from the measured quality ordering and "
+                    "the approved tie-break sequence."
+                )
+            )
+            document.add_paragraph(
+                "The table keeps all twelve configurations visible so that the "
+                "recommendation is auditable. Equal competition ranks indicate "
+                "identical full score tuples. Runtime is intentionally omitted "
+                "from the main quality columns because it is only a late "
+                "tie-breaker after dataset rank, worst rank and budget."
             )
             ranked = sorted(
                 (
@@ -897,7 +1127,8 @@ def build_report(
                 ],
             )
         else:
-            document.add_paragraph(section_text[heading])
+            for paragraph in section_text[heading]:
+                document.add_paragraph(paragraph)
             if heading == "Parameter choices":
                 _add_table(
                     document,
@@ -977,11 +1208,14 @@ def publish_outputs(
     output_dir: Path = OUTPUT_DIR,
 ) -> None:
     output_dir.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(
+    transaction = Path(tempfile.mkdtemp(
         prefix=f".{output_dir.name}-",
         dir=output_dir.parent,
-    ) as temporary:
-        staging = Path(temporary)
+    ))
+    staging = transaction / "staged"
+    backup = transaction / "previous"
+    staging.mkdir()
+    try:
         write_machine_outputs(payload, staging)
         charts = create_charts(payload["trials"], staging)
         build_report(
@@ -990,9 +1224,17 @@ def publish_outputs(
             staging / "vn-hyperparameter-analysis.docx",
         )
         validate_generated_outputs(payload, staging)
-        output_dir.mkdir(parents=True, exist_ok=True)
-        for name in ARTIFACT_NAMES:
-            os.replace(staging / name, output_dir / name)
+        had_previous = output_dir.exists()
+        if had_previous:
+            os.replace(output_dir, backup)
+        try:
+            os.replace(staging, output_dir)
+        except BaseException:
+            if had_previous and backup.exists():
+                os.replace(backup, output_dir)
+            raise
+    finally:
+        shutil.rmtree(transaction, ignore_errors=True)
 
 
 def main() -> int:
