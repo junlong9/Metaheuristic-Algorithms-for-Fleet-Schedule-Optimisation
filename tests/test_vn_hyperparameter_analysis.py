@@ -7,6 +7,7 @@ import unittest
 
 import numpy as np
 import pandas as pd
+from docx import Document
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -256,6 +257,65 @@ class StudyOutputTests(unittest.TestCase):
             {row["trial_key"] for row in rows},
             {trial["trial_key"] for trial in saved["trials"]},
         )
+
+
+class PresentationOutputTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        inputs = study.load_study_inputs(ROOT)
+        cls.payload = study.run_study(inputs, fake_trial)
+
+    def test_matplotlib_is_headless(self):
+        self.assertEqual(study.matplotlib.get_backend().lower(), "agg")
+
+    def test_create_charts_writes_three_nonempty_png_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths = study.create_charts(
+                self.payload["trials"],
+                Path(directory),
+            )
+            self.assertEqual(
+                set(paths),
+                {"ranked_quality", "budget_convergence", "runtime"},
+            )
+            for path in paths.values():
+                self.assertEqual(path.suffix, ".png")
+                self.assertGreater(path.stat().st_size, 1_000)
+
+    def test_report_has_required_sections_charts_and_page_breaks(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            charts = study.create_charts(self.payload["trials"], folder)
+            report = folder / "report.docx"
+            study.build_report(self.payload, charts, report)
+            document = Document(report)
+            headings = [
+                paragraph.text
+                for paragraph in document.paragraphs
+                if paragraph.style.name.startswith("Heading")
+            ]
+            self.assertEqual(
+                headings,
+                [
+                    "Purpose and recommendation",
+                    "Method and datasets",
+                    "Parameter choices",
+                    "Original dataset",
+                    "Moderate stagger",
+                    "Wide stagger",
+                    "Cross-dataset comparison",
+                    "Runtime and convergence",
+                    "Limitations",
+                    "Practical recommendation and reproduction",
+                ],
+            )
+            self.assertEqual(len(document.inline_shapes), 3)
+            xml = document._element.xml
+            self.assertEqual(xml.count('w:type="page"'), 9)
+            text = "\n".join(p.text.lower() for p in document.paragraphs)
+            self.assertIn("one observed run", text)
+            self.assertNotIn("statistically significant", text)
+            self.assertNotIn("confidence interval", text)
 
 
 if __name__ == "__main__":

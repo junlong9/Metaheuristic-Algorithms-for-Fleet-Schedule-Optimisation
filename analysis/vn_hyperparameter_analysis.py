@@ -650,3 +650,282 @@ def write_machine_outputs(
         writer.writeheader()
         writer.writerows(build_summary_rows(payload["trials"]))
     return {"json": json_path, "csv": csv_path}
+
+
+def create_charts(
+    trials: list[dict[str, object]],
+    output_dir: Path,
+) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    paths = {
+        "ranked_quality": output_dir / "ranked-quality.png",
+        "budget_convergence": output_dir / "budget-convergence.png",
+        "runtime": output_dir / "runtime.png",
+    }
+
+    figure, axes = plt.subplots(1, 3, figsize=(13, 5), constrained_layout=True)
+    for axis, dataset in zip(axes, DATASET_KEYS):
+        rows = sorted(
+            (item for item in trials if item["dataset"] == dataset),
+            key=lambda item: (item["dataset_rank"], item["availability_std"]),
+        )
+        labels = [
+            f'{item["strategy_key"]} / {item["max_iters"]} '
+            f'(min {item["min_availability"]})'
+            for item in rows
+        ]
+        positions = np.arange(len(rows))
+        axis.scatter(
+            [item["availability_std"] for item in rows],
+            positions,
+            color="black",
+        )
+        axis.set_yticks(positions, labels, fontsize=7)
+        axis.invert_yaxis()
+        axis.set_title(rows[0]["dataset_label"])
+        axis.set_xlabel("Availability standard deviation (lower is better)")
+        axis.grid(axis="x", alpha=0.25)
+    figure.savefig(paths["ranked_quality"], dpi=180)
+    plt.close(figure)
+
+    figure, axes = plt.subplots(1, 3, figsize=(13, 4), constrained_layout=True)
+    for axis, dataset in zip(axes, DATASET_KEYS):
+        for strategy in STRATEGIES:
+            rows = sorted(
+                (
+                    item
+                    for item in trials
+                    if item["dataset"] == dataset
+                    and item["strategy_key"] == strategy.key
+                ),
+                key=lambda item: item["max_iters"],
+            )
+            axis.plot(
+                [item["max_iters"] for item in rows],
+                [item["accepted_moves"] for item in rows],
+                marker="o",
+                label=strategy.label,
+            )
+            for item in rows:
+                if item["stop_reason"] == "local_exhaustion":
+                    axis.annotate(
+                        "local",
+                        (item["max_iters"], item["accepted_moves"]),
+                        fontsize=7,
+                    )
+        axis.set_title(next(
+            item["dataset_label"]
+            for item in trials
+            if item["dataset"] == dataset
+        ))
+        axis.set_xlabel("max_iters")
+        axis.set_ylabel("Accepted moves")
+        axis.grid(alpha=0.25)
+    axes[-1].legend(fontsize=7, loc="best")
+    figure.savefig(paths["budget_convergence"], dpi=180)
+    plt.close(figure)
+
+    figure, axes = plt.subplots(1, 3, figsize=(13, 5), constrained_layout=True)
+    for axis, dataset in zip(axes, DATASET_KEYS):
+        rows = [
+            item for item in trials if item["dataset"] == dataset
+        ]
+        labels = [
+            f'{item["strategy_key"]} / {item["max_iters"]}'
+            for item in rows
+        ]
+        positions = np.arange(len(rows))
+        axis.barh(
+            positions,
+            [item["elapsed_seconds"] for item in rows],
+            color="#666666",
+        )
+        axis.set_yticks(positions, labels, fontsize=7)
+        axis.invert_yaxis()
+        axis.set_title(rows[0]["dataset_label"])
+        axis.set_xlabel("One observed search run (seconds)")
+        axis.grid(axis="x", alpha=0.25)
+    figure.savefig(paths["runtime"], dpi=180)
+    plt.close(figure)
+    return paths
+
+
+REPORT_SECTIONS = (
+    "Purpose and recommendation",
+    "Method and datasets",
+    "Parameter choices",
+    "Original dataset",
+    "Moderate stagger",
+    "Wide stagger",
+    "Cross-dataset comparison",
+    "Runtime and convergence",
+    "Limitations",
+    "Practical recommendation and reproduction",
+)
+
+
+def _best_for_dataset(
+    payload: dict[str, object],
+    dataset: str,
+) -> dict[str, object]:
+    return min(
+        (item for item in payload["trials"] if item["dataset"] == dataset),
+        key=lambda item: (
+            item["dataset_rank"],
+            item["max_iters"],
+            item["elapsed_seconds"],
+        ),
+    )
+
+
+def _add_table(
+    document: Document,
+    headers: tuple[str, ...],
+    rows: list[tuple[object, ...]],
+) -> None:
+    table = document.add_table(rows=1, cols=len(headers))
+    table.style = "Table Grid"
+    for index, header in enumerate(headers):
+        table.rows[0].cells[index].text = header
+    for values in rows:
+        cells = table.add_row().cells
+        for index, value in enumerate(values):
+            cells[index].text = str(value)
+
+
+def build_report(
+    payload: dict[str, object],
+    charts: dict[str, Path],
+    output_path: Path,
+) -> None:
+    document = Document()
+    document.styles["Normal"].font.name = "Calibri"
+    document.styles["Normal"].font.size = Pt(11)
+    document.add_heading("VN priority hyperparameter analysis", 0)
+    shared = payload["recommendations"]["shared"]
+
+    section_text = {
+        "Purpose and recommendation": (
+            "This report compares a deliberately small set of settings for the "
+            "deterministic priority-based optimiser. The shared recommendation "
+            f'is {shared["strategy_key"]} with max_iters={shared["max_iters"]}. '
+            "Each configuration has one observed run; no repeated-run or "
+            "statistical claim is made."
+        ),
+        "Method and datasets": (
+            "The same four strategies and three budgets are applied once to "
+            "the original, moderate-stagger, and wide-stagger forecasts. "
+            "Scores use the common forecast dates and the production "
+            "lexicographic objective."
+        ),
+        "Parameter choices": (
+            "The earlier tuned baseline is kept separate from the current live "
+            "seven-level ladder. Selection remains the first priority level "
+            "with improving candidates, followed by its best candidate."
+        ),
+        "Cross-dataset comparison": (
+            "Ranks are calculated within each dataset. Differences between "
+            "datasets describe different starting maintenance states and are "
+            "not optimiser gains."
+        ),
+        "Runtime and convergence": (
+            "Runtime is one observed search duration and excludes loading, "
+            "validation, charting, and report construction. Local exhaustion "
+            "means a complete outer pass found no improving move."
+        ),
+        "Limitations": (
+            "The experiment covers three related forecasts and four grounded "
+            "shift strategies. It does not establish global optimality and "
+            "does not enforce the saved loose, medium, or tight operational "
+            "scenarios during search."
+        ),
+        "Practical recommendation and reproduction": (
+            "Use the shared recommendation when one setting is required across "
+            "all three forecasts; use the rank-one dataset result when settings "
+            "may differ. Reproduce with: "
+            "python3 analysis/vn_hyperparameter_analysis.py"
+        ),
+    }
+    dataset_sections = {
+        "Original dataset": "original",
+        "Moderate stagger": "moderate",
+        "Wide stagger": "wide",
+    }
+
+    for index, heading in enumerate(REPORT_SECTIONS):
+        if index:
+            document.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
+        document.add_heading(heading, level=1)
+        if heading in dataset_sections:
+            dataset = dataset_sections[heading]
+            best = _best_for_dataset(payload, dataset)
+            document.add_paragraph(
+                "The strongest measured configuration is "
+                f'{best["strategy_label"]} at max_iters={best["max_iters"]}. '
+                f'It reaches minimum availability {best["min_availability"]}, '
+                f'standard deviation {best["availability_std"]:.6f}, and mean '
+                f'availability {best["mean_availability"]:.6f}. It accepted '
+                f'{best["accepted_moves"]} moves and ended by '
+                f'{best["stop_reason"].replace("_", " ")}.'
+            )
+            ranked = sorted(
+                (
+                    item
+                    for item in payload["trials"]
+                    if item["dataset"] == dataset
+                ),
+                key=lambda item: (
+                    item["dataset_rank"],
+                    item["max_iters"],
+                ),
+            )
+            _add_table(
+                document,
+                ("Rank", "Strategy", "Budget", "Minimum", "Std", "Moves"),
+                [
+                    (
+                        item["dataset_rank"],
+                        item["strategy_label"],
+                        item["max_iters"],
+                        item["min_availability"],
+                        f'{item["availability_std"]:.4f}',
+                        item["accepted_moves"],
+                    )
+                    for item in ranked
+                ],
+            )
+        else:
+            document.add_paragraph(section_text[heading])
+            if heading == "Parameter choices":
+                _add_table(
+                    document,
+                    ("Strategy", "Ordered shift sets"),
+                    [
+                        (
+                            strategy.label,
+                            " | ".join(
+                                ",".join(str(value) for value in level)
+                                for level in strategy.shift_sets
+                            ),
+                        )
+                        for strategy in STRATEGIES
+                    ],
+                )
+
+        if heading == "Cross-dataset comparison":
+            document.add_picture(
+                str(charts["ranked_quality"]),
+                width=Inches(6.4),
+            )
+        elif heading == "Runtime and convergence":
+            document.add_picture(
+                str(charts["budget_convergence"]),
+                width=Inches(6.4),
+            )
+            document.add_picture(
+                str(charts["runtime"]),
+                width=Inches(6.4),
+            )
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    document.save(output_path)
