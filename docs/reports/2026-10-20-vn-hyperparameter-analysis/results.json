@@ -2003,7 +2003,8 @@
           "shift": -14
         }
       ],
-      "dataset_rank": 9
+      "dataset_rank": 9,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "original:historical_half_step:400",
@@ -4762,7 +4763,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 3
+      "dataset_rank": 3,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:historical_half_step:800",
@@ -7521,7 +7523,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 3
+      "dataset_rank": 3,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:live_wide_to_fine:200",
@@ -9384,7 +9387,8 @@
           "shift": 42
         }
       ],
-      "dataset_rank": 11
+      "dataset_rank": 11,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "original:live_wide_to_fine:400",
@@ -12435,7 +12439,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 5
+      "dataset_rank": 5,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:live_wide_to_fine:800",
@@ -15486,7 +15491,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 5
+      "dataset_rank": 5,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:dense_pairs:200",
@@ -17345,7 +17351,8 @@
           "shift": -7
         }
       ],
-      "dataset_rank": 12
+      "dataset_rank": 12,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "original:dense_pairs:400",
@@ -20239,7 +20246,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 7
+      "dataset_rank": 7,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:dense_pairs:800",
@@ -23133,7 +23141,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 7
+      "dataset_rank": 7,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:half_step_plus_42:200",
@@ -24996,7 +25005,8 @@
           "shift": 7
         }
       ],
-      "dataset_rank": 10
+      "dataset_rank": 10,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "original:half_step_plus_42:400",
@@ -27777,7 +27787,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 1
+      "dataset_rank": 1,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "original:half_step_plus_42:800",
@@ -30558,7 +30569,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 1
+      "dataset_rank": 1,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:historical_half_step:200",
@@ -32417,7 +32429,8 @@
           "shift": 28
         }
       ],
-      "dataset_rank": 11
+      "dataset_rank": 11,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "moderate:historical_half_step:400",
@@ -35698,7 +35711,8 @@
           "shift": -3
         }
       ],
-      "dataset_rank": 7
+      "dataset_rank": 7,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:historical_half_step:800",
@@ -38979,7 +38993,8 @@
           "shift": -3
         }
       ],
-      "dataset_rank": 7
+      "dataset_rank": 7,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:live_wide_to_fine:200",
@@ -40842,7 +40857,8 @@
           "shift": -14
         }
       ],
-      "dataset_rank": 10
+      "dataset_rank": 10,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "moderate:live_wide_to_fine:400",
@@ -44208,7 +44224,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 1
+      "dataset_rank": 1,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:live_wide_to_fine:800",
@@ -47574,7 +47591,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 1
+      "dataset_rank": 1,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:dense_pairs:200",
@@ -49433,7 +49451,8 @@
           "shift": 14
         }
       ],
-      "dataset_rank": 12
+      "dataset_rank": 12,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "moderate:dense_pairs:400",
@@ -53092,7 +53111,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 4
+      "dataset_rank": 4,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "moderate:dense_pairs:800",
@@ -56877,7 +56897,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 3
+      "dataset_rank": 3,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:half_step_plus_42:200",
@@ -58740,7 +58761,8 @@
           "shift": -7
         }
       ],
-      "dataset_rank": 9
+      "dataset_rank": 9,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "moderate:half_step_plus_42:400",
@@ -61629,7 +61651,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 5
+      "dataset_rank": 5,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "moderate:half_step_plus_42:800",
@@ -64518,7 +64541,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 5
+      "dataset_rank": 5,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:historical_half_step:200",
@@ -66377,7 +66401,8 @@
           "shift": -7
         }
       ],
-      "dataset_rank": 11
+      "dataset_rank": 11,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "wide:historical_half_step:400",
@@ -69217,7 +69242,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 9
+      "dataset_rank": 9,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:historical_half_step:800",
@@ -72057,7 +72083,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 9
+      "dataset_rank": 9,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:live_wide_to_fine:200",
@@ -73920,7 +73947,8 @@
           "shift": 7
         }
       ],
-      "dataset_rank": 7
+      "dataset_rank": 7,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "wide:live_wide_to_fine:400",
@@ -76602,7 +76630,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 1
+      "dataset_rank": 1,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:live_wide_to_fine:800",
@@ -79284,7 +79313,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 1
+      "dataset_rank": 1,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:dense_pairs:200",
@@ -81143,7 +81173,8 @@
           "shift": 21
         }
       ],
-      "dataset_rank": 12
+      "dataset_rank": 12,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "wide:dense_pairs:400",
@@ -84460,7 +84491,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 3
+      "dataset_rank": 3,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:dense_pairs:800",
@@ -87777,7 +87809,8 @@
           "shift": -1
         }
       ],
-      "dataset_rank": 3
+      "dataset_rank": 3,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:half_step_plus_42:200",
@@ -89640,7 +89673,8 @@
           "shift": 28
         }
       ],
-      "dataset_rank": 8
+      "dataset_rank": 8,
+      "natural_exhaustion": false
     },
     {
       "trial_key": "wide:half_step_plus_42:400",
@@ -92547,7 +92581,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 5
+      "dataset_rank": 5,
+      "natural_exhaustion": true
     },
     {
       "trial_key": "wide:half_step_plus_42:800",
@@ -95454,7 +95489,8 @@
           "shift": 1
         }
       ],
-      "dataset_rank": 5
+      "dataset_rank": 5,
+      "natural_exhaustion": true
     }
   ],
   "recommendations": {
