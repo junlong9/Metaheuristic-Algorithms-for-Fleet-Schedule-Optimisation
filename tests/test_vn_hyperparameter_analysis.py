@@ -180,6 +180,10 @@ class TrialTests(unittest.TestCase):
             result["stop_reason"],
             "iteration_cap" if result["accepted_moves"] else "local_exhaustion",
         )
+        self.assertEqual(
+            result["natural_exhaustion"],
+            result["stop_reason"] == "local_exhaustion",
+        )
         scores = [tuple(item["score"]) for item in result["trace"]]
         self.assertTrue(
             all(left < right for left, right in zip(scores, scores[1:]))
@@ -211,6 +215,7 @@ def fake_trial(dataset, strategy, max_iters, **_kwargs):
         "lexicographic_score": score,
         "accepted_moves": 2,
         "outer_passes": 3,
+        "natural_exhaustion": True,
         "stop_reason": "local_exhaustion",
         "elapsed_seconds": float(max_iters),
         "rule_compliant": True,
@@ -254,6 +259,12 @@ class StudyOutputTests(unittest.TestCase):
                 rows = list(csv.DictReader(handle))
         self.assertEqual(len(saved["trials"]), 36)
         self.assertEqual(len(rows), 36)
+        self.assertTrue(
+            all("natural_exhaustion" in trial for trial in saved["trials"])
+        )
+        self.assertTrue(
+            all("natural_exhaustion" in row for row in rows)
+        )
         self.assertEqual(
             {row["trial_key"] for row in rows},
             {trial["trial_key"] for trial in saved["trials"]},
