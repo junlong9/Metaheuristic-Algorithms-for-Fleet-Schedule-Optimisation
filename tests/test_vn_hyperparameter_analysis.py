@@ -1,6 +1,9 @@
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+
+import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -63,6 +66,54 @@ class MatrixTests(unittest.TestCase):
             {dataset for dataset, _, _ in keys},
             {"original", "moderate", "wide"},
         )
+
+
+class InputLoadingTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = study.load_study_inputs(ROOT)
+
+    def test_inputs_use_the_common_reporting_window(self):
+        inputs = self.inputs
+        self.assertEqual(
+            inputs.origin + pd.Timedelta(days=inputs.scoring_start),
+            pd.Timestamp("2026-01-21"),
+        )
+        self.assertEqual(
+            inputs.origin + pd.Timedelta(days=inputs.scoring_end),
+            pd.Timestamp("2038-01-18"),
+        )
+        self.assertEqual(
+            tuple(dataset.key for dataset in inputs.datasets),
+            ("original", "moderate", "wide"),
+        )
+
+    def test_stagger_inputs_keep_saved_opening_state(self):
+        for dataset in self.inputs.datasets[1:]:
+            for events in dataset.schedule.values():
+                self.assertIn("_origin", events[0])
+                self.assertIn("_opening", events[0])
+
+    def test_every_initial_schedule_is_rule_compliant(self):
+        for dataset in self.inputs.datasets:
+            self.assertTrue(
+                study.optimiser.is_rule_compliant_schedule(
+                    dataset.schedule,
+                    self.inputs.horizon,
+                )
+            )
+        self.assertEqual(
+            set(self.inputs.input_hashes),
+            {"original", "moderate", "wide", "opening_state", "production"},
+        )
+
+    def test_missing_inputs_name_the_missing_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(
+                FileNotFoundError,
+                "opening_state: missing input",
+            ):
+                study.load_study_inputs(Path(directory))
 
 
 if __name__ == "__main__":
