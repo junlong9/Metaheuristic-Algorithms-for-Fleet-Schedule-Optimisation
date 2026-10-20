@@ -237,3 +237,254 @@ def load_study_inputs(root: Path = ROOT) -> StudyInputs:
         scoring_end=int((forecast_end - origin).days),
         input_hashes=hashes,
     )
+
+
+SCHEDULE_FIELDS = (
+    "check",
+    "start",
+    "duration",
+    "earliest_start",
+    "latest_start",
+)
+
+
+def visible_score(
+    availability: np.ndarray,
+    scoring_start: int,
+    scoring_end: int,
+) -> tuple[float, float, float]:
+    return optimiser.score_availability(
+        availability[scoring_start:scoring_end + 1]
+    )
+
+
+def priority_groups(
+    schedule: dict[str, list[dict[str, object]]],
+    availability: np.ndarray,
+    scoring_start: int,
+    scoring_end: int,
+) -> list[list[tuple[str, int]]]:
+    rows = []
+    for aircraft in sorted(schedule):
+        for index, event in enumerate(schedule[aircraft]):
+            left = max(int(event["start"]), scoring_start)
+            right = min(
+                int(event["start"]) + int(event["duration"]),
+                scoring_end + 1,
+            )
+            level = (
+                float(np.min(availability[left:right]))
+                if left < right
+                else float("inf")
+            )
+            rows.append((level, int(event["start"]), aircraft, index))
+    rows.sort()
+    grouped: dict[float, list[tuple[str, int]]] = {}
+    for level, _, aircraft, index in rows:
+        grouped.setdefault(level, []).append((aircraft, index))
+    return list(grouped.values())
+
+
+def generate_study_neighbors(
+    schedule: dict[str, list[dict[str, object]]],
+    availability: np.ndarray,
+    horizon: int,
+    scoring_start: int,
+    scoring_end: int,
+    current_score: tuple[float, float, float],
+    shifts: tuple[int, ...],
+) -> list[dict[str, object]]:
+    for group in priority_groups(
+        schedule,
+        availability,
+        scoring_start,
+        scoring_end,
+    ):
+        improving = []
+        for aircraft, index in group:
+            events = schedule[aircraft]
+            event = events[index]
+            if int(event["start"]) < scoring_start:
+                continue
+            for shift in shifts:
+                rebuilt = optimiser.rebuild_aircraft_schedule(
+                    events,
+                    horizon=horizon,
+                    event_index=index,
+                    new_start=int(event["start"]) + shift,
+                )
+                if rebuilt is None or int(rebuilt[index]["start"]) < scoring_start:
+                    continue
+                candidate_availability = (
+                    optimiser.availability_with_rebuilt_aircraft(
+                        availability,
+                        events,
+                        rebuilt,
+                    )
+                )
+                candidate_score = visible_score(
+                    candidate_availability,
+                    scoring_start,
+                    scoring_end,
+                )
+                if candidate_score > current_score:
+                    improving.append({
+                        "aircraft": aircraft,
+                        "event_index": index,
+                        "events": rebuilt,
+                        "availability": candidate_availability,
+                        "score": candidate_score,
+                        "shift": shift,
+                    })
+        if improving:
+            return improving
+    return []
+
+
+def independent_availability(
+    schedule: dict[str, list[dict[str, object]]],
+    horizon: int,
+) -> np.ndarray:
+    occupied_count = np.zeros(horizon + 1, dtype=int)
+    for events in schedule.values():
+        occupied = np.zeros(horizon + 1, dtype=bool)
+        for event in events:
+            start = int(event["start"])
+            end = start + int(event["duration"])
+            occupied[start:end] = True
+        occupied_count += occupied.astype(int)
+    return len(schedule) - occupied_count
+
+
+def schedule_sha256(
+    schedule: dict[str, list[dict[str, object]]],
+) -> str:
+    canonical = {
+        aircraft: [
+            {field: event[field] for field in SCHEDULE_FIELDS}
+            for event in sorted(events, key=lambda item: int(item["start"]))
+        ]
+        for aircraft, events in sorted(schedule.items())
+    }
+    encoded = json.dumps(
+        canonical,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def validate_endpoint(
+    initial: dict[str, list[dict[str, object]]],
+    final: dict[str, list[dict[str, object]]],
+    incremental_availability: np.ndarray,
+    horizon: int,
+    scoring_start: int,
+) -> None:
+    if not optimiser.is_rule_compliant_schedule(final, horizon):
+        raise ValueError("endpoint failed maintenance-rule replay")
+    exact = optimiser.compute_availability(final, horizon)
+    independent = independent_availability(final, horizon)
+    if not np.array_equal(incremental_availability, exact):
+        raise ValueError("incremental availability differs from full rebuild")
+    if not np.array_equal(exact, independent):
+        raise ValueError("full availability differs from occupancy mask")
+    if set(initial) != set(final):
+        raise ValueError("aircraft set changed")
+    for aircraft in sorted(initial):
+        before = initial[aircraft]
+        after = final[aircraft]
+        if len(before) != len(after):
+            raise ValueError(f"{aircraft}: check count changed")
+        for old, new in zip(before, after):
+            if old["check"] != new["check"] or old["duration"] != new["duration"]:
+                raise ValueError(f"{aircraft}: check identity changed")
+            if int(old["start"]) < scoring_start and old != new:
+                raise ValueError(f"{aircraft}: commenced check changed")
+
+
+def run_trial(
+    dataset: LoadedDataset,
+    strategy: Strategy,
+    max_iters: int,
+    *,
+    horizon: int,
+    scoring_start: int,
+    scoring_end: int,
+    clock: Callable[[], float] = time.perf_counter,
+) -> dict[str, object]:
+    initial = copy.deepcopy(dataset.schedule)
+    current = copy.deepcopy(dataset.schedule)
+    availability = optimiser.compute_availability(current, horizon)
+    current_score = visible_score(
+        availability,
+        scoring_start,
+        scoring_end,
+    )
+    trace = [{"iteration": 0, "score": [float(v) for v in current_score]}]
+    accepted_moves = 0
+    outer_passes = 0
+    exhausted = False
+    started = clock()
+    for iteration in range(max_iters):
+        outer_passes += 1
+        accepted = False
+        for shifts in strategy.shift_sets:
+            candidates = generate_study_neighbors(
+                current,
+                availability,
+                horizon,
+                scoring_start,
+                scoring_end,
+                current_score,
+                shifts,
+            )
+            if not candidates:
+                continue
+            best = max(candidates, key=lambda item: item["score"])
+            current[best["aircraft"]] = best["events"]
+            availability = best["availability"]
+            current_score = best["score"]
+            accepted_moves += 1
+            trace.append({
+                "iteration": iteration + 1,
+                "score": [float(v) for v in current_score],
+                "shift": int(best["shift"]),
+            })
+            accepted = True
+            break
+        if not accepted:
+            exhausted = True
+            break
+    elapsed = clock() - started
+    validate_endpoint(
+        initial,
+        current,
+        availability,
+        horizon,
+        scoring_start,
+    )
+    scores = [tuple(item["score"]) for item in trace]
+    if not all(left < right for left, right in zip(scores, scores[1:])):
+        raise ValueError("accepted score trace is not strictly improving")
+    visible = availability[scoring_start:scoring_end + 1]
+    return {
+        "trial_key": f"{dataset.key}:{strategy.key}:{max_iters}",
+        "dataset": dataset.key,
+        "dataset_label": dataset.label,
+        "strategy_key": strategy.key,
+        "strategy_label": strategy.label,
+        "shift_sets": [list(level) for level in strategy.shift_sets],
+        "max_iters": max_iters,
+        "min_availability": int(np.min(visible)),
+        "availability_std": float(np.std(visible)),
+        "mean_availability": float(np.mean(visible)),
+        "lexicographic_score": [float(value) for value in current_score],
+        "accepted_moves": accepted_moves,
+        "outer_passes": outer_passes,
+        "stop_reason": "local_exhaustion" if exhausted else "iteration_cap",
+        "elapsed_seconds": float(elapsed),
+        "rule_compliant": True,
+        "endpoint_sha256": schedule_sha256(current),
+        "trace": trace,
+    }
