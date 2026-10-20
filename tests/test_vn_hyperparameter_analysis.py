@@ -4,6 +4,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -316,6 +317,54 @@ class PresentationOutputTests(unittest.TestCase):
             self.assertIn("one observed run", text)
             self.assertNotIn("statistically significant", text)
             self.assertNotIn("confidence interval", text)
+
+
+class PublicationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        inputs = study.load_study_inputs(ROOT)
+        cls.payload = study.run_study(inputs, fake_trial)
+
+    def test_trial_error_names_the_configuration(self):
+        inputs = study.load_study_inputs(ROOT)
+
+        def fail(*_args, **_kwargs):
+            raise ValueError("deliberate failure")
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            "original:historical_half_step:200: trial failed",
+        ):
+            study.run_study(inputs, fail)
+
+    def test_publish_does_not_leave_partial_outputs_on_report_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "published"
+            with patch.object(
+                study,
+                "build_report",
+                side_effect=RuntimeError("report failed"),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "report failed"):
+                    study.publish_outputs(self.payload, output)
+            self.assertFalse(output.exists())
+
+    def test_publish_writes_exactly_six_valid_artifacts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "published"
+            study.publish_outputs(self.payload, output)
+            self.assertEqual(
+                {path.name for path in output.iterdir()},
+                {
+                    "results.json",
+                    "summary.csv",
+                    "ranked-quality.png",
+                    "budget-convergence.png",
+                    "runtime.png",
+                    "vn-hyperparameter-analysis.docx",
+                },
+            )
+            study.validate_generated_outputs(self.payload, output)
 
 
 if __name__ == "__main__":

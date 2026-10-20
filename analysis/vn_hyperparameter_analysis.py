@@ -929,3 +929,77 @@ def build_report(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     document.save(output_path)
+
+
+ARTIFACT_NAMES = (
+    "results.json",
+    "summary.csv",
+    "ranked-quality.png",
+    "budget-convergence.png",
+    "runtime.png",
+    "vn-hyperparameter-analysis.docx",
+)
+
+
+def validate_generated_outputs(
+    payload: dict[str, object],
+    output_dir: Path,
+) -> None:
+    missing = [
+        name
+        for name in ARTIFACT_NAMES
+        if not (output_dir / name).is_file()
+        or (output_dir / name).stat().st_size == 0
+    ]
+    if missing:
+        raise ValueError(f"Missing or empty artifacts: {', '.join(missing)}")
+    saved = json.loads(
+        (output_dir / "results.json").read_text(encoding="utf-8")
+    )
+    with (output_dir / "summary.csv").open(
+        newline="",
+        encoding="utf-8",
+    ) as handle:
+        rows = list(csv.DictReader(handle))
+    if len(saved["trials"]) != 36 or len(rows) != 36:
+        raise ValueError("JSON and CSV must each contain 36 trials.")
+    expected = {item["trial_key"] for item in payload["trials"]}
+    if {row["trial_key"] for row in rows} != expected:
+        raise ValueError("CSV trial keys differ from JSON trial keys.")
+    if not all(item["rule_compliant"] for item in saved["trials"]):
+        raise ValueError("A saved trial is not rule-compliant.")
+
+
+def publish_outputs(
+    payload: dict[str, object],
+    output_dir: Path = OUTPUT_DIR,
+) -> None:
+    output_dir.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(
+        prefix=f".{output_dir.name}-",
+        dir=output_dir.parent,
+    ) as temporary:
+        staging = Path(temporary)
+        write_machine_outputs(payload, staging)
+        charts = create_charts(payload["trials"], staging)
+        build_report(
+            payload,
+            charts,
+            staging / "vn-hyperparameter-analysis.docx",
+        )
+        validate_generated_outputs(payload, staging)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        for name in ARTIFACT_NAMES:
+            os.replace(staging / name, output_dir / name)
+
+
+def main() -> int:
+    inputs = load_study_inputs(ROOT)
+    payload = run_study(inputs)
+    publish_outputs(payload, OUTPUT_DIR)
+    print(f"Wrote 36 validated trials and report to {OUTPUT_DIR}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
