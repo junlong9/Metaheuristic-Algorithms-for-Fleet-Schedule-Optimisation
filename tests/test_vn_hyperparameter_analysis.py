@@ -1,6 +1,8 @@
 from pathlib import Path
+import copy
 import csv
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -189,6 +191,27 @@ class TrialTests(unittest.TestCase):
             all(left < right for left, right in zip(scores, scores[1:]))
         )
 
+    def test_repeated_trial_has_identical_deterministic_endpoint(self):
+        dataset = self.inputs.datasets[0]
+        results = [
+            study.run_trial(
+                dataset,
+                study.STRATEGIES[0],
+                1,
+                horizon=self.inputs.horizon,
+                scoring_start=self.inputs.scoring_start,
+                scoring_end=self.inputs.scoring_end,
+                clock=iter((10.0, 11.0)).__next__,
+            )
+            for _ in range(2)
+        ]
+        self.assertEqual(
+            results[0]["endpoint_sha256"],
+            results[1]["endpoint_sha256"],
+        )
+        self.assertEqual(results[0]["lexicographic_score"], results[1]["lexicographic_score"])
+        self.assertEqual(results[0]["trace"], results[1]["trace"])
+
 
 def fake_trial(dataset, strategy, max_iters, **_kwargs):
     strategy_index = next(
@@ -198,7 +221,7 @@ def fake_trial(dataset, strategy, max_iters, **_kwargs):
     )
     score = [
         20.0 - strategy_index,
-        -(1.0 + max_iters / 10000),
+        -(1.0 + min(max_iters, 400) / 10000),
         21.0,
     ]
     return {
@@ -322,12 +345,41 @@ class PresentationOutputTests(unittest.TestCase):
                 ],
             )
             self.assertEqual(len(document.inline_shapes), 3)
+            self.assertEqual(len(document.tables), 4)
             xml = document._element.xml
             self.assertEqual(xml.count('w:type="page"'), 9)
-            text = "\n".join(p.text.lower() for p in document.paragraphs)
-            self.assertIn("one observed run", text)
-            self.assertNotIn("statistically significant", text)
-            self.assertNotIn("confidence interval", text)
+            text_parts = [p.text for p in document.paragraphs]
+            text_parts.extend(
+                cell.text
+                for table in document.tables
+                for row in table.rows
+                for cell in row.cells
+            )
+            text = "\n".join(text_parts)
+            word_count = len(text.split())
+            self.assertGreaterEqual(word_count, 1_800)
+            self.assertLessEqual(word_count, 2_500)
+            lower_text = text.lower()
+            self.assertIn("one observed run", lower_text)
+            self.assertIn("400- and 800-iteration results", lower_text)
+            self.assertIn("exactly tied", lower_text)
+            self.assertIn("lower-budget tie-break", lower_text)
+            self.assertNotIn("statistically significant", lower_text)
+            self.assertNotIn("confidence interval", lower_text)
+
+            section_words = {}
+            current = None
+            for paragraph in document.paragraphs:
+                if paragraph.style.name.startswith("Heading 1"):
+                    current = paragraph.text
+                    section_words[current] = 0
+                elif current:
+                    section_words[current] += len(paragraph.text.split())
+            self.assertEqual(set(section_words), set(headings))
+            self.assertTrue(
+                all(words >= 90 for words in section_words.values()),
+                section_words,
+            )
 
 
 class PublicationTests(unittest.TestCase):
@@ -360,6 +412,50 @@ class PublicationTests(unittest.TestCase):
                     study.publish_outputs(self.payload, output)
             self.assertFalse(output.exists())
 
+    def test_mid_publication_failure_restores_previous_artifact_set(self):
+        with tempfile.TemporaryDirectory() as directory:
+            parent = Path(directory)
+            output = parent / "published"
+            previous = copy.deepcopy(self.payload)
+            previous["study"] = "previous complete publication"
+            previous["trials"][0]["elapsed_seconds"] = -1.0
+            study.publish_outputs(previous, output)
+            before = {
+                path.name: path.read_bytes()
+                for path in output.iterdir()
+            }
+
+            real_replace = os.replace
+            failed = False
+
+            def fail_output_promotion(source, destination):
+                nonlocal failed
+                if Path(destination) == output and not failed:
+                    failed = True
+                    raise OSError("simulated replacement failure")
+                return real_replace(source, destination)
+
+            with patch.object(
+                study.os,
+                "replace",
+                side_effect=fail_output_promotion,
+            ):
+                with self.assertRaisesRegex(
+                    OSError,
+                    "simulated replacement failure",
+                ):
+                    study.publish_outputs(self.payload, output)
+
+            after = {
+                path.name: path.read_bytes()
+                for path in output.iterdir()
+            }
+            self.assertEqual(after, before)
+            self.assertEqual(
+                list(parent.glob(f".{output.name}-*")),
+                [],
+            )
+
     def test_publish_writes_exactly_six_valid_artifacts(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "published"
@@ -376,6 +472,17 @@ class PublicationTests(unittest.TestCase):
                 },
             )
             study.validate_generated_outputs(self.payload, output)
+
+    def test_main_runs_study_and_publishes_outputs(self):
+        with (
+            patch.object(study, "load_study_inputs", return_value="inputs") as load,
+            patch.object(study, "run_study", return_value=self.payload) as run,
+            patch.object(study, "publish_outputs") as publish,
+        ):
+            self.assertEqual(study.main(), 0)
+        load.assert_called_once_with(study.ROOT)
+        run.assert_called_once_with("inputs")
+        publish.assert_called_once_with(self.payload, study.OUTPUT_DIR)
 
 
 if __name__ == "__main__":
