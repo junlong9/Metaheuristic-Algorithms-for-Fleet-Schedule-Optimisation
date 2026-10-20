@@ -1,4 +1,6 @@
 from pathlib import Path
+import csv
+import json
 import sys
 import tempfile
 import unittest
@@ -179,6 +181,80 @@ class TrialTests(unittest.TestCase):
         scores = [tuple(item["score"]) for item in result["trace"]]
         self.assertTrue(
             all(left < right for left, right in zip(scores, scores[1:]))
+        )
+
+
+def fake_trial(dataset, strategy, max_iters, **_kwargs):
+    strategy_index = next(
+        index
+        for index, item in enumerate(study.STRATEGIES)
+        if item.key == strategy.key
+    )
+    score = [
+        20.0 - strategy_index,
+        -(1.0 + max_iters / 10000),
+        21.0,
+    ]
+    return {
+        "trial_key": f"{dataset.key}:{strategy.key}:{max_iters}",
+        "dataset": dataset.key,
+        "dataset_label": dataset.label,
+        "strategy_key": strategy.key,
+        "strategy_label": strategy.label,
+        "shift_sets": [list(level) for level in strategy.shift_sets],
+        "max_iters": max_iters,
+        "min_availability": int(score[0]),
+        "availability_std": -score[1],
+        "mean_availability": score[2],
+        "lexicographic_score": score,
+        "accepted_moves": 2,
+        "outer_passes": 3,
+        "stop_reason": "local_exhaustion",
+        "elapsed_seconds": float(max_iters),
+        "rule_compliant": True,
+        "endpoint_sha256": strategy.key,
+        "trace": [{"iteration": 0, "score": score}],
+    }
+
+
+class StudyOutputTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = study.load_study_inputs(ROOT)
+
+    def test_run_study_calls_each_of_36_trials_once(self):
+        calls = []
+
+        def recording_runner(*args, **kwargs):
+            calls.append((args[0].key, args[1].key, args[2]))
+            return fake_trial(*args, **kwargs)
+
+        payload = study.run_study(self.inputs, recording_runner)
+        self.assertEqual(len(calls), 36)
+        self.assertEqual(len(set(calls)), 36)
+        self.assertEqual(len(payload["trials"]), 36)
+
+    def test_exact_score_ties_share_competition_rank(self):
+        trials = [
+            {"dataset": "original", "lexicographic_score": [18, -1.2, 21]},
+            {"dataset": "original", "lexicographic_score": [18, -1.2, 21]},
+            {"dataset": "original", "lexicographic_score": [17, -1.0, 22]},
+        ]
+        study.assign_dataset_ranks(trials)
+        self.assertEqual([item["dataset_rank"] for item in trials], [1, 1, 3])
+
+    def test_json_and_csv_cover_the_same_36_trials(self):
+        payload = study.run_study(self.inputs, fake_trial)
+        with tempfile.TemporaryDirectory() as directory:
+            paths = study.write_machine_outputs(payload, Path(directory))
+            saved = json.loads(paths["json"].read_text(encoding="utf-8"))
+            with paths["csv"].open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+        self.assertEqual(len(saved["trials"]), 36)
+        self.assertEqual(len(rows), 36)
+        self.assertEqual(
+            {row["trial_key"] for row in rows},
+            {trial["trial_key"] for trial in saved["trials"]},
         )
 
 
