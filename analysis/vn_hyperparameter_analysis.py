@@ -488,3 +488,165 @@ def run_trial(
         "endpoint_sha256": schedule_sha256(current),
         "trace": trace,
     }
+
+
+def assign_dataset_ranks(trials: list[dict[str, object]]) -> None:
+    for dataset in DATASET_KEYS:
+        group = [item for item in trials if item["dataset"] == dataset]
+        scores = [tuple(item["lexicographic_score"]) for item in group]
+        for item in group:
+            score = tuple(item["lexicographic_score"])
+            item["dataset_rank"] = 1 + sum(other > score for other in scores)
+
+
+def choose_recommendations(
+    trials: list[dict[str, object]],
+) -> dict[str, object]:
+    winners = {
+        dataset: min(
+            (item for item in trials if item["dataset"] == dataset),
+            key=lambda item: (
+                item["dataset_rank"],
+                item["max_iters"],
+                item["elapsed_seconds"],
+                next(
+                    index
+                    for index, strategy in enumerate(STRATEGIES)
+                    if strategy.key == item["strategy_key"]
+                ),
+            ),
+        )["trial_key"]
+        for dataset in DATASET_KEYS
+    }
+    strategy_order = {
+        strategy.key: index for index, strategy in enumerate(STRATEGIES)
+    }
+    candidates = []
+    for strategy in STRATEGIES:
+        for budget in BUDGETS:
+            rows = [
+                item
+                for item in trials
+                if item["strategy_key"] == strategy.key
+                and item["max_iters"] == budget
+            ]
+            candidates.append((
+                sum(item["dataset_rank"] for item in rows),
+                max(item["dataset_rank"] for item in rows),
+                budget,
+                sum(item["elapsed_seconds"] for item in rows),
+                strategy_order[strategy.key],
+                strategy.key,
+            ))
+    _, _, budget, _, _, strategy_key = min(candidates)
+    return {
+        "dataset_winners": winners,
+        "shared": {
+            "strategy_key": strategy_key,
+            "max_iters": budget,
+        },
+    }
+
+
+CSV_FIELDS = (
+    "trial_key",
+    "dataset",
+    "strategy_key",
+    "strategy_label",
+    "max_iters",
+    "shift_sets",
+    "min_availability",
+    "availability_std",
+    "mean_availability",
+    "accepted_moves",
+    "outer_passes",
+    "stop_reason",
+    "elapsed_seconds",
+    "lexicographic_score",
+    "dataset_rank",
+    "rule_compliant",
+    "endpoint_sha256",
+)
+
+
+def run_study(
+    inputs: StudyInputs,
+    trial_runner: Callable[..., dict[str, object]] = run_trial,
+) -> dict[str, object]:
+    datasets = {item.key: item for item in inputs.datasets}
+    trials = []
+    for dataset_key, strategy, budget in build_trial_matrix():
+        try:
+            result = trial_runner(
+                datasets[dataset_key],
+                strategy,
+                budget,
+                horizon=inputs.horizon,
+                scoring_start=inputs.scoring_start,
+                scoring_end=inputs.scoring_end,
+            )
+        except Exception as exc:
+            trial_key = f"{dataset_key}:{strategy.key}:{budget}"
+            raise RuntimeError(f"{trial_key}: trial failed: {exc}") from exc
+        trials.append(result)
+    if len(trials) != 36 or len({item["trial_key"] for item in trials}) != 36:
+        raise ValueError("Study did not produce 36 unique trial records.")
+    assign_dataset_ranks(trials)
+    return {
+        "study": "VN priority hyperparameter analysis",
+        "forecast_start": str(
+            (inputs.origin + pd.Timedelta(days=inputs.scoring_start)).date()
+        ),
+        "forecast_end": str(
+            (inputs.origin + pd.Timedelta(days=inputs.scoring_end)).date()
+        ),
+        "selection_policy": "first_priority_level_best_candidate",
+        "input_hashes": inputs.input_hashes,
+        "strategies": [
+            {
+                "key": item.key,
+                "label": item.label,
+                "shift_sets": [list(level) for level in item.shift_sets],
+            }
+            for item in STRATEGIES
+        ],
+        "budgets": list(BUDGETS),
+        "trials": trials,
+        "recommendations": choose_recommendations(trials),
+    }
+
+
+def build_summary_rows(
+    trials: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    rows = []
+    for trial in trials:
+        row = {field: trial[field] for field in CSV_FIELDS}
+        row["shift_sets"] = json.dumps(
+            row["shift_sets"],
+            separators=(",", ":"),
+        )
+        row["lexicographic_score"] = json.dumps(
+            row["lexicographic_score"],
+            separators=(",", ":"),
+        )
+        rows.append(row)
+    return rows
+
+
+def write_machine_outputs(
+    payload: dict[str, object],
+    output_dir: Path,
+) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "results.json"
+    csv_path = output_dir / "summary.csv"
+    json_path.write_text(
+        json.dumps(payload, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    with csv_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=CSV_FIELDS)
+        writer.writeheader()
+        writer.writerows(build_summary_rows(payload["trials"]))
+    return {"json": json_path, "csv": csv_path}
