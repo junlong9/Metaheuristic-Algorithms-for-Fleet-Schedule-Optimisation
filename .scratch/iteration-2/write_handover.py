@@ -33,6 +33,34 @@ def table(headers, rows):
     return "\n".join(lines)
 
 
+def repeat_note(results):
+    repeats = [
+        row for row in results.get("sweep", [])
+        if row.get("seed") not in (None, 99)
+    ]
+
+    if not repeats:
+        return (
+            "No second seed was run."
+        )
+
+    row = repeats[-1]
+    setting = row.get("variant", row["name"])
+
+    if row.get("timed_out"):
+        return (
+            f"The extra seed of {setting} reached smoothness "
+            f"{row['smoothness']:.6f} and was then stopped at "
+            f"{row['seconds']:.1f}s, past the 5-minute limit, so "
+            "that row is not a finished repeat of the setting."
+        )
+
+    return (
+        f"The extra seed of {setting} finished at smoothness "
+        f"{row['smoothness']:.6f} in {row['seconds']:.1f}s."
+    )
+
+
 def recommendation(results):
     decision = results.get("decision", {})
     judgement = decision.get("judgement")
@@ -197,9 +225,7 @@ def build_markdown(results):
         "finished variant, and only if time remained. The decision-run "
         "defaults (temperature 1.5, 15 escape cycles, 30 plateau moves, "
         "400 polish iterations) were not repeated inside the hour. "
-        "The extra seed of escape temperature 1.0 was stopped at 5 "
-        "minutes during its opening polish, so that row is not a "
-        "finished repeat of the setting."
+        + repeat_note(results)
     )
     sections.append("")
 

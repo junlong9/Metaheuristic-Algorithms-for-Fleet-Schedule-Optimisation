@@ -1,6 +1,6 @@
 # Iteration 2 remaining work
 
-Status: ready-for-agent
+Status: ready-for-human
 
 ## Problem Statement
 

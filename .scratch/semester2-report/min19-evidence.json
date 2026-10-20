@@ -1,0 +1,135 @@
+{
+  "workbook": "heavy_maintenance_forecast.xlsx",
+  "sha256": "a98a1a3725cf3da075034932aa94e314d8b99933e2b942b305730a35978667a2",
+  "fleet": 24,
+  "checks": {
+    "A": 144,
+    "B": 72,
+    "C": 38,
+    "D": 24
+  },
+  "horizon_index": 4480,
+  "observations": 4481,
+  "downtime": 10248,
+  "mean": 21.713010488730195,
+  "loaded_min": 15,
+  "loaded_std": 1.9497670360504062,
+  "loaded_compliant": true,
+  "forced_peak": 6,
+  "peak_days": [
+    2676,
+    2677,
+    2678,
+    2679,
+    2680,
+    2681
+  ],
+  "peak_dates": [
+    "20 May 2033",
+    "21 May 2033",
+    "22 May 2033",
+    "23 May 2033",
+    "24 May 2033",
+    "25 May 2033"
+  ],
+  "selected": [
+    {
+      "aircraft": "Aircraft 11",
+      "earliest": 2587,
+      "due": 2657,
+      "core_end_exclusive": 2713,
+      "core_last_day": 2712,
+      "earliest_date": "20 Feb 2033",
+      "due_date": "01 May 2033",
+      "core_end_exclusive_date": "26 Jun 2033",
+      "core_last_day_date": "25 Jun 2033"
+    },
+    {
+      "aircraft": "Aircraft 14",
+      "earliest": 2591,
+      "due": 2661,
+      "core_end_exclusive": 2717,
+      "core_last_day": 2716,
+      "earliest_date": "24 Feb 2033",
+      "due_date": "05 May 2033",
+      "core_end_exclusive_date": "30 Jun 2033",
+      "core_last_day_date": "29 Jun 2033"
+    },
+    {
+      "aircraft": "Aircraft 15",
+      "earliest": 2556,
+      "due": 2626,
+      "core_end_exclusive": 2682,
+      "core_last_day": 2681,
+      "earliest_date": "20 Jan 2033",
+      "due_date": "31 Mar 2033",
+      "core_end_exclusive_date": "26 May 2033",
+      "core_last_day_date": "25 May 2033"
+    },
+    {
+      "aircraft": "Aircraft 19",
+      "earliest": 2606,
+      "due": 2676,
+      "core_end_exclusive": 2732,
+      "core_last_day": 2731,
+      "earliest_date": "11 Mar 2033",
+      "due_date": "20 May 2033",
+      "core_end_exclusive_date": "15 Jul 2033",
+      "core_last_day_date": "14 Jul 2033"
+    },
+    {
+      "aircraft": "Aircraft 24",
+      "earliest": 2572,
+      "due": 2642,
+      "core_end_exclusive": 2698,
+      "core_last_day": 2697,
+      "earliest_date": "05 Feb 2033",
+      "due_date": "16 Apr 2033",
+      "core_end_exclusive_date": "11 Jun 2033",
+      "core_last_day_date": "10 Jun 2033"
+    },
+    {
+      "aircraft": "Blue-8",
+      "earliest": 2558,
+      "due": 2628,
+      "core_end_exclusive": 2684,
+      "core_last_day": 2683,
+      "earliest_date": "22 Jan 2033",
+      "due_date": "02 Apr 2033",
+      "core_end_exclusive_date": "28 May 2033",
+      "core_last_day_date": "27 May 2033"
+    }
+  ],
+  "core_intersection": [
+    2676,
+    2682
+  ],
+  "legal_placements_checked": 426,
+  "occupancy_assertions": 2556,
+  "export_summary": [
+    [
+      "Schedule",
+      "Min_Availability",
+      "Availability_Std",
+      "Average_Availability"
+    ],
+    [
+      "Original",
+      15,
+      1.949767036050406,
+      21.71301048873019
+    ],
+    [
+      "Optimised",
+      18,
+      1.413971434383376,
+      21.71301048873019
+    ]
+  ],
+  "optimised_compliant": true,
+  "optimised_score": [
+    18.0,
+    -1.4139714343833762,
+    21.713010488730195
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "file": "schedule-priority-period-objective-None.json",
+    "valid": true,
+    "score_under_original_global_objective": [
+      18.0,
+      -1.4597884284579175,
+      21.713010488730195
+    ]
+  },
+  {
+    "file": "schedule-basin-hopping-period-objective-1.json",
+    "valid": true,
+    "score_under_original_global_objective": [
+      17.0,
+      -1.4866009817782675,
+      21.713010488730195
+    ]
+  },
+  {
+    "file": "schedule-basin-hopping-period-objective-2.json",
+    "valid": true,
+    "score_under_original_global_objective": [
+      17.0,
+      -1.4692360771552078,
+      21.713010488730195
+    ]
+  },
+  {
+    "file": "schedule-basin-hopping-period-objective-3.json",
+    "valid": true,
+    "score_under_original_global_objective": [
+      17.0,
+      -1.472725438137184,
+      21.713010488730195
+    ]
+  }
+]

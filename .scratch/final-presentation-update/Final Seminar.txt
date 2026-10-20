@@ -1,0 +1,308 @@
+{'cx': '12192000', 'cy': '6858000'}
+
+SLIDE 1
+TextBox 8: Scheduling Algorithm Research:
+Fleet maintenance optimisation
+
+
+
+Data7902 Capstone Project
+
+Presenter: David Long
+NOTES: Today I will present the complete journey through both iterations of the scheduling algorithm research. The goal was to improve daily aircraft availability by changing maintenance timing while preserving the maintenance rules. Iteration 1 established the objective and made the search practical. Iteration 2 tested whether a more exploratory method could improve it, investigated starting schedules, and finished a wider hyperparameter study. I will focus on the measured findings and the final recommendation. The supporting diagrams and earlier plots are available after the references for questions. | 1
+
+SLIDE 2
+Title 1: The scheduling problem
+Content Placeholder 2: Concurrent maintenance creates dips in fleet availability.
+Retiming checks must preserve start windows and maintenance rules.
+First: maximise worst-day availability.
+Then: reduce standard deviation.
+Finally: improve mean availability.
+NOTES: The scheduling problem starts when several aircraft enter maintenance at similar times. Availability then falls even if the average across the year looks acceptable. The decision variable is the start of a check inside its legal start window. Checks must not overlap on one aircraft, and changing one check must preserve the sequence and the reset rules for later checks. The score ranks worst-day availability first, lower population standard deviation second, and mean availability last. A smoother schedule cannot compensate for a lower worst day. Random failures and resource shortages motivate the problem, but the reported experiments model scheduled maintenance. Source: CONTEXT.md and the completed technical report dated 12 October 2026. | 2
+
+SLIDE 3
+Title 1: The project journey
+Content Placeholder 2: Iteration 1: establish the objective on a simple fleet
+Scale to a heavy maintenance forecast
+Replace exhaustive and random search with priority selection
+Iteration 2: test basin-hopping with tabu polish
+Measure the effect of starting schedules
+Tune settings across three forecasts
+Select the method and settings to take forward
+NOTES: The work developed in two iterations. First, a simple ten-aircraft dataset established that local neighbourhood search could reduce maintenance overlap. Scaling to the heavy forecast made candidate evaluation expensive, so the method progressed through random sampling to deterministic priority selection. The second iteration asked whether basin-hopping with tabu polish could escape local optima, how sensitive the result was to the start schedule, and which neighbourhood settings should be retained. The newest study tests the settings on three matched forecasts. This order shows why each change was needed and how the final recommendation follows from the evidence. | 3
+
+SLIDE 4
+Title 1: Simple fleet proof of concept
+Simple setup: 10 aircraft, 80 checks. Keep the best feasible improvement at each iteration.
+NOTES: The first proof of concept used ten aircraft with eight checks each. Each check lasted sixty days, and the model constrained maintenance intervals to the supplied window. The flowchart shows the basic search loop: calculate daily availability, score the schedule, generate neighbours by shifting one check, reject infeasible candidates, and keep the best improvement. Larger timing changes came before smaller changes. On the right, the resulting simple-fleet schedule retains at least eight available aircraft, which was the original target. This established the objective and feasibility checks before the heavy maintenance model made the neighbourhood much larger. Source: presentations/Iteration 1.pptx and Iteration 1 Milestones.pptx. | 4
+
+SLIDE 5
+Title 1: The heavy maintenance forecast
+Rectangle 1: 24 aircraft and 278 checks
+A, B, C and D maintenance checks
+Sequence: A B A C A B A D
+12-year forecast
+NOTES: The heavy forecast contains twenty-four aircraft and two hundred and seventy-eight supplied checks over roughly twelve years. It adds A, B, C, and D check types, with different durations and maintenance reset rules. The repeating sequence is shown on the slide. The availability plot makes the central difficulty visible: long checks can overlap and create a sustained dip. In this model, shifting one check can change the due clocks for later checks on the same aircraft. The optimiser therefore needs to rebuild the later schedule rather than treating every start as an independent variable. The displayed table and plot come from the original iteration presentation. | 5
+
+SLIDE 6
+Title 1: Scaling the search
+Rectangle 1: The heavy fleet creates over 1,000 neighbours per iteration.
+Full evaluation becomes too slow.
+Sampling 200 neighbours reduces work.
+Random selection can miss a useful move.
+Priority selection targets checks that cause the worst days.
+NOTES: When the same neighbourhood search scaled to the heavy forecast, an iteration could produce over a thousand candidate schedules. Fully copying, checking, and scoring each one was expensive. Sampling two hundred neighbours reduced the work but introduced uncertainty, because the sample could omit a useful improving move. The next change used the structure of the problem: checks covering the worst availability days are the most relevant place to search first. Priority selection therefore concentrates the work deterministically, while widening the search when a worse priority group cannot improve. Source: Iteration 1 milestone slides 5 to 7. | 6
+
+SLIDE 7
+TextBox 3: MILESTONE 4 · PRIORITY-BASED SELECTION
+TextBox 4: Priority selection searches the worst availability regions first
+TextBox 6: Rank events by the worst availability during their interval.
+Search the worst priority level first, expand only if needed.
+Move one check, then rebuild later events using A/B/C/D rules.
+Update incrementally by removing old intervals and add the rebuilt intervals and score once.
+Deterministic, rule-compliant, and substantially faster.
+Measured result: min 15→18, std 1.96→1.44.
+NOTES: This is the method I want to spend the most time on, because it is the main technical result of iteration 1.
+
+Priority-based selection changes the question we ask. Instead of asking “what happens if we try random moves to find the best one?”, we ask “which maintenance events are actually hurting and causing the minimum availability to be the lowest?”
+
+How this algorithm works is for every event, it gets a priority score equal to the lowest fleet availability of the event for every day it is active. So if an event overlaps a day when only fifteen aircraft are available on that day, then the event priority score is fifteen. Then the events with the lowest priority score will be the ones to be shifted first.
+
+Another thing I changed is that when we move one check, we do not leave the rest of that aircraft’s plan sitting in a potentially broken state. Before,  | when we move one maintenance check, only that selected event is shifted. Now when an event is shifted, the schedule is rebuilt, everything earlier on the same aircraft stays exactly as it was. Everything later is recalculated from the new shift date using the A/B/C/D rules, so the due dates will remain legal even after getting shifted. | 
+
+I also changed how scoring works. The entire fleet is not deep copied for every trial. We rebuild one aircraft, then update availability incrementally. That aircraft’s old intervals are removed from the stored availability array, and the new rebuilt intervals are added, and scored once. That is much cheaper than recomputing availability from scratch for every  | neighbour | .
+
+
+---
+
+SLIDE 8
+TextBox 3: PRIORITY-BASED SELECTION
+TextBox 4: Priority selection targets the worst availability days
+TextBox 5: Illustration from the original heavy forecast: 24 aircraft and 278 checks
+TextBox 7: 1. Score each check
+TextBox 8: Priority equals the lowest fleet availability during that check.
+Example: [18, 18, 16, 15] gives priority 15.
+TextBox 10: 2. Group by priority
+TextBox 11: Priority 15: 20 checks
+Priority 16: 10 checks
+Priority 17: 9 checks
+Each check belongs to one group.
+TextBox 13: 3. Search worst first
+TextBox 14: Try the worst group first.
+20 checks × 2 shifts = 40 proposals.
+Take the best improvement in that group.
+Expand only if it finds none.
+NOTES: Each check receives a priority equal to the lowest fleet availability during its maintenance interval. A check covering a day with fifteen available aircraft has priority fifteen. Checks then belong to exclusive priority groups. In this illustration, twenty checks touch the worst days, so a pair of timing shifts produces around forty proposals at that first group. The baseline chooses the best improving move within the first group that can improve the score. If none improves, it expands to the next group. After a move, the later checks on that aircraft are rebuilt and availability is updated incrementally. This combines targeted selection with lower evaluation cost. Source: Iteration 1 Milestones.pptx slides 7 and 8.
+
+SLIDE 9
+TextBox 3: ITERATION 1 RESULTS
+TextBox 4: Priority selection made the heavy search practical
+TextBox 6: WORST-DAY AVAILABILITY
+TextBox 7: 15 to 18
+TextBox 9: SEARCH STRATEGY
+TextBox 10: Worst days first
+TextBox 12: VALIDITY
+TextBox 13: Rebuild and verify
+TextBox 15: Historical runtime comparison from the Iteration 1 milestone
+TextBox 16: Full neighbourhood
+TextBox 18: 920 s
+TextBox 19: 200 random samples
+TextBox 21: 451 s
+TextBox 22: Priority selection
+TextBox 24: 15.4 s
+NOTES: The historical milestone comparison reported about nine hundred and twenty seconds for full neighbourhood search, four hundred and fifty-one seconds for two hundred random samples, and fifteen point four seconds for priority selection. That is approximately sixty times faster than full search and thirty times faster than the sampled method in that benchmark. The primary result was an improvement from fifteen to eighteen available aircraft on the worst day. These are the historical Iteration 1 measurements. They are not directly comparable with the timings in the new hyperparameter study, which uses a matched scoring window and a verified study driver. Source: Iteration 1 Milestones.pptx slide 9.
+
+SLIDE 10
+TextBox 3: ITERATION 2
+TextBox 4: Three questions guided the second iteration
+TextBox 6: METHOD
+TextBox 7: Escape local optima
+TextBox 9: SETTINGS
+TextBox 10: Tune the search
+TextBox 12: Scope of the completed work
+TextBox 13: Can basin-hopping improve the tuned baseline?
+How much does the starting schedule affect the result?
+Which neighbourhoods work across three forecasts?
+Study scope: scheduled maintenance without operational constraints.
+NOTES: The second iteration focused on three questions. Could a method that temporarily accepts a worse schedule improve the tuned hill-climb? How much did the starting schedule affect the result? And which settings worked consistently across the tested forecasts? Operational constraints were part of the earlier plan, but they are outside the scope requested for this final presentation. Maintenance legality remains necessary throughout. I will separate the earlier controlled start-schedule experiment from the new moderate and wide stagger datasets, because those newer datasets change maintenance opening states and are different problem instances. Sources: Iteration 2 execution plan, completed study records, and the final-presentation scope.
+
+SLIDE 11
+TextBox 3: CANDIDATE METHOD
+TextBox 4: Basin-hopping with tabu polish
+TextBox 6: Baseline search
+TextBox 7: Prioritise checks on the worst days
+Rebuild later checks after a move
+Update availability incrementally
+Keep only improving schedules
+TextBox 9: Candidate search
+TextBox 10: Start from a polished hill-climb schedule
+Perturb the schedule to leave a local optimum
+Use tabu polish to refine the new schedule
+Accept worse basins by temperature
+Return the best-so-far schedule
+TextBox 12: Classic single-chain simulated annealing remains an earlier ablation
+NOTES: The baseline is an improving priority hill-climb. The candidate is basin-hopping with tabu polish, built on the same maintenance neighbourhoods. It first obtains a polished schedule, perturbs it to leave the current local optimum, and uses tabu search to polish the new schedule. Temperature then determines whether to continue from a worse basin. The best-so-far schedule is tracked separately and is the result we return. This is more structured than simply accepting every generated neighbour along one annealing chain. Classic simulated annealing remains an earlier ablation and is not the candidate in the comparison that follows. Source: .scratch/iteration-2/spec.md and the 12 October 2026 completed technical report.
+
+SLIDE 12
+TextBox 3: ACCEPTANCE AND TESTING
+TextBox 4: Temporary setbacks with best-so-far reporting
+TextBox 27: Candidate acceptance
+TextBox 28: Temperature can accept a worse schedule, including a lower worst day. These moves become rarer as the search cools.
+TextBox 29: Tightened fallback
+TextBox 30: Reject every move that lowers worst-day availability. Anneal only when the worst day is unchanged.
+TextBox 31: Reported result
+TextBox 32: Always return the best-so-far schedule. Temporary deterioration never replaces the best result.
+TextBox 33: Matched comparison and keep rule
+TextBox 34: Same input and half-step neighbourhoods. Report the median of seeds 1–3. Keep only if all seeds retain 18 aircraft, smoothness improves by at least 0.005, and median runtime stays within 300 seconds.
+NOTES: The implemented candidate can temporarily accept a lower worst-day availability at high temperature. That differs from the original execution-plan slide, which always rejected a lower worst day. The tightened fallback keeps that stricter rule and anneals only when worst-day availability is unchanged. Both versions return the best-so-far schedule. The decision comparison holds the input and half-step neighbourhoods fixed. The random candidate runs use seeds one, two, and three, and we report their median with their spread. Adoption requires all seeds to retain eighteen aircraft, at least zero point zero zero five improvement in standard deviation, and median runtime within five minutes. Sources: docs/adr/0001-temperature-may-lower-worst-day.md and .scratch/iteration-2/study-results.json.
+
+SLIDE 13
+TextBox 3: METHOD COMPARISON
+TextBox 4: Basin-hopping did not meet the keep rule
+Decision finding: Smoothness gain: 0.00144 against a 0.005 threshold. Median runtime exceeded 300 s.
+Decision context: Earlier decision benchmark. Candidate seeds 1–3. Two candidate runs reached the time budget.
+NOTES: On the original decision benchmark, all reported methods retained eighteen aircraft on the worst day. The tuned hill-climb achieved standard deviation about one point three nine two in one hundred and fifteen point six seconds. Basin-hopping improved the median standard deviation by only zero point zero zero one four four, below the required zero point zero zero five. Its median runtime was three hundred and six point three seconds, just over the five-minute limit. Two runs reached the time budget. Tightened acceptance matched the hill-climb quality. The candidate therefore failed both the smoothness threshold and the runtime criterion. These values use the earlier decision-study horizon and must not be compared numerically with the later matched hyperparameter scores. Source: .scratch/iteration-2/study-results.json, decision section.
+
+SLIDE 14
+TextBox 3: CONTROLLED START SCHEDULES
+TextBox 4: The as-loaded start finished smoothest
+Start finding: Same original checks and due dates. Tuned hill-climb endpoints shown.
+Start distinction: The later moderate and wide stagger datasets change maintenance ages and check mix. They are different problem instances.
+NOTES: This earlier experiment changes the opening start schedule for the same original checks and due dates. The three starts are as-loaded, bunched, and spread. All begin at a worst-day availability of fifteen and finish at eighteen with the tuned hill-climb. The as-loaded start finishes smoothest. Basin-hopping adds a small smoothness improvement on each start but takes longer. This supports retaining the as-loaded start for that original instance. It does not show that a more widely staggered fleet is always worse. The new moderate and wide datasets have different maintenance ages and check mixes, so their results answer a different question. Source: .scratch/iteration-2/study-results.json, stagger section.
+
+SLIDE 15
+TextBox 3: HYPERPARAMETER STUDY
+TextBox 4: 58 settings across three matched forecasts
+Study scale: 174 matched sweep cases, 203 completed run records
+Study content: Settings: shift magnitudes, ladder order, priority selection and iteration budget
+
+Inputs: original, moderate stagger and wide stagger forecasts
+
+Matched window: 21 January 2026 to 18 January 2038
+
+Checks: preserve opening due clocks, freeze commenced checks, replay rules and independently recompute availability
+Study caveat: Each input is a distinct maintenance instance. Compare tuned and default settings within the same dataset.
+NOTES: The completed hyperparameter study crosses fifty-eight neighbourhood and selection settings with three actual input workbooks, giving one hundred and seventy-four matched sweep cases and two hundred and three total run records. All use the same forecast dates, from twenty-first January 2026 to eighteenth January 2038. The aged fleets retain their saved sequence positions and due clocks, and checks already commenced before the benchmark are frozen. Endpoints receive full rule replay and independent daily availability checks. Serial finalist timing repeats follow the parallel sweeps. The original, moderate, and wide inputs are distinct maintenance problem instances. We compare tuning against the default within each one, rather than calling their differing inputs an algorithm gain. Source: docs/reports/2026-10-14-priority-hyperparameter-analysis-three-datasets.docx.
+
+SLIDE 16
+TextBox 3: HYPERPARAMETER RESULTS
+TextBox 4: Tuning improved smoothness on every forecast
+Quality gain: Smoothness improvement at the same worst day: 1.42%, 3.10% and 4.85%
+Runtime evidence: Serial median search time: C57 original 32.16 s. C30 moderate 14.69 s, wide 28.55 s. Three repeats per setting on this machine.
+Results boundary: Matched scoring window. All listed winners reached local exhaustion.
+NOTES: The best measured setting on the original forecast is C57, half steps plus forty-two days. It retains eighteen aircraft and improves smoothness by one point four two percent against the default. Moderate and wide stagger both favour C30, the wide dense ladder. They retain nineteen and twenty aircraft respectively, with smoothness improvements of three point one and four point eight five percent. All listed winners naturally exhausted their improving neighbourhoods. The previous half-step setting reaches only nineteen aircraft on wide stagger, while the default reaches twenty, so it cannot be adopted universally. Serial timings are local-machine medians, and repeated deterministic endpoints agree. Source: the three-forecast report dated 14 October 2026 and .scratch/priority-hyperparameter-analysis/three-dataset-summary.json.
+
+SLIDE 17
+TextBox 3: RECOMMENDED SETTINGS
+TextBox 4: A wide dense ladder works across these forecasts
+TextBox 6: Shared setting: C30
+TextBox 7: Shift levels, in order:
+±56, ±42, ±28, ±14, ±7, ±3, ±1 days
+
+Use first-level selection
+Set a 400-iteration cap
+TextBox 9: Dataset-specific option
+TextBox 10: Original forecast: C57
+Half steps plus 42 days
+
+Moderate and wide: C30
+
+C30's original smoothness penalty is 0.56%.
+Earlier half steps reach 19 on wide, compared with 20 for C30.
+NOTES: C30 is the shared recommendation among naturally converged configurations that retain each dataset's best measured worst day. Its shift levels range from plus or minus fifty-six down to plus or minus one day, and it retains first-level priority selection. A four-hundred-iteration cap covers the observed convergence counts with room to confirm no further improvement. On the original input, C30 has only zero point five six percent worse smoothness than the dataset winner. C57 is appropriate when that final original-input smoothness improvement matters. The frozen default stays the reference baseline, and future comparisons should challenge the tuned baseline on each input with matched dates and opening states. Source: three-forecast report, shared-settings recommendations.
+
+SLIDE 18
+TextBox 3: LIMITS AND NEXT STEPS
+TextBox 4: The original worst-day target is already optimal
+TextBox 12: Original forecast
+TextBox 14: Six D checks must overlap in a fixed interval.
+With 24 aircraft, worst-day availability cannot exceed 18.
+The measured result reaches this bound.
+TextBox 16: Stagger datasets
+TextBox 18: The upper bound is 21 on each stagger dataset.
+Measured results reach 19 and 20.
+Those remaining gaps are unresolved.
+TextBox 6: Evidence boundary
+TextBox 7: Smoothness is locally optimal only. These are synthetic, maintenance-only benchmarks. A new fleet, regenerated check list, or changed rules needs a fresh study.
+NOTES: The original forecast has a useful bound on the primary objective. A D check lasts one hundred and twenty-six days and has a seventy-day early allowance, so each first D check must cover a fixed fifty-six-day interval beginning at its due date. Six of those mandatory intervals overlap in the original fleet. With twenty-four aircraft, no legal schedule can exceed eighteen available aircraft on every day. Our result reaches that bound. For the two stagger inputs, the corresponding upper bound is twenty-one, while the measured results reach nineteen and twenty. Those gaps remain unresolved. These bounds do not prove globally optimal smoothness. Source: the three-forecast report, limits of the evidence section.
+
+SLIDE 19
+TextBox 3: FINAL RECOMMENDATION
+TextBox 4: Priority selection remains the method to take forward
+TextBox 6: METHOD
+TextBox 7: Priority hill-climb
+TextBox 9: SHARED SETTINGS
+TextBox 10: C30, cap 400
+TextBox 12: Project outcome
+TextBox 13: Iteration 1 raised original worst-day availability from 15 to 18.
+Basin-hopping offered too little smoothness gain for its runtime.
+Three-dataset tuning supports C30 as the shared setting.
+Use C57 when the original forecast needs the best measured smoothness.
+NOTES: The final recommendation is to retain the priority hill-climb. Iteration 1 delivered the major practical improvement: raising original worst-day availability from fifteen to eighteen and reducing search cost. Iteration 2 showed that basin-hopping's small smoothness gain did not justify its runtime in the decision benchmark. The completed three-forecast study now supports C30 as the shared tuning choice, with C57 as the original-input option. The method, input opening state, and scoring window need to stay explicit in future comparisons. The remaining work is broader validation on new fleets and investigation of the unresolved stagger-input gaps. That completes the project journey, and I am happy to take questions.
+
+SLIDE 20
+Title 1: References
+Content Placeholder 2: Pippin, Bradley W. Allocating Flight Hours to Army Helicopters. PhD thesis, Naval Postgraduate School, 1998.
+U.S. Army, Black Hawk helicopter celebrates 40 years of aviation service with the Army, 2018.
+Winata, Leonard. Heuristic approaches for flight and maintenance planning of Large Fleets. Doctor of Philosophy Thesis, RMIT University, 2011.
+
+Internal evidence: Project evidence: Iteration 1 milestone deck, completed technical report (12 Oct 2026), three-forecast hyperparameter report (14 Oct 2026), and saved study results.
+NOTES: References for the historical motivation and method review are retained here. Internal evidence for the completed work is the 12 October 2026 technical report, the 14 October 2026 three-forecast hyperparameter report, .scratch/iteration-2/study-results.json, and the frozen study records. Detailed diagrams and historical plots follow as backup material. | 20
+
+SLIDE 21
+Title 1: Backup: simple fleet input
+Rectangle 5: 10 aircraft with 8 checks each
+80 checks, each lasting 60 days
+Maintenance intervals of 320–380 days
+The random start creates overlapping maintenance
+Goal: keep at least 8 aircraft available
+NOTES: Backup input description for the ten-aircraft proof of concept. Each aircraft has eight sixty-day checks. The source model constrains intervals to 320–380 days. The starting plan has major overlaps. The optimisation target is at least eight available aircraft, equivalent to no more than two offline. Source: Iteration 1.pptx. | 21
+
+SLIDE 22
+Title 1: Backup: historical availability result
+TextBox 2: Original 
+Min Availability: 15
+Availability S.D.: 1.947
+Average Availability:  21.694
+
+Optimised
+Min Availability: 18
+Availability S.D.: 1.433
+Average Availability:  21.712
+
+NOTES: Backup historical plot from the Iteration 1 presentation. The displayed original and optimised scores belong to this historical run and its horizon. Do not combine its standard deviation or mean with the newer matched-window hyperparameter scores. The plot illustrates how timing changes remove the deepest maintenance dip. Source: Iteration 1.pptx. | 22
+
+SLIDE 23
+Title 1: Backup: historical VNS convergence
+Content Placeholder 2: Standard Deviation of fleet availability decreases over iterations
+Final value converges to ~1.40
+Around iteration ~100, the algorithm transitions between shift sizes
+Earlier iterations relied on large shift sizes (±28)
+Later iterations focused on local optimisation (±14, ±7, ±3)
+Algorithm terminated at iteration 311 (no improvement found)
+NOTES: Backup historical convergence trace. The plot shows standard deviation decreasing as improving moves accumulate, with larger shifts earlier and finer shifts later. It stops after the tested neighbourhoods find no improvement. This is local convergence, not proof of global smoothness optimality. These historical values are separate from the three-forecast study. Source: Iteration 1.pptx. | 23
+
+SLIDE 24
+TextBox 3: BACKUP: SIMULATED ANNEALING
+TextBox 4: Simulated annealing
+TextBox 8: 1. Search
+TextBox 9: Same priority-based selection neighbour search algorithm
+TextBox 10: 2. Accept
+TextBox 11: Better moves are always kept. Worse moves can still be kept early on, by chance.
+TextBox 12: 3. Cool down
+TextBox 13: Over time we accept fewer worse moves, so the search settles on a strong plan.
+TextBox 15: Why it helps
+TextBox 16: Think of the search like walking over hills. Today’s method only walks uphill. That is fast and safe, but you can get stuck on a steep part of the hill when a better peak is nearby.
+
+Simulated annealing sometimes takes a downhill step early, so you can leave a trap and reach a better overall schedule. As the search “cools,” those downhill steps become rare, and we settle on the best plan we found.
+NOTES: Backup explanation of simulated annealing. Temperature allows temporary worsening to leave a local optimum, with fewer worse moves as the search cools. The returned schedule remains best-so-far. The final comparison uses basin-hopping with tabu polish rather than classic single-chain simulated annealing. Source: Iteration 2 Execution Plan.pptx and the completed technical report.
+
+SLIDE 25
+TextBox 3: BACKUP: PRIORITY SEARCH
+TextBox 4: Priority selection and schedule rebuild
+TextBox 6: Rank checks by the worst day they cover.
+Search the worst priority group first.
+Move one check, then rebuild the later checks on that aircraft.
+Remove old intervals and add rebuilt intervals to availability.
+Verify maintenance rules and non-overlap.
+NOTES: Backup detailed priority-search flowchart. Moving one check triggers a rebuild of that aircraft's later checks using the maintenance sequence and due-reset rules. Availability is updated by removing its old intervals and adding its rebuilt intervals. Every retained endpoint must satisfy maintenance rules and non-overlap. The full fleet need not be deep-copied and recomputed for each proposal. Source: Iteration 1 Milestones.pptx slide 7.

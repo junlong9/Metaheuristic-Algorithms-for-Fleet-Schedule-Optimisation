@@ -1,0 +1,19 @@
+{
+  "workbook": "heavy_maintenance_forecast.xlsx",
+  "command": "python savn_priority_sa.py",
+  "params": {
+    "escape_cycles": 15,
+    "plateau_moves": 30,
+    "escape_temperature": 1.5,
+    "baseline_max_iters": 400,
+    "random_seed": 99
+  },
+  "warm_start": [18.0, -1.4139714343833762, 21.713010488730195],
+  "best_score": [18.0, -1.4065339515503619, 21.713010488730195],
+  "std": 1.4065339515503619,
+  "elapsed_seconds": 239.3586152,
+  "completed_escape_cycles": 15,
+  "reached_min_19": false,
+  "beat_keep_gate_std_1.405740": false,
+  "new_best_cycles": [1, 3, 5, 10]
+}

@@ -1,0 +1,116 @@
+{'cx': '12192000', 'cy': '6858000'}
+
+SLIDE 1
+TextBox 8: Scheduling Algorithm Research. 
+Prototype a range of proposed scheduling algorithm improvements with dummy data
+
+Iteration 1
+
+
+
+Presenter: David Long
+
+
+
+
+
+
+
+
+
+
+NOTES: 1
+
+SLIDE 2
+Title 1: Overview
+Content Placeholder 2: Literature Review and Method Selection
+Initial Simple Dataset
+Best Improvement Neighbourhood Search
+Extended Heavy Maintenance Dataset
+Introducing Random Sampling Method for Heavy Dataset
+Behaviour of Algorithm
+Future Works
+
+NOTES: 3
+
+SLIDE 3
+Title 1: Literature Review and Method Selection
+NOTES: 4
+
+SLIDE 4
+Title 1: Initial Dataset
+Rectangle 5: 
+Simple Dataset provided by Tim
+
+10-aircraft fleet maintenance schedule 
+
+8 maintenance event with each even lasting 60 days 
+
+Maintenance windows constrained to 320–380 days 
+
+ Initial random schedule caused heavy maintenance overlap 
+
+Goal: stagger maintenance checks to maximum of 2 aircraft offline 
+NOTES: 5
+
+SLIDE 5
+Title 1: Best-Improvement Neighbourhood Search	
+NOTES: 6
+
+SLIDE 6
+Title 1: Extended Heavy maintenance dataset	
+Rectangle 1: Maintenance Cycle: A → B → A → C → A → B → A → D
+Minimum forecast length: 12 years 
+Represents 1.5 maintenance cycles
+24 Aircraft having 11-12 maintenance events per forecast
+
+
+NOTES: 7
+
+SLIDE 7
+Title 1: Optimised Heavy dataset using Random Sampling	
+Rectangle 1: Initial neighbourhood search worked on smaller dataset but too slow for heavy dataset
+Scaling to 24 aircraft made the search generate over 1000 schedules per iteration
+Random sampling strategy introduced 
+Only 200 neighbouring schedules are evaluated which is sufficient to identify better local solutions.
+
+
+NOTES: 8
+
+SLIDE 8
+Title 1: Optimised Heavy maintenance dataset	
+TextBox 2: Original 
+Min Availability: 15
+Availability S.D.: 1.947
+Average Availability:  21.694
+
+Optimised
+Min Availability: 18
+Availability S.D.: 1.433
+Average Availability:  21.712
+
+
+SLIDE 9
+Title 1: Convergence Behaviour of Variable Neighbourhood Search
+Content Placeholder 2: Standard Deviation of fleet availability decreases over iterations
+Final value converges to ~1.40
+Around iteration ~100, the algorithm transitions between shift sizes
+Earlier iterations relied on large shift sizes (±28)
+Later iterations focused on local optimisation (±14, ±7, ±3)
+Algorithm terminated at iteration 311 (no improvement found)
+
+SLIDE 10
+Title 1: Future Work and Research Direction
+Rectangle 1: Semester 2 (Iteration 2)
+Investigate Simulated Annealing + VNS hybrid optimisation 
+Include additional operational and logistic constraints (in these 3 months, maximise availability, can change surrounding) (standard deviation inside the window)
+Improve computational efficiency 
+Analysis of Hyperparameters
+Look at the start to see if initial stagger changes outcome	
+Exploit left to right nature of timeline (start from left)
+
+SLIDE 11
+Title 1: References
+Content Placeholder 2: Pippin, Bradley W. Allocating Flight Hours to Army Helicopters. PhD thesis, Naval Postgraduate School, 1998.
+U.S. Army, Black Hawk helicopter celebrates 40 years of aviation service with the Army, 2018.
+Winata, Leonard. Heuristic approaches for flight and maintenance planning of Large Fleets. Doctor of Philosophy Thesis, RMIT University, 2011.

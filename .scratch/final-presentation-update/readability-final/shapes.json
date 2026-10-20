@@ -1,0 +1,205 @@
+[
+  {
+    "slide": 14,
+    "name": "TextBox 3",
+    "text": "HYPERPARAMETER RESULTS",
+    "h": 25.0,
+    "boundH": 18.0
+  },
+  {
+    "slide": 14,
+    "name": "TextBox 4",
+    "text": "Tuning improved smoothness on every forecast",
+    "h": 52.0,
+    "boundH": 38.4
+  },
+  {
+    "slide": 14,
+    "name": "Quality gain",
+    "text": "Smoothness improvement at the same worst day: 1.42%, 3.10% and 4.85%",
+    "h": 26.657795,
+    "boundH": 26.4
+  },
+  {
+    "slide": 14,
+    "name": "Runtime evidence",
+    "text": "Median search time: original 32.16 s, moderate 14.69 s, wide 28.55 s. Three serial repeats per setting on this machine.",
+    "h": 43.62189,
+    "boundH": 21.6
+  },
+  {
+    "slide": 14,
+    "name": "Results boundary",
+    "text": "58 step-size and selection combinations on each forecast. Exact winning steps are on the next slide.",
+    "h": 16.964094,
+    "boundH": 18.0
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 3",
+    "text": "HYPERPARAMETER SETTINGS",
+    "h": 25.0,
+    "boundH": 18.0
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 4",
+    "text": "The step sizes that gave the best results",
+    "h": 52.0,
+    "boundH": 38.4
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 12",
+    "text": "Original forecast: paired shifts",
+    "h": 33.928112,
+    "boundH": 25.2
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 14",
+    "text": "Level 1: ±42 days\rLevel 2: ±28 and ±14 days\rLevel 3: ±14 and ±7 days\rLevel 4: ±7 and ±3 days\rLevel 5: ±3 and ±1 days",
+    "h": 203.0,
+    "boundH": 182.02
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 16",
+    "text": "Moderate and wide: separate steps",
+    "h": 33.928112,
+    "boundH": 24.0
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 18",
+    "text": "One size at each level, in order:\r±56, ±42, ±28, ±14,\r±7, ±3 and ±1 days\r\rShared choice across all three forecasts",
+    "h": 203.0,
+    "boundH": 182.02
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 6",
+    "text": "Selection and stopping rule",
+    "h": 31.504725,
+    "boundH": 25.2
+  },
+  {
+    "slide": 15,
+    "name": "TextBox 7",
+    "text": "Choose the best improvement in the first priority group that can improve.\rUse a 400-iteration limit. ± means try earlier and later, within the legal start window.",
+    "h": 56.0,
+    "boundH": 43.2
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 3",
+    "text": "LIMITS AND NEXT STEPS",
+    "h": 25.0,
+    "boundH": 18.0
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 4",
+    "text": "Availability limits and remaining work",
+    "h": 52.0,
+    "boundH": 38.4
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 12",
+    "text": "Original forecast",
+    "h": 33.928112,
+    "boundH": 27.6
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 14",
+    "text": "18 aircraft\rBest possible worst-day availability\r\rSix D checks must overlap.\r24 aircraft − 6 in maintenance = 18",
+    "h": 211.0,
+    "boundH": 198.58
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 16",
+    "text": "Moderate and wide stagger",
+    "h": 33.928112,
+    "boundH": 27.6
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 18",
+    "text": "19 and 20 aircraft\rBest worst-day availability found so far\r\rUpper limit: 21 on each dataset\rWhether we can reach 21 is still open.",
+    "h": 211.0,
+    "boundH": 198.58
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 6",
+    "text": "What remains open",
+    "h": 31.504725,
+    "boundH": 25.2
+  },
+  {
+    "slide": 16,
+    "name": "TextBox 7",
+    "text": "Search for smoother original schedules and higher worst-day availability on the stagger datasets.\rThese findings apply to the tested dummy maintenance forecasts.",
+    "h": 56.0,
+    "boundH": 43.2
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 3",
+    "text": "FINAL RECOMMENDATION",
+    "h": 25.0,
+    "boundH": 18.0
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 4",
+    "text": "Final method: Priority Based Selection with VNS",
+    "h": 52.0,
+    "boundH": 37.2
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 6",
+    "text": "METHOD",
+    "h": 28.8,
+    "boundH": 20.4
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 7",
+    "text": "Priority Based Selection\rwith VNS",
+    "h": 62.0,
+    "boundH": 55.2
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 9",
+    "text": "SHARED STEP SIZES",
+    "h": 28.8,
+    "boundH": 20.4
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 10",
+    "text": "±56, ±42, ±28, ±14,\r±7, ±3, ±1 days",
+    "h": 67.0,
+    "boundH": 55.2
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 12",
+    "text": "Project outcome",
+    "h": 33.928112,
+    "boundH": 26.4
+  },
+  {
+    "slide": 17,
+    "name": "TextBox 13",
+    "text": "Iteration 1 raised original worst-day availability from 15 to 18.\rSimulated Annealing offered too little smoothness gain for its runtime.\rUse the separate wide steps with a 400-iteration limit across these forecasts.\rFor the original forecast, paired shifts plus 42 days give the best measured smoothness.",
+    "h": 165.0,
+    "boundH": 133.2
+  }
+]

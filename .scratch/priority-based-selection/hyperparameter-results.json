@@ -1,0 +1,3900 @@
+{
+  "trials": [
+    {
+      "name": "baseline_default",
+      "phase": "baseline",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4139714343833762,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4139714343833762,
+      "avg": 21.713010488730195,
+      "stopped_at": 280,
+      "accepted_moves": 280,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 14.63262030000078,
+      "beat_original": true
+    },
+    {
+      "name": "iters_5",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 5,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        16.0,
+        -1.872940749044801,
+        21.713010488730195
+      ],
+      "min": 16.0,
+      "std": 1.872940749044801,
+      "avg": 21.713010488730195,
+      "stopped_at": 5,
+      "accepted_moves": 5,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.02688790000138397,
+      "beat_original": true
+    },
+    {
+      "name": "iters_10",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 10,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.8095516050929688,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.8095516050929688,
+      "avg": 21.713010488730195,
+      "stopped_at": 10,
+      "accepted_moves": 10,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.0476011999999173,
+      "beat_original": true
+    },
+    {
+      "name": "iters_20",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 20,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.7576263822426086,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.7576263822426086,
+      "avg": 21.713010488730195,
+      "stopped_at": 20,
+      "accepted_moves": 20,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.12024849999943399,
+      "beat_original": true
+    },
+    {
+      "name": "iters_40",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 40,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.674928443515262,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.674928443515262,
+      "avg": 21.713010488730195,
+      "stopped_at": 40,
+      "accepted_moves": 40,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.31084329999976035,
+      "beat_original": true
+    },
+    {
+      "name": "iters_80",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.568984386054808,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.568984386054808,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 1.0449164999990899,
+      "beat_original": true
+    },
+    {
+      "name": "iters_160",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 160,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.4681724516566161,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.4681724516566161,
+      "avg": 21.713010488730195,
+      "stopped_at": 160,
+      "accepted_moves": 160,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 4.402225600000747,
+      "beat_original": true
+    },
+    {
+      "name": "iters_400",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4139714343833762,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4139714343833762,
+      "avg": 21.713010488730195,
+      "stopped_at": 280,
+      "accepted_moves": 280,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 14.898955900000146,
+      "beat_original": true
+    },
+    {
+      "name": "iters_800",
+      "phase": "max_iters",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4139714343833762,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4139714343833762,
+      "avg": 21.713010488730195,
+      "stopped_at": 280,
+      "accepted_moves": 280,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 14.955875699999524,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm1",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.7653545154346746,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.7653545154346746,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 3.2517729999999574,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm2",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -2,
+            2
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.6642352524033055,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.6642352524033055,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -2,
+        2
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 4.19851860000017,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm3",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5900361682691868,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5900361682691868,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 8.181001099999776,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm5",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -5,
+            5
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4906486375144794,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4906486375144794,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -5,
+        5
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 13.632955400000355,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm7",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -7,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.470754207833091,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.470754207833091,
+      "avg": 21.713010488730195,
+      "stopped_at": 334,
+      "accepted_moves": 334,
+      "last_shift_set": [
+        -7,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 23.34220660000028,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm10",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -10,
+            10
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.46558614750142,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.46558614750142,
+      "avg": 21.713010488730195,
+      "stopped_at": 254,
+      "accepted_moves": 254,
+      "last_shift_set": [
+        -10,
+        10
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 5.253023400000529,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm14",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -14,
+            14
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4743913437500618,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4743913437500618,
+      "avg": 21.713010488730195,
+      "stopped_at": 188,
+      "accepted_moves": 188,
+      "last_shift_set": [
+        -14,
+        14
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 3.817774900000586,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm21",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -21,
+            21
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5255710378116574,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5255710378116574,
+      "avg": 21.713010488730195,
+      "stopped_at": 128,
+      "accepted_moves": 128,
+      "last_shift_set": [
+        -21,
+        21
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 2.353503300000739,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm28",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.554408714383612,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.554408714383612,
+      "avg": 21.713010488730195,
+      "stopped_at": 96,
+      "accepted_moves": 96,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 1.5097975999997288,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm35",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -35,
+            35
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5818748173060657,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5818748173060657,
+      "avg": 21.713010488730195,
+      "stopped_at": 89,
+      "accepted_moves": 89,
+      "last_shift_set": [
+        -35,
+        35
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 1.2940295999997034,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm42",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.6077620446903913,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.6077620446903913,
+      "avg": 21.713010488730195,
+      "stopped_at": 67,
+      "accepted_moves": 67,
+      "last_shift_set": [
+        -42,
+        42
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.8719075000008161,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm56",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        16.0,
+        -1.7043816020788316,
+        21.713010488730195
+      ],
+      "min": 16.0,
+      "std": 1.7043816020788316,
+      "avg": 21.713010488730195,
+      "stopped_at": 28,
+      "accepted_moves": 28,
+      "last_shift_set": [
+        -56,
+        56
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.3332784000012907,
+      "beat_original": true
+    },
+    {
+      "name": "single_pm70",
+      "phase": "single_neighbourhood",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -70,
+            70
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        15.0,
+        -1.9375966109484681,
+        21.713010488730195
+      ],
+      "min": 15.0,
+      "std": 1.9375966109484681,
+      "avg": 21.713010488730195,
+      "stopped_at": 2,
+      "accepted_moves": 2,
+      "last_shift_set": [
+        -70,
+        70
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 0.03484260000004724,
+      "beat_original": true
+    },
+    {
+      "name": "vns_default",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4139714343833762,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4139714343833762,
+      "avg": 21.713010488730195,
+      "stopped_at": 280,
+      "accepted_moves": 280,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 15.219007200001215,
+      "beat_original": true
+    },
+    {
+      "name": "vns_plus_day",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4071684592264013,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4071684592264013,
+      "avg": 21.713010488730195,
+      "stopped_at": 309,
+      "accepted_moves": 309,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 20.324083299999984,
+      "beat_original": true
+    },
+    {
+      "name": "vns_plus_wide",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4043109170129766,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4043109170129766,
+      "avg": 21.713010488730195,
+      "stopped_at": 291,
+      "accepted_moves": 291,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 19.536793999999645,
+      "beat_original": true
+    },
+    {
+      "name": "vns_plus_month",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4073270414463144,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4073270414463144,
+      "avg": 21.713010488730195,
+      "stopped_at": 319,
+      "accepted_moves": 319,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 23.100888700000723,
+      "beat_original": true
+    },
+    {
+      "name": "vns_early_window",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -70,
+            70
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4098619310758587,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4098619310758587,
+      "avg": 21.713010488730195,
+      "stopped_at": 303,
+      "accepted_moves": 303,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 20.553051199998663,
+      "beat_original": true
+    },
+    {
+      "name": "vns_weekly",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4150758000415407,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4150758000415407,
+      "avg": 21.713010488730195,
+      "stopped_at": 316,
+      "accepted_moves": 316,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 19.55585450000035,
+      "beat_original": true
+    },
+    {
+      "name": "vns_fine",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4117601113610392,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4117601113610392,
+      "avg": 21.713010488730195,
+      "stopped_at": 341,
+      "accepted_moves": 341,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 14.836669599999368,
+      "beat_original": true
+    },
+    {
+      "name": "vns_coarse",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -70,
+            70
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5245467158466193,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5245467158466193,
+      "avg": 21.713010488730195,
+      "stopped_at": 137,
+      "accepted_moves": 137,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 3.9903971000003366,
+      "beat_original": true
+    },
+    {
+      "name": "vns_geometric",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.404469821885205,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.404469821885205,
+      "avg": 21.713010488730195,
+      "stopped_at": 333,
+      "accepted_moves": 333,
+      "last_shift_set": [
+        -2,
+        2
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 22.41845419999845,
+      "beat_original": true
+    },
+    {
+      "name": "vns_geometric_plus_day",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.399694828258395,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.399694828258395,
+      "avg": 21.713010488730195,
+      "stopped_at": 346,
+      "accepted_moves": 346,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 94.88384709999991,
+      "beat_original": true
+    },
+    {
+      "name": "vns_three_level",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4161793044929836,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4161793044929836,
+      "avg": 21.713010488730195,
+      "stopped_at": 311,
+      "accepted_moves": 311,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 58.164115200001106,
+      "beat_original": true
+    },
+    {
+      "name": "vns_two_level_28_7",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -7,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4369848893024915,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4369848893024915,
+      "avg": 21.713010488730195,
+      "stopped_at": 215,
+      "accepted_moves": 215,
+      "last_shift_set": [
+        -7,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 25.81764039999871,
+      "beat_original": true
+    },
+    {
+      "name": "vns_two_level_14_3",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -14,
+            14
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4201133919814404,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4201133919814404,
+      "avg": 21.713010488730195,
+      "stopped_at": 315,
+      "accepted_moves": 315,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 37.66776600000048,
+      "beat_original": true
+    },
+    {
+      "name": "vns_monthish",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -30,
+            30
+          ],
+          [
+            -15,
+            15
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4076441522895267,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4076441522895267,
+      "avg": 21.713010488730195,
+      "stopped_at": 262,
+      "accepted_moves": 262,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 47.59329609999986,
+      "beat_original": true
+    },
+    {
+      "name": "vns_dense",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3965024286998777,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3965024286998777,
+      "avg": 21.713010488730195,
+      "stopped_at": 329,
+      "accepted_moves": 329,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 82.69350959999974,
+      "beat_original": true
+    },
+    {
+      "name": "vns_wide_dense",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4020843578115327,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4020843578115327,
+      "avg": 21.713010488730195,
+      "stopped_at": 339,
+      "accepted_moves": 339,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 28.930785900000046,
+      "beat_original": true
+    },
+    {
+      "name": "order_small_first_default",
+      "phase": "order",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -3,
+            3
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -28,
+            28
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5900361682691868,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5900361682691868,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 5.70343910000156,
+      "beat_original": true
+    },
+    {
+      "name": "order_small_first_weekly",
+      "phase": "order",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -1,
+            1
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -28,
+            28
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.7653545154346746,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.7653545154346746,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 3.0462153000007675,
+      "beat_original": true
+    },
+    {
+      "name": "order_interleaved",
+      "phase": "order",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -14,
+            14
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -7,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4084366170321831,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4084366170321831,
+      "avg": 21.713010488730195,
+      "stopped_at": 343,
+      "accepted_moves": 343,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 13.56041229999937,
+      "beat_original": true
+    },
+    {
+      "name": "order_wide_then_day",
+      "phase": "order",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ],
+          [
+            -1,
+            1
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -7,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.4884012988294832,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.4884012988294832,
+      "avg": 21.713010488730195,
+      "stopped_at": 400,
+      "accepted_moves": 400,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 24.309586400000626,
+      "beat_original": true
+    },
+    {
+      "name": "rich_paired_weeks",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4035161227857937,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4035161227857937,
+      "avg": 21.713010488730195,
+      "stopped_at": 261,
+      "accepted_moves": 261,
+      "last_shift_set": [
+        -7,
+        -3,
+        3,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 41.60715429999982,
+      "beat_original": true
+    },
+    {
+      "name": "rich_one_union",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            -7,
+            -3,
+            3,
+            7,
+            14,
+            28
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.413655742874947,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.413655742874947,
+      "avg": 21.713010488730195,
+      "stopped_at": 254,
+      "accepted_moves": 254,
+      "last_shift_set": [
+        -28,
+        -14,
+        -7,
+        -3,
+        3,
+        7,
+        14,
+        28
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 42.432883099998435,
+      "beat_original": true
+    },
+    {
+      "name": "rich_dense_union",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -21,
+            -14,
+            -7,
+            -3,
+            -1,
+            1,
+            3,
+            7,
+            14,
+            21,
+            28
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4065339515503619,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4065339515503619,
+      "avg": 21.713010488730195,
+      "stopped_at": 282,
+      "accepted_moves": 282,
+      "last_shift_set": [
+        -28,
+        -21,
+        -14,
+        -7,
+        -3,
+        -1,
+        1,
+        3,
+        7,
+        14,
+        21,
+        28
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 66.50653030000103,
+      "beat_original": true
+    },
+    {
+      "name": "rich_vns_with_halves",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3918604434267567,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3918604434267567,
+      "avg": 21.713010488730195,
+      "stopped_at": 319,
+      "accepted_moves": 319,
+      "last_shift_set": [
+        -3,
+        -1,
+        1,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 96.46757570000045,
+      "beat_original": true
+    },
+    {
+      "name": "asymmetric_left_heavy",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4199562377554458,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4199562377554458,
+      "avg": 21.713010488730195,
+      "stopped_at": 274,
+      "accepted_moves": 274,
+      "last_shift_set": [
+        -7,
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 34.475465200001054,
+      "beat_original": true
+    },
+    {
+      "name": "asymmetric_right_heavy",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -14,
+            14,
+            28
+          ],
+          [
+            -3,
+            3,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4128662054990055,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4128662054990055,
+      "avg": 21.713010488730195,
+      "stopped_at": 290,
+      "accepted_moves": 290,
+      "last_shift_set": [
+        -3,
+        3,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 38.326985600000626,
+      "beat_original": true
+    },
+    {
+      "name": "select_all_levels_default",
+      "phase": "selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.415233496214543,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.415233496214543,
+      "avg": 21.713010488730195,
+      "stopped_at": 286,
+      "accepted_moves": 286,
+      "last_shift_set": [
+        -7,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 69.76462250000259,
+      "beat_original": true
+    },
+    {
+      "name": "select_first_improving_default",
+      "phase": "selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_improving"
+      },
+      "score": [
+        18.0,
+        -1.421370000260484,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.421370000260484,
+      "avg": 21.713010488730195,
+      "stopped_at": 314,
+      "accepted_moves": 314,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 45.5066611000002,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_vns_with_halves_iters_80",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.5629991004532398,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.5629991004532398,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -28,
+        -14,
+        14,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 3.5672752000027685,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_vns_with_halves_iters_200",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 200,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4276364507176784,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4276364507176784,
+      "avg": 21.713010488730195,
+      "stopped_at": 200,
+      "accepted_moves": 200,
+      "last_shift_set": [
+        -7,
+        -3,
+        3,
+        7
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 19.9829467999989,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_vns_with_halves_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3918604434267567,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3918604434267567,
+      "avg": 21.713010488730195,
+      "stopped_at": 319,
+      "accepted_moves": 319,
+      "last_shift_set": [
+        -3,
+        -1,
+        1,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 34.881155999999464,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_vns_with_halves_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4031980790432985,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4031980790432985,
+      "avg": 21.713010488730195,
+      "stopped_at": 310,
+      "accepted_moves": 310,
+      "last_shift_set": [
+        -3,
+        -1,
+        1,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 49.7182556000007,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_dense_iters_80",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.568984386054808,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.568984386054808,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 1.1066333999988274,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_dense_iters_200",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 200,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.442874239832464,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.442874239832464,
+      "avg": 21.713010488730195,
+      "stopped_at": 200,
+      "accepted_moves": 200,
+      "last_shift_set": [
+        -7,
+        7
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 7.950388900000689,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_dense_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3965024286998777,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3965024286998777,
+      "avg": 21.713010488730195,
+      "stopped_at": 329,
+      "accepted_moves": 329,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 68.63886319999801,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_dense_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4014475483021298,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4014475483021298,
+      "avg": 21.713010488730195,
+      "stopped_at": 326,
+      "accepted_moves": 326,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 72.45623139999952,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_geometric_plus_day_iters_80",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5723943202486304,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5723943202486304,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -32,
+        32
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 4.865384600001562,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_geometric_plus_day_iters_200",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 200,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.4439565002392336,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.4439565002392336,
+      "avg": 21.713010488730195,
+      "stopped_at": 200,
+      "accepted_moves": 200,
+      "last_shift_set": [
+        -8,
+        8
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 30.86624650000158,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_geometric_plus_day_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.399694828258395,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.399694828258395,
+      "avg": 21.713010488730195,
+      "stopped_at": 346,
+      "accepted_moves": 346,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 987.2652200999983,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_geometric_plus_day_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        17.0,
+        -1.3985783173073554,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.3985783173073554,
+      "avg": 21.713010488730195,
+      "stopped_at": 290,
+      "accepted_moves": 290,
+      "last_shift_set": [
+        -8,
+        8
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 75.14650489999985,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_wide_dense_iters_80",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5672766368291842,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5672766368291842,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 2.38316290000148,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_wide_dense_iters_200",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 200,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.448893681677493,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.448893681677493,
+      "avg": 21.713010488730195,
+      "stopped_at": 200,
+      "accepted_moves": 200,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 35.47606169999926,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_wide_dense_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4020843578115327,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4020843578115327,
+      "avg": 21.713010488730195,
+      "stopped_at": 339,
+      "accepted_moves": 339,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 135.12799950000044,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_wide_dense_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4103367156570255,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4103367156570255,
+      "avg": 21.713010488730195,
+      "stopped_at": 318,
+      "accepted_moves": 318,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 157.86491849999948,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_paired_weeks_iters_80",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.5629991004532398,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.5629991004532398,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -28,
+        -14,
+        14,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 4.745815800000855,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_paired_weeks_iters_200",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 200,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.421370000260484,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.421370000260484,
+      "avg": 21.713010488730195,
+      "stopped_at": 200,
+      "accepted_moves": 200,
+      "last_shift_set": [
+        -7,
+        -3,
+        3,
+        7
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 27.246779400000378,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_paired_weeks_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4035161227857937,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4035161227857937,
+      "avg": 21.713010488730195,
+      "stopped_at": 261,
+      "accepted_moves": 261,
+      "last_shift_set": [
+        -7,
+        -3,
+        3,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 54.42151699999886,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_paired_weeks_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4150758000415407,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4150758000415407,
+      "avg": 21.713010488730195,
+      "stopped_at": 259,
+      "accepted_moves": 259,
+      "last_shift_set": [
+        -7,
+        -3,
+        3,
+        7
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 81.29822449999847,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_plus_wide_iters_80",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 80,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.5745217789908885,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.5745217789908885,
+      "avg": 21.713010488730195,
+      "stopped_at": 80,
+      "accepted_moves": 80,
+      "last_shift_set": [
+        -28,
+        28
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 4.660841599998093,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_plus_wide_iters_200",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 200,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        17.0,
+        -1.438692180583618,
+        21.713010488730195
+      ],
+      "min": 17.0,
+      "std": 1.438692180583618,
+      "avg": 21.713010488730195,
+      "stopped_at": 200,
+      "accepted_moves": 200,
+      "last_shift_set": [
+        -7,
+        7
+      ],
+      "exhausted": false,
+      "rule_compliant": true,
+      "elapsed_seconds": 32.28378420000081,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_plus_wide_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4043109170129766,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4043109170129766,
+      "avg": 21.713010488730195,
+      "stopped_at": 291,
+      "accepted_moves": 291,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 82.70693819999724,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_plus_wide_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4139714343833762,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4139714343833762,
+      "avg": 21.713010488730195,
+      "stopped_at": 261,
+      "accepted_moves": 261,
+      "last_shift_set": [
+        -3,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 40.80573420000292,
+      "beat_original": true
+    }
+  ],
+  "original_score": [
+    15.0,
+    -1.9497670360504062,
+    21.713010488730195
+  ],
+  "original_stats": {
+    "aircraft": 24,
+    "events": 278,
+    "horizon": 4480,
+    "min": 15.0,
+    "std": 1.9497670360504062,
+    "avg": 21.713010488730195
+  },
+  "workbook": "C:\\Users\\davsk\\OneDrive\\The University of Queensland\\Northrop Grumman\\Iteration 1\\heavy_maintenance_forecast.xlsx",
+  "trial_count": 74,
+  "elapsed_seconds": 3151.2372615000004,
+  "best": {
+    "name": "rich_vns_with_halves",
+    "phase": "richer_shifts",
+    "params": {
+      "max_iters": 400,
+      "shift_sets": [
+        [
+          -28,
+          -14,
+          14,
+          28
+        ],
+        [
+          -14,
+          -7,
+          7,
+          14
+        ],
+        [
+          -7,
+          -3,
+          3,
+          7
+        ],
+        [
+          -3,
+          -1,
+          1,
+          3
+        ]
+      ],
+      "selection": "first_level"
+    },
+    "score": [
+      18.0,
+      -1.3918604434267567,
+      21.713010488730195
+    ],
+    "min": 18.0,
+    "std": 1.3918604434267567,
+    "avg": 21.713010488730195,
+    "stopped_at": 319,
+    "accepted_moves": 319,
+    "last_shift_set": [
+      -3,
+      -1,
+      1,
+      3
+    ],
+    "exhausted": true,
+    "rule_compliant": true,
+    "elapsed_seconds": 96.46757570000045,
+    "beat_original": true
+  },
+  "top10": [
+    {
+      "name": "rich_vns_with_halves",
+      "phase": "richer_shifts",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3918604434267567,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3918604434267567,
+      "avg": 21.713010488730195,
+      "stopped_at": 319,
+      "accepted_moves": 319,
+      "last_shift_set": [
+        -3,
+        -1,
+        1,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 96.46757570000045,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_vns_with_halves_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3918604434267567,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3918604434267567,
+      "avg": 21.713010488730195,
+      "stopped_at": 319,
+      "accepted_moves": 319,
+      "last_shift_set": [
+        -3,
+        -1,
+        1,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 34.881155999999464,
+      "beat_original": true
+    },
+    {
+      "name": "vns_dense",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3965024286998777,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3965024286998777,
+      "avg": 21.713010488730195,
+      "stopped_at": 329,
+      "accepted_moves": 329,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 82.69350959999974,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_dense_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.3965024286998777,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.3965024286998777,
+      "avg": 21.713010488730195,
+      "stopped_at": 329,
+      "accepted_moves": 329,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 68.63886319999801,
+      "beat_original": true
+    },
+    {
+      "name": "vns_geometric_plus_day",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.399694828258395,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.399694828258395,
+      "avg": 21.713010488730195,
+      "stopped_at": 346,
+      "accepted_moves": 346,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 94.88384709999991,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_geometric_plus_day_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -32,
+            32
+          ],
+          [
+            -16,
+            16
+          ],
+          [
+            -8,
+            8
+          ],
+          [
+            -4,
+            4
+          ],
+          [
+            -2,
+            2
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.399694828258395,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.399694828258395,
+      "avg": 21.713010488730195,
+      "stopped_at": 346,
+      "accepted_moves": 346,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 987.2652200999983,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_dense_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            28
+          ],
+          [
+            -21,
+            21
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4014475483021298,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4014475483021298,
+      "avg": 21.713010488730195,
+      "stopped_at": 326,
+      "accepted_moves": 326,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 72.45623139999952,
+      "beat_original": true
+    },
+    {
+      "name": "vns_wide_dense",
+      "phase": "vns_ladder",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4020843578115327,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4020843578115327,
+      "avg": 21.713010488730195,
+      "stopped_at": 339,
+      "accepted_moves": 339,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 28.930785900000046,
+      "beat_original": true
+    },
+    {
+      "name": "refine_vns_wide_dense_iters_800",
+      "phase": "refine_budget",
+      "params": {
+        "max_iters": 800,
+        "shift_sets": [
+          [
+            -56,
+            56
+          ],
+          [
+            -42,
+            42
+          ],
+          [
+            -28,
+            28
+          ],
+          [
+            -14,
+            14
+          ],
+          [
+            -7,
+            7
+          ],
+          [
+            -3,
+            3
+          ],
+          [
+            -1,
+            1
+          ]
+        ],
+        "selection": "first_level"
+      },
+      "score": [
+        18.0,
+        -1.4020843578115327,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4020843578115327,
+      "avg": 21.713010488730195,
+      "stopped_at": 339,
+      "accepted_moves": 339,
+      "last_shift_set": [
+        -1,
+        1
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 135.12799950000044,
+      "beat_original": true
+    },
+    {
+      "name": "refine_rich_vns_with_halves_all_levels",
+      "phase": "refine_selection",
+      "params": {
+        "max_iters": 400,
+        "shift_sets": [
+          [
+            -28,
+            -14,
+            14,
+            28
+          ],
+          [
+            -14,
+            -7,
+            7,
+            14
+          ],
+          [
+            -7,
+            -3,
+            3,
+            7
+          ],
+          [
+            -3,
+            -1,
+            1,
+            3
+          ]
+        ],
+        "selection": "all_levels"
+      },
+      "score": [
+        18.0,
+        -1.4031980790432985,
+        21.713010488730195
+      ],
+      "min": 18.0,
+      "std": 1.4031980790432985,
+      "avg": 21.713010488730195,
+      "stopped_at": 310,
+      "accepted_moves": 310,
+      "last_shift_set": [
+        -3,
+        -1,
+        1,
+        3
+      ],
+      "exhausted": true,
+      "rule_compliant": true,
+      "elapsed_seconds": 49.7182556000007,
+      "beat_original": true
+    }
+  ]
+}

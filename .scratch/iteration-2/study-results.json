@@ -290,9 +290,9 @@
     },
     {
       "worst_day": 18,
-      "smoothness": 1.403993053313642,
+      "smoothness": 1.3918604434267567,
       "average": 21.713010488730195,
-      "seconds": 301.7,
+      "seconds": 445.4,
       "timed_out": true,
       "name": "escape_temperature_1.0-seed-1",
       "seed": 1,

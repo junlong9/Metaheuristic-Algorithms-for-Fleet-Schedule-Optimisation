@@ -1,0 +1,139 @@
+{'cx': '12192000', 'cy': '6858000'}
+
+SLIDE 1
+TextBox 8: Data Science Capstone Project 1: Seminar 
+Fleet Plan Scheduling Algorithm Research
+
+
+
+Presenter: David Long
+
+
+
+
+
+
+
+
+
+
+NOTES: Hello everyone, Today I’ll be presenting my Master of Data Science capstone project in collaboration with Northrop Grumman Australia. The project focuses on fleet planning schedule  | optimisation |  using hybrid metaheuristic algorithms | 1
+
+SLIDE 2
+Title 1: Why Maintenance Scheduling Matters
+Content Placeholder 2: In 1995, a US Army Blackhawk battalion reported 89% readiness. But when ordered to deploy, the commander mandated that no aircraft could deploy if it had less than 75 hours remaining until its next phase maintenance (Pippin, 1998).
+9 of 24 helicopters were immediately non-deployable due to poor maintenance staggering.
+This represented a massive loss of power. 
+
+TextBox 3: (U.S. Army, 2018)
+NOTES: Before introducing the technical side of the project, I want to begin with a real historical example that demonstrates why maintenance scheduling is so important. | During the 1995 United States Army Blackhawk deployment to Bosnia, a battalion reported an overall readiness level of 89 percent. | However, when deployment orders were issued, the commander required each aircraft to have at least 75 residual flight hours remaining before deployment. | Because the battalion had not properly staggered its aircraft maintenance cycles, nine out of the 24 helicopters were instantly deemed non-deployable. | As a result, the battalion experienced a major reduction in combat power despite appearing ready on paper. | This example highlights a key issue in fleet maintenance scheduling: high average readiness does not necessarily translate into operational readiness if maintenance events are poorly distributed. | This is the main motivation behind my project, developing  | optimisation |  algorithms that create smoother and more balanced maintenance schedules to  | maximise |  long-term fleet availability. | 2
+
+SLIDE 3
+Title 1: The Problem and Bottlenecks
+Content Placeholder 2: Multiple aircraft exhaust their Residual Flight Time concurrently.
+Finite resources such as dock space, mechanics, and components.
+ Aircraft undergo scheduled maintenance events
+Random Failures can also happen.
+This will cause volatility in availability of aircraft.
+
+NOTES: High variance in availability happens when short term flight allocation causes multiple aircraft to exhaust their Residual Flight Time concurrently. If they all suddenly fail, there will not be enough resources such as dock space, mechanics and components to fix them all. This is why we need to stagger and space the maintenance checks out. | However, even if we manage to space the schedules out, random failures can also happen which causes disruptions in whole schedule, leading to a cascading effect. | 3
+
+SLIDE 4
+Title 1: Literature Review and Method Selection
+NOTES: In order to solve this problem efficiently, I conducted a literature review into existing aircraft fleet scheduling and maintenance  | optimisation |  techniques. The three major approaches were investigated: mathematical programming, stochastic simulation, and metaheuristic algorithms. | Mathematical programming methods can produce optimal solutions, but they often struggle with scalability and random failures. | Stochastic simulation is useful for modelling uncertainty and random failures, | However, metaheuristic algorithms are particularly effective for large-scale scheduling  | optimisation |  because they provide flexible and computationally efficient search strategies. | Based on these findings, I decided to pursue a hybrid  | optimisation |  approach using Simulated Annealing combined with Variable Neighbourhood Search. | The goal is to combine the global exploration capability of simulated annealing with the strong local search performance of variable neighborhood search. | 4
+
+SLIDE 5
+Title 1: Initial Dataset
+Rectangle 5: 
+Simple Dataset provided by Northrop   Grumman Australia 
+
+10-aircraft fleet maintenance schedule 
+
+8 maintenance event with each even lasting 60 days 
+
+Maintenance windows constrained to 320–380 days 
+
+ Initial random schedule caused heavy maintenance overlap 
+
+Goal: stagger maintenance to maximum of 2 aircraft offline 
+NOTES: Now lets talk about my dataset. Northrop provided a simplified scheduling dataset for a fleet of 10 aircraft with each aircraft having 8 maintenance events with a fix duration. | Each maintenance event lasts 60 days, and future checks must begin within a 320 to 380 day window from the previous maintenance event. | I first developed a Python script to  | visualise |  aircraft availability over time. | This graph shows the initial  | randomised |  schedule. Large dips occur when too many aircraft enter maintenance simultaneously with up to six aircraft becoming unavailable at once. | The  | optimisation |  goal was to stagger these maintenance events so that no more than two aircraft are unavailable simultaneously, improving overall fleet availability and resource  | utilisation | . | 5
+
+SLIDE 6
+Title 1: Optimising the Schedule
+Rectangle 1: 
+Implemented a Best-Improvement Neighbourhood Search
+
+1. Maximise minimum fleet availability 
+Minimise availability variance (standard deviation) 
+
+Produced a smoother and more balanced schedule 
+
+NOTES: To  | optimise |  the initial schedule, I implemented a Best-Improvement Neighbourhood Search algorithm. Since the dataset was extremely simple, advanced metaheuristic algorithms are not required yet and a simple neighborhood search can solve the problem. | The algorithm explores  | neighbouring |  solutions by shifting maintenance start dates while ensuring all scheduling constraints remain feasible, including the required 320 to 380 day maintenance intervals. | The  | optimisation |  objective was  | prioritised |  in two stages. First,  | maximise |  the minimum number of available aircraft across the schedule. Then, if multiple schedules achieved the same minimum availability, standard deviation was used as a secondary metric to smooth the schedule further. | As shown, neighborhood search successfully removed the major dips in availability and produced a much more balanced maintenance schedule. | This took about 300 iterations and only around a minute on my laptop to run. | 6
+
+SLIDE 7
+Title 1: Extended Heavy maintenance dataset	
+Rectangle 1: Maintenance Cycle: A → B → A → C → A → B → A → D
+Minimum forecast length: 12 years 
+Represents 1.5 maintenance cycles
+11-12 maintenance events per cycle
+
+
+NOTES: To move toward a more realistic scheduling problem, the simple dataset was extended into a dataset with heavy maintenance cycles. | The model now includes four different maintenance checks: A, B, C, and D checks, each with different durations, intervals, and scheduling flexibility. | Higher-level checks include the work from lower-level checks, creating a repeating maintenance cycle of A, B, A, C, A, B, A, D. | To properly capture long-term scheduling effects, the forecast horizon was extended to 12 years, representing approximately one and a half maintenance cycles. | This significantly increases scheduling complexity, especially as fleet size grows from small fleets to larger operational fleets of 10 to 24 aircraft and different maintenance durations. | The graph shows an example long-term availability forecast under this more realistic maintenance structure. | 7
+
+SLIDE 8
+Title 1: Optimised Heavy maintenance dataset	
+NOTES: After extending the dataset to include realistic A, B, C, and D maintenance checks, I developed a scheduling  | optimiser |  using a Variable Neighbourhood Search approach. | This flowchart  | summarises |  the  | optimisation |  process. | The algorithm first computes aircraft availability across the entire 12-year forecast horizon and evaluates the schedule using three metrics: minimum availability, standard deviation, and average availability. | It then generates  | neighbouring |  schedules by shifting maintenance start dates within their feasible maintenance windows. | Each candidate schedule undergoes a feasibility check to ensure there are no overlapping maintenance events. | Initially, I attempted to use the same brute-force  | neighbourhood |  search approach that worked on the smaller dataset. However, the problem became significantly larger after scaling from 10 aircraft to 24 aircraft, with around 11 to 12 maintenance events per aircraft. | Because the  | neighbourhood |  size is determined by aircraft multiplied by events multiplied by shift combinations, each iteration could generate over 1000  | neighbouring |  schedules. | Evaluating every  | neighbour |  became computationally expensive, and the algorithm was taking more than 30 minutes to complete. | To solve this issue, I introduced a random sampling strategy. Instead of evaluating all  | neighbours | , the  | optimiser |  randomly selects 200 candidate  | neighbours |  each iteration. | This significantly reduced runtime while still consistently finding improved schedules, because 200 sampled  | neighbours |  were sufficient to identify better local solutions. | The  | optimiser |  then iteratively explores different shift sizes and accepts improvements that produce smoother fleet availability. | This process repeats until no further improvements can be found. | 8
+
+SLIDE 9
+Title 1: Optimised Heavy maintenance dataset	
+NOTES: This graph shows the  | optimised |  12-year fleet availability forecast. | Compared to the original schedule shown in blue, the  | optimised |  schedule shown in red significantly reduces large dips in availability and creates a much smoother maintenance distribution. | While  | this work currently operates on a deterministic model, it establishes a strong foundation for future extensions involving stochastic failures and hybrid  | optimisation |  methods such as Simulated Annealing with Variable Neighbourhood Search. | Ultimately, the goal of this research is to develop scalable tools that support better operational decision-making and improve real-world fleet  | deployability | . Thank you for listening. | 9
+
+SLIDE 10
+Title 1: References
+Content Placeholder 2: Pippin, Bradley W. Allocating Flight Hours to Army Helicopters. PhD thesis, Naval Postgraduate School, 1998.
+U.S. Army, Black Hawk helicopter celebrates 40 years of aviation service with the Army, 2018.
+Winata, Leonard. Heuristic approaches for flight and maintenance planning of Large Fleets. Doctor of Philosophy Thesis, RMIT University, 2011.
+
+
+SLIDE 11
+Title 1: Q&A Backup: Datasets
+TextBox 11: Initial Simple Dataset
+TextBox 12: Modified Heavy Dataset
+
+SLIDE 12
+Title 1: Q&A Backup: Future Work and Research Direction
+Rectangle 1: Semester 2 (Iteration 2)
+Introduce stochastic maintenance failures 
+Investigate Simulated Annealing + VNS hybrid optimisation 
+Include additional operational constraints 
+Improve computational efficiency 
+Add logistic constraints
+Create visualisations such as number of iterations vs standard deviation
+
+SLIDE 13
+Title 1: Q&A Backup: Research Prototype vs Operational Implementation
+Rectangle 1: Python used for rapid prototyping and experimentation 
+Real operational systems are significantly more complex 
+
+Northrop Grumman is interested in: 
+Optimisation concepts 
+scheduling strategies
+algorithmic insights 
+
+Final implementation would likely integrate: 
+Integration with the UI (Tom’s Project)
+logistics and workforce constraints
+
+
+SLIDE 14
+Title 1: Q&A Backup: Schedule Evaluation Metrics
+Content Placeholder 2: 1. Minimum Availability (Primary Objective)
+Maximise the minimum number of available aircraft 
+Prevents severe availability drops 
+2. Standard Deviation (Secondary Objective)
+Measures smoothness of availability over time 
+Lower standard deviation = more balanced schedule 
+3. Average Availability (Tie-break Metric)
+Used only if standard deviation is identical 
+Usually changes very little between schedules 
+Less important because total maintenance workload is fixed
