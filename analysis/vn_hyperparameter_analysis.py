@@ -50,6 +50,23 @@ class Strategy:
     shift_sets: tuple[tuple[int, ...], ...]
 
 
+@dataclass
+class LoadedDataset:
+    key: str
+    label: str
+    schedule: dict[str, list[dict[str, object]]]
+
+
+@dataclass
+class StudyInputs:
+    datasets: tuple[LoadedDataset, ...]
+    origin: pd.Timestamp
+    horizon: int
+    scoring_start: int
+    scoring_end: int
+    input_hashes: dict[str, str]
+
+
 STRATEGIES = (
     Strategy(
         "historical_half_step",
@@ -111,3 +128,112 @@ def build_trial_matrix() -> list[tuple[str, Strategy, int]]:
     if len(matrix) != 36 or len(set(keys)) != 36:
         raise ValueError("Experiment matrix must contain 36 unique trials.")
     return matrix
+
+
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _attach_saved_opening_state(
+    schedule: dict[str, list[dict[str, object]]],
+    payload: dict[str, object],
+    slug: str,
+    origin: pd.Timestamp,
+) -> None:
+    columns = {
+        name: index
+        for index, name in enumerate(payload["fleet_columns"])
+    }
+    variants = {
+        item["slug"]: item
+        for item in payload["variants"]
+    }
+    if slug not in variants:
+        raise ValueError(f"{slug}: opening-state record missing")
+    variant = variants[slug]
+    rows = {
+        row[columns["Aircraft"]]: row
+        for row in variant["fleet"]
+    }
+    for aircraft, events in schedule.items():
+        row = rows[aircraft]
+        opening = {
+            check: (
+                pd.Timestamp(row[columns[f"Opening_{check}_Due"]]) - origin
+            ).days
+            for check in "ABCD"
+        }
+        sequence_origin = int(row[columns["Opening_Sequence_Index"]])
+        for event in events:
+            event["_origin"] = sequence_origin
+            event["_opening"] = opening
+
+
+def load_study_inputs(root: Path = ROOT) -> StudyInputs:
+    state_path = root / ".scratch/initial-maintenance-stagger/schedule-data.json"
+    if not state_path.is_file():
+        raise FileNotFoundError(f"opening_state: missing input {state_path}")
+    payload = json.loads(state_path.read_text(encoding="utf-8"))
+    forecast_start = pd.Timestamp(payload["forecast_start"])
+    forecast_end = pd.Timestamp(payload["forecast_end"])
+    if forecast_start != FORECAST_START or forecast_end != FORECAST_END:
+        raise ValueError("Saved reporting dates do not match the approved study.")
+
+    paths = {
+        "original": root / "heavy_maintenance_forecast.xlsx",
+        "moderate": root / (
+            "outputs/initial-stagger-20261013/"
+            "heavy_maintenance_forecast_stagger_moderate.xlsx"
+        ),
+        "wide": root / (
+            "outputs/initial-stagger-20261013/"
+            "heavy_maintenance_forecast_stagger_wide.xlsx"
+        ),
+    }
+    labels = {
+        "original": "Original",
+        "moderate": "Moderate stagger",
+        "wide": "Wide stagger",
+    }
+    loaded = {}
+    for key, path in paths.items():
+        if not path.is_file():
+            raise FileNotFoundError(f"{key}: missing input {path}")
+        try:
+            loaded[key] = optimiser.load_selected_schedule(path)
+        except Exception as exc:
+            raise RuntimeError(f"{key}: could not load workbook: {exc}") from exc
+    origin = min(
+        [forecast_start] + [base_date for _, base_date in loaded.values()]
+    )
+    datasets = []
+    for key in DATASET_KEYS:
+        schedule, base_date = loaded[key]
+        offset = int((base_date - origin).days)
+        for events in schedule.values():
+            for event in events:
+                for field in ("start", "earliest_start", "latest_start"):
+                    event[field] = int(event[field]) + offset
+        if key != "original":
+            _attach_saved_opening_state(schedule, payload, key, origin)
+        datasets.append(LoadedDataset(key, labels[key], schedule))
+
+    horizon = max(
+        optimiser.get_forecast_horizon(dataset.schedule)
+        for dataset in datasets
+    )
+    for dataset in datasets:
+        if not optimiser.is_rule_compliant_schedule(dataset.schedule, horizon):
+            raise ValueError(f"{dataset.key}: initial schedule is rule-invalid")
+
+    hashes = {key: sha256_file(path) for key, path in paths.items()}
+    hashes["opening_state"] = sha256_file(state_path)
+    hashes["production"] = sha256_file(root / "vn_priority_based_selection.py")
+    return StudyInputs(
+        datasets=tuple(datasets),
+        origin=origin,
+        horizon=horizon,
+        scoring_start=int((forecast_start - origin).days),
+        scoring_end=int((forecast_end - origin).days),
+        input_hashes=hashes,
+    )
