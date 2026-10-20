@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 
+import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -114,6 +115,71 @@ class InputLoadingTests(unittest.TestCase):
                 "opening_state: missing input",
             ):
                 study.load_study_inputs(Path(directory))
+
+
+class TrialTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.inputs = study.load_study_inputs(ROOT)
+
+    def test_independent_availability_matches_production_calculation(self):
+        dataset = self.inputs.datasets[0]
+        expected = study.optimiser.compute_availability(
+            dataset.schedule,
+            self.inputs.horizon,
+        )
+        actual = study.independent_availability(
+            dataset.schedule,
+            self.inputs.horizon,
+        )
+        np.testing.assert_array_equal(actual, expected)
+
+    def test_schedule_hash_ignores_dictionary_insertion_order(self):
+        first = {
+            "B": [{
+                "check": "A",
+                "start": 1,
+                "duration": 14,
+                "earliest_start": 0,
+                "latest_start": 2,
+            }],
+            "A": [{
+                "check": "A",
+                "start": 2,
+                "duration": 14,
+                "earliest_start": 0,
+                "latest_start": 3,
+            }],
+        }
+        second = {"A": first["A"], "B": first["B"]}
+        self.assertEqual(
+            study.schedule_sha256(first),
+            study.schedule_sha256(second),
+        )
+
+    def test_one_iteration_trial_is_real_deterministic_and_compliant(self):
+        dataset = self.inputs.datasets[0]
+        result = study.run_trial(
+            dataset,
+            study.STRATEGIES[0],
+            1,
+            horizon=self.inputs.horizon,
+            scoring_start=self.inputs.scoring_start,
+            scoring_end=self.inputs.scoring_end,
+            clock=iter((10.0, 12.5)).__next__,
+        )
+        self.assertEqual(result["trial_key"], "original:historical_half_step:1")
+        self.assertEqual(result["elapsed_seconds"], 2.5)
+        self.assertLessEqual(result["accepted_moves"], 1)
+        self.assertTrue(result["rule_compliant"])
+        self.assertEqual(
+            result["stop_reason"],
+            "iteration_cap" if result["accepted_moves"] else "local_exhaustion",
+        )
+        scores = [tuple(item["score"]) for item in result["trace"]]
+        self.assertTrue(
+            all(left < right for left, right in zip(scores, scores[1:]))
+        )
 
 
 if __name__ == "__main__":
