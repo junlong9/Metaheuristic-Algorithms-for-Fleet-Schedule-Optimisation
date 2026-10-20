@@ -2,7 +2,7 @@
 
 ## Goal
 
-Make `savn_priority_based_selection.py` easier to read and usable with supplied schedules of any length, while preserving deterministic priority search, downstream date propagation, and non-overlap.
+Make `vn_priority_based_selection.py` easier to read and usable with supplied schedules of any length, while preserving deterministic priority search, downstream date propagation, and non-overlap.
 
 ## Schedule model
 

@@ -1,0 +1,258 @@
+============================================================ SLIDE 1
+Scheduling Algorithm Research. 
+Prototype a range of proposed scheduling algorithm improvements with dummy data
+
+Iteration 2: Execution Plan
+Simulated Annealing · Constraints · Hyperparameters Analysis · Initial Stagger
+
+
+
+Presenter: David Long
+---
+============================================================ SLIDE 2
+ITERATION 1 RECAP
+---
+Priority VNS delivered a practical baseline
+---
+MINIMUM AVAILABILITY
+---
+15 → 18 aircraft
+---
+RUNTIME
+---
+~15.4 seconds
+---
+What works well and what is still limited
+---
+• We focus first on maintenance that hits the worst availability days.
+• When we move a check, we rebuild that aircraft’s later schedule so rules stay valid.
+• We update availability cheaply instead of recalculating from scratch.
+• Currently we only accept better moves and we stop when nothing improves.
+---
+============================================================ SLIDE 3
+Overview
+---
+Four workstreams for Semester 2
+---
+1. SA + VNS hybrid
+---
+Keep smart search ideas, but sometimes accept a temporary worse move.
+---
+2. Operational constraints
+---
+Busy-period windows, nearby moves, and aircraft dependencies.
+---
+3. Hyperparameters
+---
+Test which settings actually change the results, shift sizes, run length, and annealing settings if we add them.
+---
+4. Initial stagger
+---
+Controlled starts to separate start effect from algorithm gain.
+---
+============================================================ SLIDE 4
+SIMULATED ANNEALING
+---
+What simulated annealing is
+---
+1 · Search
+---
+Same priority-based selection neighbour search algorithm
+---
+2 · Accept
+---
+Better moves are always kept. Worse moves can still be kept early on, by chance.
+---
+3 · Cool down
+---
+Over time we accept fewer worse moves, so the search settles on a strong plan.
+---
+Why it helps
+---
+Think of the search like walking over hills. Today’s method only walks uphill. That is fast and safe, but you can get stuck on a steep part of the hill when a better peak is nearby.
+
+Simulated annealing sometimes takes a downhill step early, so you can leave a trap and reach a better overall schedule. As the search “cools,” those downhill steps become rare, and we settle on the best plan we found.
+---
+============================================================ SLIDE 5
+HOW IT FITS
+---
+How annealing fits into our design
+---
+KEEP · How we search today
+---
+• Focus on the worst availability days first
+Rebuild the aircraft schedule after each move
+Update availability without recalculating everything
+Try larger timing shifts, then smaller ones
+---
+CHANGE · How we accept moves
+---
+Currently: only keep the improving moves
+New method: annealing accept better moves always, worse moves sometimes, depending how early and late
+Drop best improvement strategy so worse candidates can be tried
+---
+Verdict: Keep how we find candidate moves. Change how we decide which moves to accept.
+---
+============================================================ SLIDE 6
+FAIR ACCEPTANCE
+---
+Fair testing
+---
+1 · Better plan?
+---
+If the new schedule improves worst-day availability, keep it. That always comes first.
+---
+2 · Worse worst-day?
+---
+If it lowers the minimum availability, reject it. Do not accept a “smoother” plan that makes the busiest day worse.
+---
+3 · Same floor?
+---
+If the worst day is unchanged, but the plan is bumpier or lower on average, allow it sometimes early, less often as the search cools.
+---
+What we report, and how we test
+---
+Because annealing is random, run the full search 3 times and report the typical result. Current priority selection NS method needs one run, do not compare the best of three with one baseline run.
+---
+============================================================ SLIDE 7
+CONSTRAINTS
+---
+Raising availability is not enough on its own
+---
+Current model follows maintenance rules, but it still misses important operational limits.
+---
+Busy periods
+---
+Protect periods when many aircraft must stay available.
+---
+Nearby maintenance moves
+---
+Control how far nearby checks can shift when we clear a busy period.
+---
+Aircraft dependencies
+---
+Some aircraft must be active together when operations depend on them at the same time.
+---
+============================================================ SLIDE 8
+SENSITIVITY
+---
+Which settings actually change the result?
+---
+Hyperparameters to test
+---
+How far we move a check.
+How long we let the search run (max iterations) after introducing SA.
+Cooling criteria: how quickly we become stricter.
+Chance of accepting a worse move 
+These choices affect both schedule quality and runtime
+---
+What we will do
+---
+Change one setting at a time on the heavy forecast to properly measure it without interference.
+Monitor the smoothness and runtime compared to baseline model.
+Keep a list of settings that works and ignore the rest. Keep iterating to find the best hyperparameter.
+---
+============================================================ SLIDE 9
+STARTING POINT
+---
+Separate start effect from algorithm gain
+---
+Why the start matters
+---
+The search only makes local moves from the original plan.
+A well-staggered start can look like a better algorithm.
+A bunched start can make a good method look weaker.
+---
+What we will do
+---
+Build a few controlled starts: bunched, as-loaded, and more spread out.
+Run current method and annealing from each of those same starts.
+Document how much the initial stagger impacts the optimisation.
+---
+Priority targeting does not cancel this.
+---
+It only chooses which events to try first. Days that are not the current worst days keep the original stagger, so a good start can still do some of the work.
+---
+============================================================ SLIDE 10
+6–13 Oct
+---
+22 Sep – 10 Oct
+---
+8–26 Sep
+---
+17 Aug – 12 Sep
+---
+Freeze
+baseline
+---
+Step 1
+---
+Decision
+---
+Step 6
+---
+Hyperparameter Settings
++ stagger
+---
+Step 5
+---
+Operational and logistic Constraints
+---
+Step 4
+---
+Fair scoring (multiple runs)
+for worse moves and comparing
+---
+Step 3
+---
+Allow
+worse moves
+---
+Step 2
+---
+30 Oct
+---
+Oct
+---
+Sep
+---
+17 Aug
+---
+Handover document
+---
+Decision
+---
+Settings + stagger
+---
+Constraints
+---
+SA / worse moves / testing
+---
+Semester 2 work to 30th October
+---
+PLAN
+---
+============================================================ SLIDE 11
+DECISION CRITERIA
+---
+What we will keep, and when we stop
+---
+Keep it if:
+---
+Worst-day availability must be as good as current algorithm.
+Runtime does not increase too much.
+New operational rules still produce legal, usable schedules.
+The gain is from the method, not a luckier start or a luckier seed.
+---
+Drop it if:
+---
+Annealing does not beat the current method, and we  will keep the current method.
+Worse moves start hurting the minimum availability,  we tighten the acceptance rule.
+New constraints break feasibility.
+---
+RESULTS TYPE <class 'dict'>
+KEYS decision, stagger, constraints, sweep
+  decision: dict keys ['tuned', 'candidate', 'tightened', 'judgement']
+  stagger: list 3
+  constraints: list 3
+  sweep: list 9

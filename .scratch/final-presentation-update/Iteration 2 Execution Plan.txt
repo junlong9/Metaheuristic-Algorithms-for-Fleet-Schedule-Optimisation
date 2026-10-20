@@ -1,0 +1,261 @@
+{'cx': '12192000', 'cy': '6858000'}
+
+SLIDE 1
+TextBox 8: Scheduling Algorithm Research. 
+Prototype a range of proposed scheduling algorithm improvements with dummy data
+
+Iteration 2: Execution Plan
+Simulated Annealing · Constraints · Hyperparameters Analysis · Initial Stagger
+
+
+
+Presenter: David Long
+
+
+
+
+
+
+
+
+
+
+NOTES: Hello Everyone, today I will be talking about the execution plan for semester 2.  | 1
+
+SLIDE 2
+TextBox 3: ITERATION 1 RECAP
+TextBox 4: Priority VNS delivered a practical baseline
+TextBox 6: MINIMUM AVAILABILITY
+TextBox 7: 15 → 18 aircraft
+TextBox 9: RUNTIME
+TextBox 10: ~15.4 seconds
+TextBox 12: What works well and what is still limited
+TextBox 13: • We focus first on maintenance that hits the worst availability days.
+• When we move a check, we rebuild that aircraft’s later schedule so rules stay valid.
+• We update availability cheaply instead of recalculating from scratch.
+• Currently we only accept better moves and we stop when nothing improves.
+NOTES: Just a quick recap of what I have done.
+
+On the heavy dataset, we raised the worst-day availability from fifteen aircraft to eighteen, in about fifteen seconds.
+
+What works well is how we search: we focus on the worst days, rebuild an aircraft’s plan when we move a check, and update availability cheaply.
+
+What is still limited is decision-making. Right now, we only keep better moves, and we stop when nothing improves. That is why we are looking at simulated annealing in iteration 2.
+
+SLIDE 3
+TextBox 3: Overview
+TextBox 4: Four workstreams for Semester 2
+TextBox 7: 1. SA + VNS hybrid
+TextBox 8: Keep smart search ideas, but sometimes accept a temporary worse move.
+TextBox 11: 2. Operational constraints
+TextBox 12: Busy-period windows, nearby moves, and aircraft dependencies.
+TextBox 15: 3. Hyperparameters
+TextBox 16: Test which settings actually change the results, shift sizes, run length, and annealing settings if we add them.
+TextBox 19: 4. Initial stagger
+TextBox 20: Controlled starts to separate start effect from algorithm gain.
+NOTES: Here is a roadmap for iteration 2.
+ | Firstly, Simulated annealing is what I will spend most of my time on. I will explain what is simulated annealing and how it fits our design.
+
+Then I will explore operational constraints, what will happen if I try to maximize availability in certain windows and control how surrounding maintenance can move.
+
+Thirdly, hyperparameter analysis, find which parameters actually change the results.
+
+Lastly, I will explore the starting stagger and check whether a good start is doing some of the work for us.
+
+
+SLIDE 4
+TextBox 3: SIMULATED ANNEALING
+TextBox 4: What simulated annealing is 
+TextBox 8: 1 · Search
+TextBox 9: Same priority-based selection neighbour search algorithm
+TextBox 10: 2 · Accept
+TextBox 11: Better moves are always kept. Worse moves can still be kept early on, by chance.
+TextBox 12: 3 · Cool down
+TextBox 13: Over time we accept fewer worse moves, so the search settles on a strong plan.
+TextBox 15: Why it helps
+TextBox 16: Think of the search like walking over hills. Today’s method only walks uphill. That is fast and safe, but you can get stuck on a steep part of the hill when a better peak is nearby.
+
+Simulated annealing sometimes takes a downhill step early, so you can leave a trap and reach a better overall schedule. As the search “cools,” those downhill steps become rare, and we settle on the best plan we found.
+NOTES: So what is simulated annealing.
+
+Simulated annealing is a search method. The idea comes from metalworking: heating metal allows it to bend, then cool it slowly so it settles into a strong structure. In optimisation, “heat” means we are more willing to try unusual moves. “Cooling” means we become stricter over time.
+
+There are three simple steps.
+
+First, search. We propose a change to the maintenance schedule — for example, shift a check a few days earlier or later — then evaluate the new plan with the same availability score we already use: minimum availability first, then smoothness, then average. We are not inventing a new scoring system here.
+
+Second, accept. If the new plan is better, we keep it. That part is familiar. The difference is early in the search we may also keep a slightly worse plan, by chance. That sounds odd, but it is deliberate. A temporary worse move can get us out of a local minima.
+
+Third, cool down. As the search continues, we accept fewer and fewer worse moves. Near the end, we mostly behave like today’s method: keep improvements, reject clear steps backwards.
+
+So if we were walking up a hill, sometimes we might need to take a step downhill just to find a better path rather than constantly going up a hill that might be steep. If we accept worse moves temporarily, we might find an easier path.
+
+What annealing does need later is a fair acceptance rule for those temporary worse moves — because our score is a ranked tuple, not one number. That is an acceptance detail, not a new objective. Next I will show how this idea maps onto the  | optimiser |  we already built.
+
+SLIDE 5
+TextBox 3: HOW IT FITS
+TextBox 4: How annealing fits into our design
+TextBox 6: KEEP · How we search today
+TextBox 7: • Focus on the worst availability days first
+Rebuild the aircraft schedule after each move
+Update availability without recalculating everything
+Try larger timing shifts, then smaller ones
+TextBox 9: CHANGE · How we accept moves
+TextBox 10: Currently: only keep the improving moves
+New method: annealing accept better moves always, worse moves sometimes, depending how early and late
+Drop best improvement strategy so worse candidates can be tried
+TextBox 12: Verdict: Keep how we find candidate moves. Change how we decide which moves to accept.
+NOTES: So how does annealing fit our design?
+
+We will keep how we still focus on the worst availability days first. We still rebuild an aircraft’s schedule after a move, so the A, B, C, D rules stay valid. We still update availability cheaply instead of recalculating everything. We still try larger timing shifts, then smaller ones. And we still remember the best schedule we have seen so far.
+
+On the change side: currently we only keep improving moves. That is classic hill-climbing. The new method is annealing acceptance — better moves always; worse moves sometimes, more early, less later. We also drop the improve-only early-exit so worse candidates can actually be tried.
+
+So the fit is clean if we think in layers. Annealing does not replace how we find candidate moves. It replaces how we decide whether to accept them. Keep the smart search. Change the acceptance rule.
+
+Next I will show the hybrid design in one line.
+
+SLIDE 6
+TextBox 3: FAIR ACCEPTANCE
+TextBox 4: Fair testing
+TextBox 27: 1 · Better plan?
+TextBox 28: If the new schedule improves worst-day availability, keep it. That always comes first.
+TextBox 29: 2 · Worse worst-day?
+TextBox 30: If it lowers the minimum availability, reject it. Do not accept a “smoother” plan that makes the busiest day worse.
+TextBox 31: 3 · Same floor?
+TextBox 32: If the worst day is unchanged, but the plan is bumpier or lower on average, allow it sometimes early, less often as the search cools.
+TextBox 33: What we report, and how we test
+TextBox 34: Because annealing is random, run the full search 3 times and report the typical result. Current priority selection NS method needs one run, do not compare the best of three with one baseline run.
+NOTES: This slide covers two things: how we treat a worse move, and how we know which plan to keep.
+
+Checklist. If the new schedule improves the worst day, keep it. If it makes the worst day worse, reject it. If the worst day stays the same but the plan is bumpier, annealing may accept that sometimes early, less often later.
+
+We keep two plans. Current can go downhill so we can keep searching from it. Best-so-far only updates when something beats it — that is what we report.
+
+Because annealing is random, we run the full search three to five times. We report the typical result, not the lucky best. Today’s method is deterministic, so one run is enough. Do not compare best-of-five annealing with one baseline run.
+
+SLIDE 7
+TextBox 3: CONSTRAINTS
+TextBox 4: Raising availability is not enough on its own
+TextBox 5: Current model follows maintenance rules, but it still misses important operational limits.
+TextBox 7: Busy periods
+TextBox 8: Protect periods when many aircraft must stay available.
+TextBox 10: Nearby maintenance moves
+TextBox 11: Control how far nearby checks can shift when we clear a busy period.
+TextBox 13: Aircraft dependencies
+TextBox 14: Some aircraft must be active together when operations depend on them at the same time.
+NOTES: Now the constraints workstream.
+
+Today’s model follows maintenance rules and availability. That is fine for a prototype, but real operations have more limits — busy periods, how far nearby checks can move, and whether certain aircraft must be available together.
+
+So we will add those rules, and check them separately from the availability score. A nicer curve is not enough if the plan breaks the new rules.
+
+SLIDE 8
+TextBox 3: SENSITIVITY
+TextBox 4: Which settings actually change the result?
+TextBox 6: Hyperparameters to test
+TextBox 7: How far we move a check.
+How long we let the search run (max iterations) after introducing SA.
+Cooling criteria: how quickly we become stricter.
+Chance of accepting a worse move 
+These choices affect both schedule quality and runtime
+TextBox 9: What we will do
+TextBox 10: Change one setting at a time on the heavy forecast to properly measure it without interference.
+Monitor the smoothness and runtime compared to baseline model.
+Keep a list of settings that works and ignore the rest. Keep iterating to find the best hyperparameter.
+NOTES: Third workstream: settings.
+
+Several choices are already baked into today’s search: how far we move a check, how long we let it run, and whether we stop at the first improvement. If we add annealing, we also choose how quickly we become stricter.
+
+Those choices affect both schedule quality and runtime, but we have not tested which ones actually matter.
+
+So we will change one setting at a time on the heavy forecast, and watch worst-day availability and runtime together. The output should be a short list of settings that move the needle — not endless tuning. Document the result, then decide.
+
+SLIDE 9
+TextBox 3: STARTING POINT
+TextBox 4: Separate start effect from algorithm gain
+TextBox 12: Why the start matters
+TextBox 14: The search only makes local moves from the original plan.
+A well-staggered start can look like a better algorithm.
+A bunched start can make a good method look weaker.
+TextBox 16: What we will do
+TextBox 18: Build a few controlled starts: bunched, as-loaded, and more spread out.
+Run current method and annealing from each of those same starts.
+Document how much the initial stagger impacts the optimisation.
+TextBox 6: Priority targeting does not cancel this.
+TextBox 7: It only chooses which events to try first. Days that are not the current worst days keep the original stagger, so a good start can still do some of the work.
+NOTES: Fourth: the starting schedule.
+
+Our method starts from the loaded plan and only makes local changes. A well-staggered start can make the final result look better than the algorithm alone deserves. A bunched start can make a good method look weak. A “win” might just be a luckier start.
+
+Priority-based selection does not make that start irrelevant. It only chooses which events to try first — those sitting on the worst availability days. If a worst-day event has an improving move, other events are not even considered that iteration. So non-bottleneck stagger is mostly inherited from the loaded plan. That is a reason to test controlled starts, not a reason to skip them.
+
+So we will build a few controlled starting plans — bunched, as-loaded, and more spread out — and run the same search from each.
+
+Today’s method and annealing get those same starts. We only call annealing better if it wins from the same starting plans. That keeps the comparison honest.
+
+SLIDE 10
+TextBox 37: 6–13 Oct
+TextBox 36: 22 Sep – 10 Oct
+TextBox 35: 8–26 Sep
+TextBox 33: 17 Aug – 12 Sep
+TextBox 42: Freeze
+baseline
+TextBox 40: Step 1
+TextBox 62: Decision
+
+TextBox 60: Step 6
+TextBox 58: Hyperparameter Settings
++ stagger
+TextBox 56: Step 5
+TextBox 54: Operational and logistic Constraints
+
+TextBox 52: Step 4
+TextBox 50: Fair scoring (multiple runs)
+for worse moves and comparing
+TextBox 48: Step 3
+TextBox 46: Allow
+worse moves
+TextBox 44: Step 2
+TextBox 12: 30 Oct
+TextBox 11: Oct
+TextBox 10: Sep
+TextBox 9: 17 Aug
+TextBox 20: Handover document
+TextBox 19: Decision
+TextBox 18: Settings + stagger
+TextBox 17: Constraints
+TextBox 15: SA / worse moves / testing
+TextBox 8: Semester 2 work to 30th October
+TextBox 7: PLAN
+NOTES: Order of work, and when it happens.
+
+The Iteration 1 baseline is already frozen, so we do not spend time on that. Simulated annealing starts on the 17th of August. Fair scoring sits inside that work, not as a separate phase.
+
+Then constraints, settings and stagger, and a keep-or-drop decision in October.
+
+The last bar is the handoff document, through the last teaching day on 30 October.
+
+Do not invent new ideas before the baseline is locked.
+
+SLIDE 11
+TextBox 3: DECISION CRITERIA
+TextBox 4: What we will keep, and when we stop
+TextBox 6: Keep it if:
+TextBox 7: Worst-day availability must be as good as current algorithm.
+Runtime does not increase too much.
+New operational rules still produce legal, usable schedules.
+The gain is from the method, not a luckier start or a luckier seed.
+TextBox 9: Drop it if:
+TextBox 10: Annealing does not beat the current method, and we  will keep the current method.
+Worse moves start hurting the minimum availability,  we tighten the acceptance rule.
+New constraints break feasibility.
+NOTES: What we will keep, and when we stop.
+
+Keep annealing if the worst-day availability is at least as good as today, and it is not much slower. New operational rules still have to produce legal, usable schedules. And the gain has to come from the method — not a luckier start or a luckier random seed.
+
+If annealing does not beat today’s method, we keep today’s method. If worse moves start hurting the worst day, we tighten the acceptance rule. If new constraints break feasibility, we do not ship them.
+
+We only keep what the evidence supports.
+
+Happy to take questions.

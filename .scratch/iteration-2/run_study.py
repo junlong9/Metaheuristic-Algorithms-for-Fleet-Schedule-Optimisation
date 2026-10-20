@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 import savn_iteration2 as study
-import savn_priority_based_selection as baseline
-import savn_priority_sa as annealing
+import savn_basin_hopping as basin
+import vn_priority_based_selection as baseline
 
 RESULTS_PATH = Path(__file__).resolve().parent / "study-results.json"
 RUNTIME_LIMIT_SECONDS = study.RUNTIME_LIMIT_SECONDS
@@ -48,7 +48,7 @@ def measured(schedule, horizon, started, timed_out=False):
 
 def run_polish(schedule, horizon, scenario=None, as_loaded=None):
     started = time.perf_counter()
-    polished, _, _ = annealing.greedy_polish(
+    polished, _, _ = basin.greedy_polish(
         schedule,
         horizon=horizon,
         max_iters=study.TUNED_ITERATIONS,
@@ -70,7 +70,7 @@ def run_candidate(
 ):
     started = time.perf_counter()
     deadline = time.monotonic() + RUNTIME_LIMIT_SECONDS
-    best, _, _ = annealing.basin_hopping_optimise(
+    best, _, _ = basin.basin_hopping_optimise(
         schedule,
         escape_cycles=settings.get("escape_cycles", 15),
         plateau_moves=settings.get("plateau_moves", 30),

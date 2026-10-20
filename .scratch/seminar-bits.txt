@@ -1,0 +1,34 @@
+======================================== 2
+Why Maintenance Scheduling Matters
+---
+In 1995, a US Army Blackhawk battalion reported 89% readiness. But when ordered to deploy, the commander mandated that no aircraft could deploy if it had less than 75 hours remaining until its next phase maintenance (Pippin, 1998).
+9 of 24 helicopters were immediately non-deployable due to poor maintenance staggering.
+This represented a massive loss of power.
+---
+(U.S. Army, 2018)
+---
+======================================== 3
+The Problem and Bottlenecks
+---
+Multiple aircraft exhaust their Residual Flight Time concurrently.
+Finite resources such as dock space, mechanics, and components.
+ Aircraft undergo scheduled maintenance events
+Random Failures can also happen.
+This will cause volatility in availability of aircraft.
+---
+======================================== 6
+Optimising the Schedule
+---
+Implemented a Best-Improvement Neighbourhood Search
+
+1. Maximise minimum fleet availability 
+Minimise availability variance (standard deviation) 
+
+Produced a smoother and more balanced schedule
+---
+======================================== 8
+Optimised Heavy maintenance dataset
+---
+======================================== 9
+Optimised Heavy maintenance dataset
+---

@@ -1,0 +1,1014 @@
+[
+  {
+    "slide": 1,
+    "id": 256,
+    "text": "Scheduling Algorithm Research:\rFleet maintenance optimisation\r\r\r\rData7902 Capstone Project\r\rPresenter: David Long",
+    "shapes": [
+      {
+        "name": "TextBox 8",
+        "text": "Scheduling Algorithm Research:\rFleet maintenance optimisation\r\r\r\rData7902 Capstone Project\r\rPresenter: David Long",
+        "x": 36.022835,
+        "y": 59.99992,
+        "w": 768.57324,
+        "h": 385.0,
+        "font": "Aptos",
+        "size": 32.0
+      }
+    ]
+  },
+  {
+    "slide": 2,
+    "id": 258,
+    "text": "The aircraft maintenance scheduling problem\nMultiple aircraft go through routine checks concurrently\rConcurrent maintenance creates dips in fleet availability. Staggered checks must preserve start windows and maintenance rules.\rFinite resources such as dock space, mechanics, and components.\rFirst: maximise worst-day availability.\rThen: reduce standard deviation.",
+    "shapes": [
+      {
+        "name": "Title 1",
+        "text": "The aircraft maintenance scheduling problem",
+        "x": 43.57945,
+        "y": 26.04244,
+        "w": 365.89795,
+        "h": 127.91496,
+        "font": "Aptos Display",
+        "size": 40.0
+      },
+      {
+        "name": "Content Placeholder 2",
+        "text": "Multiple aircraft go through routine checks concurrently\rConcurrent maintenance creates dips in fleet availability. Staggered checks must preserve start windows and maintenance rules.\rFinite resources such as dock space, mechanics, and components.\rFirst: maximise worst-day availability.\rThen: reduce standard deviation.",
+        "x": 34.465355,
+        "y": 182.0,
+        "w": 429.93463,
+        "h": 310.0,
+        "font": "Arial",
+        "size": 20.0
+      }
+    ]
+  },
+  {
+    "slide": 3,
+    "id": 269,
+    "text": "Simple fleet proof of concept\n10 aircraft, 80 checks. Keep the best feasible improvement at each iteration.",
+    "shapes": [
+      {
+        "name": "Title 1",
+        "text": "Simple fleet proof of concept",
+        "x": 36.0,
+        "y": 31.0,
+        "w": 888.0,
+        "h": 45.0,
+        "font": "Aptos Display",
+        "size": 32.0
+      },
+      {
+        "name": "Simple setup",
+        "text": "10 aircraft, 80 checks. Keep the best feasible improvement at each iteration.",
+        "x": 48.0,
+        "y": 89.0,
+        "w": 860.0,
+        "h": 19.38748,
+        "font": "Calibri",
+        "size": 16.0
+      }
+    ]
+  },
+  {
+    "slide": 4,
+    "id": 268,
+    "text": "The heavy maintenance forecast\n24 aircraft and 278 checks\rA, B, C and D maintenance checks\rSequence: A B A C A B A D\r12-year forecast",
+    "shapes": [
+      {
+        "name": "Title 1",
+        "text": "The heavy maintenance forecast",
+        "x": 57.540237,
+        "y": 0.0,
+        "w": 828.0,
+        "h": 104.37504,
+        "font": "Aptos Display",
+        "size": 36.0
+      },
+      {
+        "name": "Rectangle 1",
+        "text": "24 aircraft and 278 checks\rA, B, C and D maintenance checks\rSequence: A B A C A B A D\r12-year forecast",
+        "x": 65.7,
+        "y": 88.6,
+        "w": 438.0,
+        "h": 166.0,
+        "font": "Aptos",
+        "size": 21.0
+      }
+    ]
+  },
+  {
+    "slide": 5,
+    "id": 276,
+    "text": "Scaling the search: Random Sampling method\nThe heavy fleet creates over 1,000 neighbours per iteration.\rFull evaluation becomes too slow.\rSampling 200 neighbours reduces work.\rNot deterministic, only reproducible with same seed\rRandom selection can miss a useful move.",
+    "shapes": [
+      {
+        "name": "Title 1",
+        "text": "Scaling the search: Random Sampling method",
+        "x": 43.82142,
+        "y": 50.666695,
+        "w": 882.75,
+        "h": 58.648502,
+        "font": "Aptos Display",
+        "size": 32.0
+      },
+      {
+        "name": "Rectangle 1",
+        "text": "The heavy fleet creates over 1,000 neighbours per iteration.\rFull evaluation becomes too slow.\rSampling 200 neighbours reduces work.\rNot deterministic, only reproducible with same seed\rRandom selection can miss a useful move.",
+        "x": 23.842598,
+        "y": 131.79213,
+        "w": 340.6574,
+        "h": 325.0,
+        "font": "Aptos",
+        "size": 21.0
+      }
+    ]
+  },
+  {
+    "slide": 6,
+    "id": 286,
+    "text": "PRIORITY BASED SELECTION WITH VARIABLE NEIGHBOURHOOD SEARCH\nPriority selection searches the worst availability regions first\nRank events by the worst availability during their interval.\rSearch the worst priority level first, expand only if needed.\rMove one check, then rebuild later events using A/B/C/D rules.\rUpdate incrementally and score once.\rDeterministic, rule-compliant, and substantially faster.\rMeasured result: min 15→18, std 1.96→1.44.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "PRIORITY BASED SELECTION WITH VARIABLE NEIGHBOURHOOD SEARCH",
+        "x": 36.0,
+        "y": 20.159922,
+        "w": 888.0,
+        "h": 27.0,
+        "font": "Calibri",
+        "size": 14.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Priority selection searches the worst availability regions first",
+        "x": 39.6,
+        "y": 39.6,
+        "w": 878.4,
+        "h": 50.4,
+        "font": "Calibri",
+        "size": 30.0
+      },
+      {
+        "name": "TextBox 6",
+        "text": "Rank events by the worst availability during their interval.\rSearch the worst priority level first, expand only if needed.\rMove one check, then rebuild later events using A/B/C/D rules.\rUpdate incrementally and score once.\rDeterministic, rule-compliant, and substantially faster.\rMeasured result: min 15→18, std 1.96→1.44.",
+        "x": 61.2,
+        "y": 118.8,
+        "w": 357.63873,
+        "h": 314.23904,
+        "font": "Calibri",
+        "size": 20.0
+      }
+    ]
+  },
+  {
+    "slide": 7,
+    "id": 275,
+    "text": "MILESTONE 4 · HOW PRIORITY LEVELS WORK\nEach event gets one priority: the worst day it covers\nFrom the heavy starting schedule: global min availability = 15, 278 events, 24 aircraft\n1. Score every event\nLook at fleet availability on every day that event is in the hangar.\rPriority = the minimum of those days.\rExample: event days with availability: [18, 18, 16, 15, etc.] → priority 15.\n2. Split into exclusive buckets\nLevel 15 → 20 events (touch a day-15 dip).\rLevel 16 → 10 events \rLevel 17 → 9 events\rLevel 21 → 68 events\r\n3. Search worst first\nTry only level-15 events × shifts (e.g. 20 × 2 = 40).\rIf any move improves the score, stop and pick the best.\rOnly then expand to 16, 17… if level 15 finds nothing.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "MILESTONE 4 · HOW PRIORITY LEVELS WORK",
+        "x": 39.6,
+        "y": 20.16,
+        "w": 864.0,
+        "h": 21.6,
+        "font": "Calibri",
+        "size": 12.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Each event gets one priority: the worst day it covers",
+        "x": 39.6,
+        "y": 39.6,
+        "w": 878.4,
+        "h": 43.62189,
+        "font": "Calibri",
+        "size": 30.0
+      },
+      {
+        "name": "TextBox 5",
+        "text": "From the heavy starting schedule: global min availability = 15, 278 events, 24 aircraft",
+        "x": 39.6,
+        "y": 90.0,
+        "w": 878.4,
+        "h": 29.08126,
+        "font": "Calibri",
+        "size": 18.0
+      },
+      {
+        "name": "TextBox 7",
+        "text": "1. Score every event",
+        "x": 54.0,
+        "y": 136.8,
+        "w": 259.2,
+        "h": 31.504725,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 8",
+        "text": "Look at fleet availability on every day that event is in the hangar.\rPriority = the minimum of those days.\rExample: event days with availability: [18, 18, 16, 15, etc.] → priority 15.",
+        "x": 54.0,
+        "y": 172.8,
+        "w": 259.2,
+        "h": 217.30157,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 10",
+        "text": "2. Split into exclusive buckets",
+        "x": 352.8,
+        "y": 136.8,
+        "w": 259.2,
+        "h": 31.504725,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 11",
+        "text": "Level 15 → 20 events (touch a day-15 dip).\rLevel 16 → 10 events \rLevel 17 → 9 events\rLevel 21 → 68 events\r",
+        "x": 352.8,
+        "y": 172.8,
+        "w": 259.2,
+        "h": 184.98906,
+        "font": null,
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 13",
+        "text": "3. Search worst first",
+        "x": 651.6,
+        "y": 136.8,
+        "w": 259.2,
+        "h": 31.504725,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 14",
+        "text": "Try only level-15 events × shifts (e.g. 20 × 2 = 40).\rIf any move improves the score, stop and pick the best.\rOnly then expand to 16, 17… if level 15 finds nothing.",
+        "x": 651.6,
+        "y": 172.8,
+        "w": 259.2,
+        "h": 168.83284,
+        "font": "Calibri",
+        "size": 20.0
+      }
+    ]
+  },
+  {
+    "slide": 8,
+    "id": 284,
+    "text": "ITERATION 1 RESULTS\nPriority selection made the heavy search practical\nWORST-DAY AVAILABILITY\n15 to 18\nSEARCH STRATEGY\nWorst days first\nVALIDITY\nRebuilt every time we find improvement\nHistorical runtime comparison from the Iteration 1 milestone\nFull neighbourhood\n920 s\n200 random samples\n451 s\nPriority selection\n15.4 s",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "ITERATION 1 RESULTS",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Priority selection made the heavy search practical",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "TextBox 6",
+        "text": "WORST-DAY AVAILABILITY",
+        "x": 52.56,
+        "y": 120.96,
+        "w": 266.4,
+        "h": 21.810946,
+        "font": "Calibri",
+        "size": 12.0
+      },
+      {
+        "name": "TextBox 7",
+        "text": "15 to 18",
+        "x": 52.56,
+        "y": 147.6,
+        "w": 266.4,
+        "h": 38.77504,
+        "font": "Calibri",
+        "size": 24.0
+      },
+      {
+        "name": "TextBox 9",
+        "text": "SEARCH STRATEGY",
+        "x": 354.96,
+        "y": 120.96,
+        "w": 266.4,
+        "h": 21.810946,
+        "font": "Calibri",
+        "size": 12.0
+      },
+      {
+        "name": "TextBox 10",
+        "text": "Worst days first",
+        "x": 354.96,
+        "y": 147.6,
+        "w": 266.4,
+        "h": 38.77504,
+        "font": "Calibri",
+        "size": 24.0
+      },
+      {
+        "name": "TextBox 12",
+        "text": "VALIDITY",
+        "x": 657.3599,
+        "y": 120.96,
+        "w": 252.0,
+        "h": 21.810946,
+        "font": "Calibri",
+        "size": 12.0
+      },
+      {
+        "name": "TextBox 13",
+        "text": "Rebuilt every time we find improvement",
+        "x": 657.3599,
+        "y": 147.6,
+        "w": 252.0,
+        "h": 38.77504,
+        "font": "Calibri",
+        "size": 24.0
+      },
+      {
+        "name": "TextBox 15",
+        "text": "Historical runtime comparison from the Iteration 1 milestone",
+        "x": 61.2,
+        "y": 266.4,
+        "w": 835.2,
+        "h": 26.657795,
+        "font": "Calibri",
+        "size": 16.0
+      },
+      {
+        "name": "TextBox 16",
+        "text": "Full neighbourhood",
+        "x": 61.2,
+        "y": 306.0,
+        "w": 216.0,
+        "h": 28.8,
+        "font": "Calibri",
+        "size": 14.0
+      },
+      {
+        "name": "TextBox 18",
+        "text": "920 s",
+        "x": 763.2,
+        "y": 306.0,
+        "w": 144.0,
+        "h": 21.810946,
+        "font": "Calibri",
+        "size": 12.0
+      },
+      {
+        "name": "TextBox 19",
+        "text": "200 random samples",
+        "x": 61.2,
+        "y": 356.4,
+        "w": 216.0,
+        "h": 28.8,
+        "font": "Calibri",
+        "size": 14.0
+      },
+      {
+        "name": "TextBox 21",
+        "text": "451 s",
+        "x": 763.2,
+        "y": 356.4,
+        "w": 144.0,
+        "h": 21.810946,
+        "font": "Calibri",
+        "size": 12.0
+      },
+      {
+        "name": "TextBox 22",
+        "text": "Priority selection",
+        "x": 61.2,
+        "y": 406.8,
+        "w": 216.0,
+        "h": 28.8,
+        "font": "Calibri",
+        "size": 14.0
+      },
+      {
+        "name": "TextBox 24",
+        "text": "15.4 s",
+        "x": 763.2,
+        "y": 406.8,
+        "w": 144.0,
+        "h": 21.810946,
+        "font": "Calibri",
+        "size": 12.0
+      }
+    ]
+  },
+  {
+    "slide": 9,
+    "id": 257,
+    "text": "ITERATION 2\nThree goals for iteration 2\nMETHOD\nEscape local optima using Simulated Annealing\nScope of the completed work\nCan Simulated Annealing improve the tuned baseline?\rHow much does the starting schedule affect the result?\rWhich hyperparameters were the best for the algorithm?",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "ITERATION 2",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Three goals for iteration 2",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "TextBox 6",
+        "text": "METHOD",
+        "x": 51.84,
+        "y": 109.44,
+        "w": 399.6,
+        "h": 28.8,
+        "font": "Calibri",
+        "size": 17.0
+      },
+      {
+        "name": "TextBox 7",
+        "text": "Escape local optima using Simulated Annealing",
+        "x": 51.84,
+        "y": 142.55992,
+        "w": 559.26,
+        "h": 55.0,
+        "font": "Calibri",
+        "size": 25.0
+      },
+      {
+        "name": "TextBox 12",
+        "text": "Scope of the completed work",
+        "x": 57.6,
+        "y": 241.2,
+        "w": 842.4,
+        "h": 33.928112,
+        "font": "Calibri",
+        "size": 22.0
+      },
+      {
+        "name": "TextBox 13",
+        "text": "Can Simulated Annealing improve the tuned baseline?\rHow much does the starting schedule affect the result?\rWhich hyperparameters were the best for the algorithm?",
+        "x": 58.5,
+        "y": 288.0,
+        "w": 842.4,
+        "h": 152.67653,
+        "font": "Calibri",
+        "size": 19.0
+      }
+    ]
+  },
+  {
+    "slide": 10,
+    "id": 287,
+    "text": "SIMULATED ANNEALING\nWhat simulated annealing is \n1 · Search\nSame priority-based selection neighbour search algorithm\n2 · Accept\nBetter moves are always kept. Worse moves can still be kept early on, by chance.\n3 · Cool down\nOver time we accept fewer worse moves, so the search settles on a strong plan.\nWhy it helps\nThink of the search like walking over hills. Today’s method only walks uphill. That is fast and safe, but you can get stuck on a steep part of the hill when a better peak is nearby.\r\rSimulated annealing sometimes takes a downhill step early, so you can leave a trap and reach a better overall schedule. As the search “cools,” those downhill steps become rare, and we settle on the best plan we found.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "SIMULATED ANNEALING",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 880.0,
+        "h": 27.869528,
+        "font": "Calibri",
+        "size": 17.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "What simulated annealing is ",
+        "x": 36.0,
+        "y": 32.0,
+        "w": 890.0,
+        "h": 50.892204,
+        "font": "Calibri",
+        "size": 36.0
+      },
+      {
+        "name": "TextBox 8",
+        "text": "1 · Search",
+        "x": 52.0,
+        "y": 110.0,
+        "w": 255.0,
+        "h": 31.504725,
+        "font": "Aptos",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 9",
+        "text": "Same priority-based selection neighbour search algorithm",
+        "x": 52.0,
+        "y": 145.0,
+        "w": 255.0,
+        "h": 46.045277,
+        "font": "Calibri",
+        "size": 16.0
+      },
+      {
+        "name": "TextBox 10",
+        "text": "2 · Accept",
+        "x": 354.0,
+        "y": 110.0,
+        "w": 255.0,
+        "h": 31.504725,
+        "font": "Aptos",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 11",
+        "text": "Better moves are always kept. Worse moves can still be kept early on, by chance.",
+        "x": 354.0,
+        "y": 145.0,
+        "w": 255.0,
+        "h": 65.43284,
+        "font": "Aptos",
+        "size": 16.0
+      },
+      {
+        "name": "TextBox 12",
+        "text": "3 · Cool down",
+        "x": 656.0,
+        "y": 110.0,
+        "w": 255.0,
+        "h": 31.504725,
+        "font": "Aptos",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 13",
+        "text": "Over time we accept fewer worse moves, so the search settles on a strong plan.",
+        "x": 656.0,
+        "y": 145.0,
+        "w": 255.0,
+        "h": 65.43284,
+        "font": "Aptos",
+        "size": 16.0
+      },
+      {
+        "name": "TextBox 15",
+        "text": "Why it helps",
+        "x": 55.0,
+        "y": 280.0,
+        "w": 850.0,
+        "h": 33.928112,
+        "font": "Aptos",
+        "size": 22.0
+      },
+      {
+        "name": "TextBox 16",
+        "text": "Think of the search like walking over hills. Today’s method only walks uphill. That is fast and safe, but you can get stuck on a steep part of the hill when a better peak is nearby.\r\rSimulated annealing sometimes takes a downhill step early, so you can leave a trap and reach a better overall schedule. As the search “cools,” those downhill steps become rare, and we settle on the best plan we found.",
+        "x": 55.0,
+        "y": 320.0,
+        "w": 850.0,
+        "h": 116.32504,
+        "font": "Aptos",
+        "size": 18.0
+      }
+    ]
+  },
+  {
+    "slide": 11,
+    "id": 279,
+    "text": "METHOD COMPARISON\nSimulated Annealing did not meet the keep rule\nMethod / Worst day / Std deviation / Runtime\nTuned Priority Based\rSelection with VNS / 18 / 1.391860 / 115.6 s\nSimulated Annealing median / 18 / 1.390417 / 306.3 s\nTightened acceptance median / 18 / 1.391860 / 63.5 s\nSmoothness gain: 0.00144 against a 0.005 threshold. Median runtime exceeded 300 s.\nEarlier decision benchmark. Simulated Annealing seeds 1–3. Two runs reached the time budget.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "METHOD COMPARISON",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Simulated Annealing did not meet the keep rule",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "Method results",
+        "text": "Method / Worst day / Std deviation / Runtime",
+        "row": 1
+      },
+      {
+        "name": "Method results",
+        "text": "Tuned Priority Based\rSelection with VNS / 18 / 1.391860 / 115.6 s",
+        "row": 2
+      },
+      {
+        "name": "Method results",
+        "text": "Simulated Annealing median / 18 / 1.390417 / 306.3 s",
+        "row": 3
+      },
+      {
+        "name": "Method results",
+        "text": "Tightened acceptance median / 18 / 1.391860 / 63.5 s",
+        "row": 4
+      },
+      {
+        "name": "Decision finding",
+        "text": "Smoothness gain: 0.00144 against a 0.005 threshold. Median runtime exceeded 300 s.",
+        "x": 42.0,
+        "y": 383.0,
+        "w": 875.0,
+        "h": 25.446062,
+        "font": "Calibri",
+        "size": 21.0
+      },
+      {
+        "name": "Decision context",
+        "text": "Earlier decision benchmark. Simulated Annealing seeds 1–3. Two runs reached the time budget.",
+        "x": 42.0,
+        "y": 465.0,
+        "w": 875.0,
+        "h": 19.38748,
+        "font": "Calibri",
+        "size": 16.0
+      }
+    ]
+  },
+  {
+    "slide": 12,
+    "id": 280,
+    "text": "CONTROLLED START SCHEDULES\nThe as-loaded start finished smoothest\nStart schedule / Initial worst day / Final worst day / Final std deviation\nAs-loaded / 15 / 18 / 1.414\nModerate / 15 / 19 / 0.944\nWide / 15 / 20 / 0.713\nInstead of focusing on the algorithm which cannot be improved further because of constraints, I decided to focus on the initial stagger. In the normal heavy dataset, all the D checks happen at once. What if we move the D checks around? First, I did moderate spread of the D checks then widespread.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "CONTROLLED START SCHEDULES",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "The as-loaded start finished smoothest",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "Start schedule results",
+        "text": "Start schedule / Initial worst day / Final worst day / Final std deviation",
+        "row": 1
+      },
+      {
+        "name": "Start schedule results",
+        "text": "As-loaded / 15 / 18 / 1.414",
+        "row": 2
+      },
+      {
+        "name": "Start schedule results",
+        "text": "Moderate / 15 / 19 / 0.944",
+        "row": 3
+      },
+      {
+        "name": "Start schedule results",
+        "text": "Wide / 15 / 20 / 0.713",
+        "row": 4
+      },
+      {
+        "name": "Start distinction",
+        "text": "Instead of focusing on the algorithm which cannot be improved further because of constraints, I decided to focus on the initial stagger. In the normal heavy dataset, all the D checks happen at once. What if we move the D checks around? First, I did moderate spread of the D checks then widespread.",
+        "x": 42.0,
+        "y": 440.0,
+        "w": 875.0,
+        "h": 46.045277,
+        "font": "Calibri",
+        "size": 19.0
+      }
+    ]
+  },
+  {
+    "slide": 13,
+    "id": 288,
+    "text": "CONTROLLED START SCHEDULES\nModerate and Wide Staggers\nModerate initial stagger\nWide initial stagger",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "CONTROLLED START SCHEDULES",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Moderate and Wide Staggers",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "Start distinction",
+        "text": "Moderate initial stagger",
+        "x": 76.31575,
+        "y": 169.94095,
+        "w": 317.4,
+        "h": 46.045277,
+        "font": "Calibri",
+        "size": 19.0
+      },
+      {
+        "name": "Start distinction",
+        "text": "Wide initial stagger",
+        "x": 65.8,
+        "y": 388.02954,
+        "w": 317.4,
+        "h": 46.045277,
+        "font": "Calibri",
+        "size": 19.0
+      }
+    ]
+  },
+  {
+    "slide": 14,
+    "id": 285,
+    "text": "HYPERPARAMETER RESULTS\nTuning improved smoothness on every forecast\nDataset / Initial worst day / Tuned worst day / Default std / Tuned std / Best setting\nOriginal / 15 / 18 / 1.4221 / 1.4019 / C57\nModerate / 16 / 19 / 0.9117 / 0.8834 / C30\nWide / 17 / 20 / 0.6167 / 0.5868 / C30\nSmoothness improvement at the same worst day: 1.42%, 3.10% and 4.85%\nSerial median search time: C57 original 32.16 s. C30 moderate 14.69 s, wide 28.55 s. Three repeats per setting on this machine.\nMatched scoring window. All listed winners reached local exhaustion.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "HYPERPARAMETER RESULTS",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Tuning improved smoothness on every forecast",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "Hyperparameter results",
+        "text": "Dataset / Initial worst day / Tuned worst day / Default std / Tuned std / Best setting",
+        "row": 1
+      },
+      {
+        "name": "Hyperparameter results",
+        "text": "Original / 15 / 18 / 1.4221 / 1.4019 / C57",
+        "row": 2
+      },
+      {
+        "name": "Hyperparameter results",
+        "text": "Moderate / 16 / 19 / 0.9117 / 0.8834 / C30",
+        "row": 3
+      },
+      {
+        "name": "Hyperparameter results",
+        "text": "Wide / 17 / 20 / 0.6167 / 0.5868 / C30",
+        "row": 4
+      },
+      {
+        "name": "Quality gain",
+        "text": "Smoothness improvement at the same worst day: 1.42%, 3.10% and 4.85%",
+        "x": 42.0,
+        "y": 377.0,
+        "w": 875.0,
+        "h": 26.657795,
+        "font": "Calibri",
+        "size": 22.0
+      },
+      {
+        "name": "Runtime evidence",
+        "text": "Serial median search time: C57 original 32.16 s. C30 moderate 14.69 s, wide 28.55 s. Three repeats per setting on this machine.",
+        "x": 42.0,
+        "y": 432.0,
+        "w": 875.0,
+        "h": 43.62189,
+        "font": "Calibri",
+        "size": 18.0
+      },
+      {
+        "name": "Results boundary",
+        "text": "Matched scoring window. All listed winners reached local exhaustion.",
+        "x": 42.0,
+        "y": 505.0,
+        "w": 875.0,
+        "h": 16.964094,
+        "font": "Calibri",
+        "size": 14.0
+      }
+    ]
+  },
+  {
+    "slide": 15,
+    "id": 263,
+    "text": "LIMITS AND NEXT STEPS\nThe original worst-day target is already optimal\nOriginal forecast\nSix D checks must overlap in a fixed interval.\rWith 24 aircraft, worst-day availability cannot exceed 18.\rThe measured result reaches this bound.\nStagger datasets\nThe upper bound is 21 on each stagger dataset.\rMeasured results reach 19 and 20.\rThose remaining gaps are unresolved.\nEvidence boundary\nSmoothness is locally optimal only. These are synthetic, maintenance-only benchmarks. A new fleet, regenerated check list, or changed rules needs a fresh study.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "LIMITS AND NEXT STEPS",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "The original worst-day target is already optimal",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 32.0
+      },
+      {
+        "name": "TextBox 12",
+        "text": "Original forecast",
+        "x": 57.6,
+        "y": 115.2,
+        "w": 396.0,
+        "h": 33.928112,
+        "font": "Calibri",
+        "size": 22.0
+      },
+      {
+        "name": "TextBox 14",
+        "text": "Six D checks must overlap in a fixed interval.\rWith 24 aircraft, worst-day availability cannot exceed 18.\rThe measured result reaches this bound.",
+        "x": 57.6,
+        "y": 172.8,
+        "w": 396.0,
+        "h": 165.0,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 16",
+        "text": "Stagger datasets",
+        "x": 511.2,
+        "y": 115.2,
+        "w": 388.8,
+        "h": 33.928112,
+        "font": "Calibri",
+        "size": 22.0
+      },
+      {
+        "name": "TextBox 18",
+        "text": "The upper bound is 21 on each stagger dataset.\rMeasured results reach 19 and 20.\rThose remaining gaps are unresolved.",
+        "x": 511.2,
+        "y": 172.79993,
+        "w": 388.8,
+        "h": 165.0,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 6",
+        "text": "Evidence boundary",
+        "x": 57.6,
+        "y": 420.0,
+        "w": 840.0,
+        "h": 31.504725,
+        "font": "Calibri",
+        "size": 20.0
+      },
+      {
+        "name": "TextBox 7",
+        "text": "Smoothness is locally optimal only. These are synthetic, maintenance-only benchmarks. A new fleet, regenerated check list, or changed rules needs a fresh study.",
+        "x": 57.6,
+        "y": 450.0,
+        "w": 840.0,
+        "h": 46.045277,
+        "font": "Aptos Display",
+        "size": 17.0
+      }
+    ]
+  },
+  {
+    "slide": 16,
+    "id": 281,
+    "text": "FINAL RECOMMENDATION\nFinal method: Priority Based Selection with VNS\nMETHOD\nPriority Based Selection\rwith VNS\nSHARED SETTINGS\nC30, cap 400\nProject outcome\nIteration 1 raised original worst-day availability from 15 to 18.\rSimulated Annealing offered too little smoothness gain for its runtime.\rThree-dataset tuning supports C30 as the shared setting.\rUse C57 when the original forecast needs the best measured smoothness.",
+    "shapes": [
+      {
+        "name": "TextBox 3",
+        "text": "FINAL RECOMMENDATION",
+        "x": 36.0,
+        "y": 13.0,
+        "w": 888.0,
+        "h": 25.0,
+        "font": "Calibri",
+        "size": 15.0
+      },
+      {
+        "name": "TextBox 4",
+        "text": "Final method: Priority Based Selection with VNS",
+        "x": 36.0,
+        "y": 42.0,
+        "w": 888.0,
+        "h": 52.0,
+        "font": "Calibri",
+        "size": 31.0
+      },
+      {
+        "name": "TextBox 6",
+        "text": "METHOD",
+        "x": 51.84,
+        "y": 109.44,
+        "w": 399.6,
+        "h": 28.8,
+        "font": "Calibri",
+        "size": 17.0
+      },
+      {
+        "name": "TextBox 7",
+        "text": "Priority Based Selection\rwith VNS",
+        "x": 51.84,
+        "y": 142.55992,
+        "w": 399.6,
+        "h": 62.0,
+        "font": "Calibri",
+        "size": 23.0
+      },
+      {
+        "name": "TextBox 9",
+        "text": "SHARED SETTINGS",
+        "x": 501.84,
+        "y": 109.44,
+        "w": 399.6,
+        "h": 28.8,
+        "font": "Calibri",
+        "size": 17.0
+      },
+      {
+        "name": "TextBox 10",
+        "text": "C30, cap 400",
+        "x": 501.84,
+        "y": 142.55992,
+        "w": 399.6,
+        "h": 55.0,
+        "font": "Calibri",
+        "size": 27.0
+      },
+      {
+        "name": "TextBox 12",
+        "text": "Project outcome",
+        "x": 57.6,
+        "y": 241.2,
+        "w": 842.4,
+        "h": 33.928112,
+        "font": "Calibri",
+        "size": 22.0
+      },
+      {
+        "name": "TextBox 13",
+        "text": "Iteration 1 raised original worst-day availability from 15 to 18.\rSimulated Annealing offered too little smoothness gain for its runtime.\rThree-dataset tuning supports C30 as the shared setting.\rUse C57 when the original forecast needs the best measured smoothness.",
+        "x": 57.6,
+        "y": 288.0,
+        "w": 842.4,
+        "h": 152.67653,
+        "font": "Calibri",
+        "size": 20.0
+      }
+    ]
+  }
+]

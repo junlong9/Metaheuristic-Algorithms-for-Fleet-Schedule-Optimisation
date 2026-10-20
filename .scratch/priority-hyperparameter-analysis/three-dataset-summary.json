@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-14",
+  "configurations": 58,
+  "matched_sweep_cases": 174,
+  "total_run_records": 203,
+  "best": {
+    "original": {
+      "config_id": "C57",
+      "config_name": "Half steps plus 42 days",
+      "min": 18,
+      "std": 1.4019288312784548,
+      "avg": 21.707601004336908,
+      "accepted_moves": 302,
+      "cap": 800,
+      "exhausted": true
+    },
+    "moderate": {
+      "config_id": "C30",
+      "config_name": "vns wide dense",
+      "min": 19,
+      "std": 0.8834188840278825,
+      "avg": 21.469070988358823,
+      "accepted_moves": 367,
+      "cap": 800,
+      "exhausted": true
+    },
+    "wide": {
+      "config_id": "C30",
+      "config_name": "vns wide dense",
+      "min": 20,
+      "std": 0.5867970474573515,
+      "avg": 21.47500570645971,
+      "accepted_moves": 291,
+      "cap": 800,
+      "exhausted": true
+    }
+  },
+  "shared_configuration": {
+    "id": "C30",
+    "name": "vns wide dense",
+    "params": {
+      "shift_sets": [
+        [
+          -56,
+          56
+        ],
+        [
+          -42,
+          42
+        ],
+        [
+          -28,
+          28
+        ],
+        [
+          -14,
+          14
+        ],
+        [
+          -7,
+          7
+        ],
+        [
+          -3,
+          3
+        ],
+        [
+          -1,
+          1
+        ]
+      ],
+      "selection": "first_level"
+    },
+    "family": "vns_ladder"
+  },
+  "shared_worst_smoothness_penalty_percent": 0.5559177796559123
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "file": "heavy_maintenance_forecast_stagger_moderate.xlsx",
+    "checks": 278,
+    "historical_checks": 68,
+    "worst_day_availability": 16,
+    "peak_concurrent_D_checks": 6,
+    "maintenance_rules": "Pass: unchanged baseline replay on full histories",
+    "daily_counts_and_formula_caches": "Pass",
+    "source_files_unchanged": true,
+    "exact_original_template_and_native_chart": "Pass",
+    "operational_scenarios": {
+      "loose": true,
+      "medium": true,
+      "tight": false
+    }
+  },
+  {
+    "file": "heavy_maintenance_forecast_stagger_wide.xlsx",
+    "checks": 277,
+    "historical_checks": 80,
+    "worst_day_availability": 17,
+    "peak_concurrent_D_checks": 4,
+    "maintenance_rules": "Pass: unchanged baseline replay on full histories",
+    "daily_counts_and_formula_caches": "Pass",
+    "source_files_unchanged": true,
+    "exact_original_template_and_native_chart": "Pass",
+    "operational_scenarios": {
+      "loose": true,
+      "medium": true,
+      "tight": false
+    }
+  }
+]

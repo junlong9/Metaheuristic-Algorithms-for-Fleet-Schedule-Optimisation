@@ -1,0 +1,188 @@
+{'cx': '12192000', 'cy': '6858000'}
+
+SLIDE 1
+TextBox 8: Scheduling Algorithm Research. 
+Prototype a range of proposed scheduling algorithm improvements with dummy data
+
+Iteration 1- Results and Review
+From exhaustive search to practical priority selection
+
+
+Presenter: David Long
+
+
+
+
+
+
+
+
+
+
+NOTES: Hello everyone, today I will present my results of iteration 1 and also what I have done over the holidays which is introducing the priority-based selection algorithm. Some context for Darryl who hasn’t seen my project before, my project focuses on scheduling algorithm research, so when aircraft go into maintenance at the same time, the availability of the fleet will drop. My job is to stagger the aircraft, so the availability stays consistent throughout the whole schedule instead of having random dips in availability. | 1
+
+SLIDE 2
+TextBox 4: Overview
+TextBox 6: Milestone 1
+TextBox 7: Simple fleet
+baseline optimiser
+TextBox 10: Milestone 2
+TextBox 11: Heavy Dataset: Full neighbourhood
+search
+TextBox 14: Milestone 3
+TextBox 15: Random Sampling: 200 random
+samples
+TextBox 18: Milestone 4
+TextBox 19: Priority-based
+selection
+TextBox 21: Simple dataset: proved the objective and feasibility checks (80 events).
+Heavy dataset: 24 aircraft, 278 maintenance events over a multi-year horizon.
+Search strategy evolved from exhaustive → sampled → priority-based.
+Final method is deterministic, rule-aware, and substantially faster.
+NOTES: Here is an overview on what I am going to talk about today. There are a total of three milestones I have achieved in iteration 1 and also an additional milestone that I have done since the last meeting. The first milestone was achieved when I received the simple dataset from Tim and I used a simple  | neighbourhood |  search to optimize it. The second milestone was achieved when I went back to Tim and he told me about the different types of checks that occur in maintenance which led to a heavy dataset to be generated. At first I tried to run the same algorithm on it but it was too slow, so I introduced the random sampling method for my third milestone. Finally, I will introduce the priority-based selection method which I worked on since the last meeting.
+
+
+
+SLIDE 3
+TextBox 3: MILESTONE 1 · SIMPLE DATASET
+TextBox 4: The simple dataset proved the optimisation objective
+TextBox 6: Input: Simple Random Fleet Plans (80 maintenance events).
+Shift event start times within feasible windows.
+Reject overlapping maintenance on the same aircraft.
+Score schedules: min avail. → −std. → average.
+Variable neighbourhood search with coarse-to-fine shifts.
+Established the baseline optimiser design before scaling.
+TextBox 8: DATASET SCALE
+TextBox 9: 80 events
+TextBox 11: PURPOSE
+TextBox 12: Proof of concept
+TextBox 14: RESULT
+TextBox 15: Staggered the schedule
+NOTES: The Simple Dataset provided by Tim had 10-aircraft with 8 maintenance events each lasting 60 days. The maintenance windows were constrained to 320–380 days and the Initial random schedule caused heavy overlap.  | To  | optimise |  the initial schedule, I implemented a Best-Improvement  | Neighbourhood |  Search algorithm. The algorithm explores  | neighbouring |  solutions by shifting maintenance start dates while ensuring all scheduling constraints remain feasible, including the required 320 to 380 day window. The  | optimisation |  objective was  | prioritised |  in two stages. First,  | maximise |  the minimum number of available aircraft across the schedule. Then, if multiple schedules achieved the same minimum availability, standard deviation was used as a secondary metric to smooth the schedule further. As shown, neighborhood search successfully removed the major dips in availability and produced a much more balanced maintenance schedule.
+
+SLIDE 4
+Title 1: Extended Heavy maintenance dataset	
+Rectangle 1: Maintenance Cycle: A → B → A → C → A → B → A → D
+Minimum forecast length: 12 years 
+Represents 1.5 maintenance cycles
+24 Aircraft having 11-12 maintenance events per forecast
+
+
+NOTES: To move toward a more realistic scheduling problem, the simple dataset was extended into a dataset with heavy maintenance cycles. | The model now includes four different maintenance checks: A, B, C, and D checks, each with different durations and intervals. | Higher-level checks include the work from lower-level checks, creating a repeating maintenance cycle of A, B, A, C, A, B, A, D. | To properly capture long-term scheduling effects, the forecast horizon was extended to 12 years, representing approximately one and a half maintenance cycles. | This significantly increases scheduling complexity, especially as fleet size grows from small fleets to larger operational fleets of 10 to 24 aircraft and different maintenance durations. | This graph shows an example long-term availability forecast under this more realistic maintenance structure. | 4
+
+SLIDE 5
+TextBox 3: MILESTONE 2 · FULL NEIGHBOURHOOD
+TextBox 4: Full neighbourhood search improved quality—but did not scale
+TextBox 6: Heavy forecast: 24 aircraft, 278 events.
+For every aircraft and event, try each shift (±28, ±14, ±7, ±3).
+Deep-copy and fully evaluate every feasible neighbour.
+Candidate count grows with fleet size × events × shifts.
+Quality gains were real, but evaluation cost became impractical.
+NOTES: After extending the dataset to  | includethe |  realistic checks, I developed a scheduling  | optimiser |  using a Variable  | Neighbourhood |  Search approach. | This flowchart  | summarises |  the  | optimisation |  process. | The algorithm first computes aircraft availability across the entire 12-year forecast horizon and evaluates the schedule using three metrics: minimum availability, standard deviation, and average availability. | It then generates  | neighbouring |  schedules by shifting maintenance start dates within their feasible maintenance windows. | Each candidate schedule undergoes a feasibility check to ensure there are no overlapping maintenance events. | Initially, I attempted to use the same brute-force  | neighbourhood |  search approach that worked on the smaller dataset. However, the problem became significantly larger after scaling from 10 aircraft to 24 aircraft, with around 11 to 12 maintenance events per aircraft.
+
+SLIDE 6
+TextBox 3: MILESTONE 3 · 200 RANDOM SAMPLES
+TextBox 4: Sampling 200 neighbours reduced work but added uncertainty
+TextBox 6: What changed
+TextBox 7: Same heavy dataset and shift sets as full neighbourhood search.
+If more than 200 neighbours exist, randomly sample 200.
+Cut evaluation cost dramatically versus the full set.
+Trade-off: non-deterministic candidate selection.
+Same seed later enables reproducible benchmarking.
+TextBox 8: Limitations remaining
+TextBox 9: May miss the best improving move in a neighbourhood.
+Still scores complete candidate schedules each time.
+Still deep-copies and revalidates.
+Motivated a smarter, deterministic selection criteria.
+NOTES: Because the  | neighbourhood |  size is determined by aircraft multiplied by events multiplied by shift combinations, each iteration could generate over 1000  | neighbouring |  schedules. | Evaluating every  | neighbour |  became computationally expensive, and the algorithm was taking more than 15 minutes to complete. | To solve this issue, I introduced a random sampling strategy. Instead of evaluating all  | neighbours | , the  | optimiser |  randomly selects 200 candidate  | neighbours |  each iteration. | This significantly reduced runtime while still consistently finding improved schedules, because 200 sampled  | neighbours |  were sufficient to identify better local solutions. The trade-off is that it is nondeterministic as it is random however it can be reproduced by using the same seed. | There are still limitations to this approach as it may miss the best improving move and it still deep copies 200  | neighbours | . So I thought instead of having a random approach of 200  | neighbours |  because 200 is still a lot, we can find a more deterministic approach that is smarter and  | utilises |  the nature of the schedule.
+
+SLIDE 7
+TextBox 3: MILESTONE 4 · PRIORITY-BASED SELECTION
+TextBox 4: Priority selection searches the worst availability regions first
+TextBox 6: Rank events by the worst availability during their interval.
+Search the worst priority level first, expand only if needed.
+Move one check, then rebuild later events using A/B/C/D rules.
+Update incrementally by removing old intervals and add the rebuilt intervals and score once.
+Deterministic, rule-compliant, and substantially faster.
+Measured result: min 15→18, std 1.96→1.44.
+NOTES: This is the method I want to spend the most time on, because it is the main technical result of iteration 1.
+
+Priority-based selection changes the question we ask. Instead of asking “what happens if we try random moves to find the best one?”, we ask “which maintenance events are actually hurting and causing the minimum availability to be the lowest?”
+
+How this algorithm works is for every event, it gets a priority score equal to the lowest fleet availability of the event for every day it is active. So if an event overlaps a day when only fifteen aircraft are available on that day, then the event priority score is fifteen. Then the events with the lowest priority score will be the ones to be shifted first.
+
+Another thing I changed is that when we move one check, we do not leave the rest of that aircraft’s plan sitting in a potentially broken state. Before,  | when we move one maintenance check, only that selected event is shifted. Now when an event is shifted, the schedule is rebuilt, everything earlier on the same aircraft stays exactly as it was. Everything later is recalculated from the new shift date using the A/B/C/D rules, so the due dates will remain legal even after getting shifted. | 
+
+I also changed how scoring works. The entire fleet is not deep copied for every trial. We rebuild one aircraft, then update availability incrementally. That aircraft’s old intervals are removed from the stored availability array, and the new rebuilt intervals are added, and scored once. That is much cheaper than recomputing availability from scratch for every  | neighbour | .
+
+
+---
+
+SLIDE 8
+TextBox 3: MILESTONE 4 · HOW PRIORITY LEVELS WORK
+TextBox 4: Each event gets one priority: the worst day it covers
+TextBox 5: From the heavy starting schedule: global min availability = 15, 278 events, 24 aircraft
+TextBox 7: 1. Score every event
+TextBox 8: Look at fleet availability on every day that event is in the hangar.
+Priority = the minimum of those days.
+Example: event days with availability: [18, 18, 16, 15, etc.] → priority 15.
+TextBox 10: 2. Split into exclusive buckets
+TextBox 11: Level 15 → 20 events (touch a day-15 dip).
+Level 16 → 10 events 
+Level 17 → 9 events
+Level 21 → 68 events
+
+TextBox 13: 3. Search worst first
+TextBox 14: Try only level-15 events × shifts (e.g. 20 × 2 = 40).
+If any move improves the score, stop and pick the best.
+Only then expand to 16, 17… if level 15 finds nothing.
+NOTES: Now I want to walk through the mechanics of those priority levels.
+
+The global minimum availability for the starting schedule is fifteen. First, we score every event. For each event we look at fleet availability on every day that the event is active, and the priority is the minimum of those days. For example, for an event, if the first day has an availability of 18, the second has 18, third has 16, and forth has 15 aircraft available, and so on, its priority is fifteen.
+
+Second, we split the events into exclusive buckets by that priority. In our starting schedule we had twenty events at level fifteen, ten at sixteen, nine at seventeen, and larger groups at higher levels. So level 21 had the  | most events.  | An event sits in only one bucket: the bucket for its own worst day. So the twenty events at fifteen and the ten at sixteen are different events. 
+
+Third, we search the worst buckets first. For a shift set like plus and minus twenty-eight, level fifteen is about twenty events times two shifts, so around forty candidates. If any of those moves improve the score, we stop at that level for the iteration and take the best improving move. We only expand to level sixteen, then seventeen, and so on if the worse levels find nothing.
+
+That is why the method is both targeted and fast. We are not randomly discarding most of the  | neighbourhood | . We are concentrating effort on the events that touch the availability floor, and we only widen the search when we have to. And for higher levels like 21 where there are a lot of events, the algorithm converged at level 18 so the algorithm never needed to search that many  | neighbours | .
+
+
+---
+
+SLIDE 9
+TextBox 3: MEASURED COMPARISON · HEAVY DATASET
+TextBox 4: Better worst-case availability with less variation
+TextBox 6: MINIMUM AVAILABILITY
+TextBox 7: 15 → 18
+TextBox 9: STANDARD DEVIATION
+TextBox 10: 1.96 → 1.41
+TextBox 12: AVERAGE AVAILABILITY
+TextBox 13: 21.76 → 21.75
+TextBox 15: Measured runtime on the heavy dataset (24 aircraft, 278 events)
+TextBox 16: Full neighbourhood
+TextBox 18: 920 s  (~15.3 min)
+TextBox 19: 200 random samples
+TextBox 21: 451 s  (~7.5 min)
+TextBox 22: Priority selection
+TextBox 24: 15.4 s  
+NOTES: Here are the measured results on the same heavy dataset.
+
+All algorithms converged to 18 minimum availability and around 1.44 standard deviation. 
+
+However, For runtime, full  | neighbourhood |  search took roughly fifteen minutes. The two-hundred random sample method took roughly seven and a half minutes. And Priority selection took only about fifteen seconds.
+
+So I managed to cut runtime by about sixty times compared with full  | neighbourhood |  search, and by about thirty times compared with  | neighbourhood |  search with random sampling. 
+---
+
+SLIDE 10
+Title 1: Future Work and Research Direction
+Rectangle 1: Semester 2 (Iteration 2)
+Investigate Simulated Annealing + VNS hybrid optimisation 
+Include additional operational and logistic constraints (in these 3 months, maximise availability, can change surrounding events) 
+Analysis of Hyperparameters
+Analyse if initial stagger changes outcome	
+NOTES: Looking ahead to Semester Two and Iteration 2, the plan is to investigate a hybrid method of simulated annealing and variable  | neighbourhood |  search, bring in additional operational and logistic constraints like maximizing availability for 3 months because of a special event by reducing availability of surrounding events,  | analysing |  hyperparameters more carefully like investigating in the step sizes, and I think investigating whether the initial stagger of the schedule changes the final outcome would be interesting. 
+
+Thank you for listening.
+
+---

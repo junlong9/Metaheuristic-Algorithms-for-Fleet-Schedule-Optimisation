@@ -1,0 +1,1996 @@
+{
+  "Aircraft 11": [
+    {
+      "check": "A",
+      "start": 102,
+      "duration": 14,
+      "earliest_start": 60,
+      "latest_start": 102
+    },
+    {
+      "check": "B",
+      "start": 447,
+      "duration": 28,
+      "earliest_start": 397,
+      "latest_start": 467
+    },
+    {
+      "check": "A",
+      "start": 833,
+      "duration": 14,
+      "earliest_start": 798,
+      "latest_start": 840
+    },
+    {
+      "check": "C",
+      "start": 1185,
+      "duration": 84,
+      "earliest_start": 1127,
+      "latest_start": 1197
+    },
+    {
+      "check": "A",
+      "start": 1599,
+      "duration": 14,
+      "earliest_start": 1592,
+      "latest_start": 1634
+    },
+    {
+      "check": "B",
+      "start": 1946,
+      "duration": 28,
+      "earliest_start": 1929,
+      "latest_start": 1999
+    },
+    {
+      "check": "A",
+      "start": 2312,
+      "duration": 14,
+      "earliest_start": 2297,
+      "latest_start": 2339
+    },
+    {
+      "check": "D",
+      "start": 2595,
+      "duration": 126,
+      "earliest_start": 2587,
+      "latest_start": 2657
+    },
+    {
+      "check": "A",
+      "start": 3086,
+      "duration": 14,
+      "earliest_start": 3044,
+      "latest_start": 3086
+    },
+    {
+      "check": "B",
+      "start": 3409,
+      "duration": 28,
+      "earliest_start": 3381,
+      "latest_start": 3451
+    },
+    {
+      "check": "A",
+      "start": 3802,
+      "duration": 14,
+      "earliest_start": 3760,
+      "latest_start": 3802
+    },
+    {
+      "check": "C",
+      "start": 4181,
+      "duration": 84,
+      "earliest_start": 4111,
+      "latest_start": 4181
+    }
+  ],
+  "Aircraft 12": [
+    {
+      "check": "A",
+      "start": 435,
+      "duration": 14,
+      "earliest_start": 393,
+      "latest_start": 435
+    },
+    {
+      "check": "B",
+      "start": 737,
+      "duration": 28,
+      "earliest_start": 730,
+      "latest_start": 800
+    },
+    {
+      "check": "A",
+      "start": 1114,
+      "duration": 14,
+      "earliest_start": 1088,
+      "latest_start": 1130
+    },
+    {
+      "check": "C",
+      "start": 1512,
+      "duration": 84,
+      "earliest_start": 1460,
+      "latest_start": 1530
+    },
+    {
+      "check": "A",
+      "start": 1919,
+      "duration": 14,
+      "earliest_start": 1919,
+      "latest_start": 1961
+    },
+    {
+      "check": "B",
+      "start": 2270,
+      "duration": 28,
+      "earliest_start": 2256,
+      "latest_start": 2326
+    },
+    {
+      "check": "A",
+      "start": 2637,
+      "duration": 14,
+      "earliest_start": 2621,
+      "latest_start": 2663
+    },
+    {
+      "check": "D",
+      "start": 2989,
+      "duration": 126,
+      "earliest_start": 2920,
+      "latest_start": 2990
+    },
+    {
+      "check": "A",
+      "start": 3445,
+      "duration": 14,
+      "earliest_start": 3438,
+      "latest_start": 3480
+    },
+    {
+      "check": "B",
+      "start": 3775,
+      "duration": 28,
+      "earliest_start": 3775,
+      "latest_start": 3845
+    },
+    {
+      "check": "A",
+      "start": 4144,
+      "duration": 14,
+      "earliest_start": 4126,
+      "latest_start": 4168
+    }
+  ],
+  "Aircraft 13": [
+    {
+      "check": "A",
+      "start": 270,
+      "duration": 14,
+      "earliest_start": 228,
+      "latest_start": 270
+    },
+    {
+      "check": "B",
+      "start": 592,
+      "duration": 28,
+      "earliest_start": 565,
+      "latest_start": 635
+    },
+    {
+      "check": "A",
+      "start": 970,
+      "duration": 14,
+      "earliest_start": 943,
+      "latest_start": 985
+    },
+    {
+      "check": "C",
+      "start": 1341,
+      "duration": 84,
+      "earliest_start": 1295,
+      "latest_start": 1365
+    },
+    {
+      "check": "A",
+      "start": 1748,
+      "duration": 14,
+      "earliest_start": 1748,
+      "latest_start": 1790
+    },
+    {
+      "check": "B",
+      "start": 2125,
+      "duration": 28,
+      "earliest_start": 2085,
+      "latest_start": 2155
+    },
+    {
+      "check": "A",
+      "start": 2476,
+      "duration": 14,
+      "earliest_start": 2476,
+      "latest_start": 2518
+    },
+    {
+      "check": "D",
+      "start": 2823,
+      "duration": 126,
+      "earliest_start": 2755,
+      "latest_start": 2825
+    },
+    {
+      "check": "A",
+      "start": 3304,
+      "duration": 14,
+      "earliest_start": 3272,
+      "latest_start": 3314
+    },
+    {
+      "check": "B",
+      "start": 3609,
+      "duration": 28,
+      "earliest_start": 3609,
+      "latest_start": 3679
+    },
+    {
+      "check": "A",
+      "start": 3979,
+      "duration": 14,
+      "earliest_start": 3960,
+      "latest_start": 4002
+    }
+  ],
+  "Aircraft 14": [
+    {
+      "check": "A",
+      "start": 106,
+      "duration": 14,
+      "earliest_start": 64,
+      "latest_start": 106
+    },
+    {
+      "check": "B",
+      "start": 431,
+      "duration": 28,
+      "earliest_start": 401,
+      "latest_start": 471
+    },
+    {
+      "check": "A",
+      "start": 792,
+      "duration": 14,
+      "earliest_start": 782,
+      "latest_start": 824
+    },
+    {
+      "check": "C",
+      "start": 1169,
+      "duration": 84,
+      "earliest_start": 1131,
+      "latest_start": 1201
+    },
+    {
+      "check": "A",
+      "start": 1614,
+      "duration": 14,
+      "earliest_start": 1576,
+      "latest_start": 1618
+    },
+    {
+      "check": "B",
+      "start": 1977,
+      "duration": 28,
+      "earliest_start": 1913,
+      "latest_start": 1983
+    },
+    {
+      "check": "A",
+      "start": 2329,
+      "duration": 14,
+      "earliest_start": 2328,
+      "latest_start": 2370
+    },
+    {
+      "check": "D",
+      "start": 2624,
+      "duration": 126,
+      "earliest_start": 2591,
+      "latest_start": 2661
+    },
+    {
+      "check": "A",
+      "start": 3115,
+      "duration": 14,
+      "earliest_start": 3073,
+      "latest_start": 3115
+    },
+    {
+      "check": "B",
+      "start": 3480,
+      "duration": 28,
+      "earliest_start": 3410,
+      "latest_start": 3480
+    },
+    {
+      "check": "A",
+      "start": 3873,
+      "duration": 14,
+      "earliest_start": 3831,
+      "latest_start": 3873
+    },
+    {
+      "check": "C",
+      "start": 4154,
+      "duration": 84,
+      "earliest_start": 4140,
+      "latest_start": 4210
+    }
+  ],
+  "Aircraft 15": [
+    {
+      "check": "A",
+      "start": 71,
+      "duration": 14,
+      "earliest_start": 29,
+      "latest_start": 71
+    },
+    {
+      "check": "B",
+      "start": 375,
+      "duration": 28,
+      "earliest_start": 366,
+      "latest_start": 436
+    },
+    {
+      "check": "A",
+      "start": 726,
+      "duration": 14,
+      "earliest_start": 726,
+      "latest_start": 768
+    },
+    {
+      "check": "C",
+      "start": 1098,
+      "duration": 84,
+      "earliest_start": 1096,
+      "latest_start": 1166
+    },
+    {
+      "check": "A",
+      "start": 1519,
+      "duration": 14,
+      "earliest_start": 1505,
+      "latest_start": 1547
+    },
+    {
+      "check": "B",
+      "start": 1884,
+      "duration": 28,
+      "earliest_start": 1842,
+      "latest_start": 1912
+    },
+    {
+      "check": "A",
+      "start": 2249,
+      "duration": 14,
+      "earliest_start": 2235,
+      "latest_start": 2277
+    },
+    {
+      "check": "D",
+      "start": 2580,
+      "duration": 126,
+      "earliest_start": 2556,
+      "latest_start": 2626
+    },
+    {
+      "check": "A",
+      "start": 3029,
+      "duration": 14,
+      "earliest_start": 3029,
+      "latest_start": 3071
+    },
+    {
+      "check": "B",
+      "start": 3382,
+      "duration": 28,
+      "earliest_start": 3366,
+      "latest_start": 3436
+    },
+    {
+      "check": "A",
+      "start": 3744,
+      "duration": 14,
+      "earliest_start": 3733,
+      "latest_start": 3775
+    },
+    {
+      "check": "C",
+      "start": 4096,
+      "duration": 84,
+      "earliest_start": 4096,
+      "latest_start": 4166
+    }
+  ],
+  "Aircraft 16": [
+    {
+      "check": "A",
+      "start": 700,
+      "duration": 14,
+      "earliest_start": 658,
+      "latest_start": 700
+    },
+    {
+      "check": "B",
+      "start": 997,
+      "duration": 28,
+      "earliest_start": 995,
+      "latest_start": 1065
+    },
+    {
+      "check": "A",
+      "start": 1390,
+      "duration": 14,
+      "earliest_start": 1348,
+      "latest_start": 1390
+    },
+    {
+      "check": "C",
+      "start": 1726,
+      "duration": 84,
+      "earliest_start": 1725,
+      "latest_start": 1795
+    },
+    {
+      "check": "A",
+      "start": 2160,
+      "duration": 14,
+      "earliest_start": 2133,
+      "latest_start": 2175
+    },
+    {
+      "check": "B",
+      "start": 2471,
+      "duration": 28,
+      "earliest_start": 2470,
+      "latest_start": 2540
+    },
+    {
+      "check": "A",
+      "start": 2846,
+      "duration": 14,
+      "earliest_start": 2822,
+      "latest_start": 2864
+    },
+    {
+      "check": "D",
+      "start": 3185,
+      "duration": 126,
+      "earliest_start": 3185,
+      "latest_start": 3255
+    },
+    {
+      "check": "A",
+      "start": 3638,
+      "duration": 14,
+      "earliest_start": 3634,
+      "latest_start": 3676
+    },
+    {
+      "check": "B",
+      "start": 3972,
+      "duration": 28,
+      "earliest_start": 3971,
+      "latest_start": 4041
+    },
+    {
+      "check": "A",
+      "start": 4334,
+      "duration": 14,
+      "earliest_start": 4323,
+      "latest_start": 4365
+    }
+  ],
+  "Aircraft 17": [
+    {
+      "check": "A",
+      "start": 20,
+      "duration": 14,
+      "earliest_start": -22,
+      "latest_start": 20
+    },
+    {
+      "check": "B",
+      "start": 343,
+      "duration": 28,
+      "earliest_start": 315,
+      "latest_start": 385
+    },
+    {
+      "check": "A",
+      "start": 709,
+      "duration": 14,
+      "earliest_start": 694,
+      "latest_start": 736
+    },
+    {
+      "check": "C",
+      "start": 1048,
+      "duration": 84,
+      "earliest_start": 1045,
+      "latest_start": 1115
+    },
+    {
+      "check": "A",
+      "start": 1496,
+      "duration": 14,
+      "earliest_start": 1455,
+      "latest_start": 1497
+    },
+    {
+      "check": "B",
+      "start": 1862,
+      "duration": 28,
+      "earliest_start": 1792,
+      "latest_start": 1862
+    },
+    {
+      "check": "A",
+      "start": 2235,
+      "duration": 14,
+      "earliest_start": 2213,
+      "latest_start": 2255
+    },
+    {
+      "check": "D",
+      "start": 2511,
+      "duration": 126,
+      "earliest_start": 2505,
+      "latest_start": 2575
+    },
+    {
+      "check": "A",
+      "start": 3002,
+      "duration": 14,
+      "earliest_start": 2960,
+      "latest_start": 3002
+    },
+    {
+      "check": "B",
+      "start": 3367,
+      "duration": 28,
+      "earliest_start": 3297,
+      "latest_start": 3367
+    },
+    {
+      "check": "A",
+      "start": 3757,
+      "duration": 14,
+      "earliest_start": 3718,
+      "latest_start": 3760
+    },
+    {
+      "check": "C",
+      "start": 4034,
+      "duration": 84,
+      "earliest_start": 4027,
+      "latest_start": 4097
+    }
+  ],
+  "Aircraft 18": [
+    {
+      "check": "A",
+      "start": 614,
+      "duration": 14,
+      "earliest_start": 572,
+      "latest_start": 614
+    },
+    {
+      "check": "B",
+      "start": 916,
+      "duration": 28,
+      "earliest_start": 909,
+      "latest_start": 979
+    },
+    {
+      "check": "A",
+      "start": 1290,
+      "duration": 14,
+      "earliest_start": 1267,
+      "latest_start": 1309
+    },
+    {
+      "check": "C",
+      "start": 1649,
+      "duration": 84,
+      "earliest_start": 1639,
+      "latest_start": 1709
+    },
+    {
+      "check": "A",
+      "start": 2092,
+      "duration": 14,
+      "earliest_start": 2056,
+      "latest_start": 2098
+    },
+    {
+      "check": "B",
+      "start": 2444,
+      "duration": 28,
+      "earliest_start": 2393,
+      "latest_start": 2463
+    },
+    {
+      "check": "A",
+      "start": 2807,
+      "duration": 14,
+      "earliest_start": 2795,
+      "latest_start": 2837
+    },
+    {
+      "check": "D",
+      "start": 3143,
+      "duration": 126,
+      "earliest_start": 3099,
+      "latest_start": 3169
+    },
+    {
+      "check": "A",
+      "start": 3592,
+      "duration": 14,
+      "earliest_start": 3592,
+      "latest_start": 3634
+    },
+    {
+      "check": "B",
+      "start": 3945,
+      "duration": 28,
+      "earliest_start": 3929,
+      "latest_start": 3999
+    },
+    {
+      "check": "A",
+      "start": 4320,
+      "duration": 14,
+      "earliest_start": 4296,
+      "latest_start": 4338
+    }
+  ],
+  "Aircraft 19": [
+    {
+      "check": "A",
+      "start": 121,
+      "duration": 14,
+      "earliest_start": 79,
+      "latest_start": 121
+    },
+    {
+      "check": "B",
+      "start": 476,
+      "duration": 28,
+      "earliest_start": 416,
+      "latest_start": 486
+    },
+    {
+      "check": "A",
+      "start": 848,
+      "duration": 14,
+      "earliest_start": 827,
+      "latest_start": 869
+    },
+    {
+      "check": "C",
+      "start": 1205,
+      "duration": 84,
+      "earliest_start": 1146,
+      "latest_start": 1216
+    },
+    {
+      "check": "A",
+      "start": 1637,
+      "duration": 14,
+      "earliest_start": 1612,
+      "latest_start": 1654
+    },
+    {
+      "check": "B",
+      "start": 1968,
+      "duration": 28,
+      "earliest_start": 1949,
+      "latest_start": 2019
+    },
+    {
+      "check": "A",
+      "start": 2360,
+      "duration": 14,
+      "earliest_start": 2319,
+      "latest_start": 2361
+    },
+    {
+      "check": "D",
+      "start": 2676,
+      "duration": 126,
+      "earliest_start": 2606,
+      "latest_start": 2676
+    },
+    {
+      "check": "A",
+      "start": 3144,
+      "duration": 14,
+      "earliest_start": 3125,
+      "latest_start": 3167
+    },
+    {
+      "check": "B",
+      "start": 3522,
+      "duration": 28,
+      "earliest_start": 3462,
+      "latest_start": 3532
+    },
+    {
+      "check": "A",
+      "start": 3898,
+      "duration": 14,
+      "earliest_start": 3873,
+      "latest_start": 3915
+    },
+    {
+      "check": "C",
+      "start": 4258,
+      "duration": 84,
+      "earliest_start": 4192,
+      "latest_start": 4262
+    }
+  ],
+  "Aircraft 20": [
+    {
+      "check": "A",
+      "start": 466,
+      "duration": 14,
+      "earliest_start": 424,
+      "latest_start": 466
+    },
+    {
+      "check": "B",
+      "start": 761,
+      "duration": 28,
+      "earliest_start": 761,
+      "latest_start": 831
+    },
+    {
+      "check": "A",
+      "start": 1136,
+      "duration": 14,
+      "earliest_start": 1112,
+      "latest_start": 1154
+    },
+    {
+      "check": "C",
+      "start": 1561,
+      "duration": 84,
+      "earliest_start": 1491,
+      "latest_start": 1561
+    },
+    {
+      "check": "A",
+      "start": 2006,
+      "duration": 14,
+      "earliest_start": 1968,
+      "latest_start": 2010
+    },
+    {
+      "check": "B",
+      "start": 2340,
+      "duration": 28,
+      "earliest_start": 2305,
+      "latest_start": 2375
+    },
+    {
+      "check": "A",
+      "start": 2706,
+      "duration": 14,
+      "earliest_start": 2691,
+      "latest_start": 2733
+    },
+    {
+      "check": "D",
+      "start": 3019,
+      "duration": 126,
+      "earliest_start": 2951,
+      "latest_start": 3021
+    },
+    {
+      "check": "A",
+      "start": 3473,
+      "duration": 14,
+      "earliest_start": 3468,
+      "latest_start": 3510
+    },
+    {
+      "check": "B",
+      "start": 3808,
+      "duration": 28,
+      "earliest_start": 3805,
+      "latest_start": 3875
+    },
+    {
+      "check": "A",
+      "start": 4179,
+      "duration": 14,
+      "earliest_start": 4159,
+      "latest_start": 4201
+    }
+  ],
+  "Aircraft 21": [
+    {
+      "check": "A",
+      "start": 214,
+      "duration": 14,
+      "earliest_start": 172,
+      "latest_start": 214
+    },
+    {
+      "check": "B",
+      "start": 515,
+      "duration": 28,
+      "earliest_start": 509,
+      "latest_start": 579
+    },
+    {
+      "check": "A",
+      "start": 881,
+      "duration": 14,
+      "earliest_start": 866,
+      "latest_start": 908
+    },
+    {
+      "check": "C",
+      "start": 1305,
+      "duration": 84,
+      "earliest_start": 1239,
+      "latest_start": 1309
+    },
+    {
+      "check": "A",
+      "start": 1734,
+      "duration": 14,
+      "earliest_start": 1712,
+      "latest_start": 1754
+    },
+    {
+      "check": "B",
+      "start": 2049,
+      "duration": 28,
+      "earliest_start": 2049,
+      "latest_start": 2119
+    },
+    {
+      "check": "A",
+      "start": 2404,
+      "duration": 14,
+      "earliest_start": 2400,
+      "latest_start": 2442
+    },
+    {
+      "check": "D",
+      "start": 2756,
+      "duration": 126,
+      "earliest_start": 2699,
+      "latest_start": 2769
+    },
+    {
+      "check": "A",
+      "start": 3230,
+      "duration": 14,
+      "earliest_start": 3205,
+      "latest_start": 3247
+    },
+    {
+      "check": "B",
+      "start": 3584,
+      "duration": 28,
+      "earliest_start": 3542,
+      "latest_start": 3612
+    },
+    {
+      "check": "A",
+      "start": 3943,
+      "duration": 14,
+      "earliest_start": 3935,
+      "latest_start": 3977
+    },
+    {
+      "check": "C",
+      "start": 4342,
+      "duration": 84,
+      "earliest_start": 4272,
+      "latest_start": 4342
+    }
+  ],
+  "Aircraft 22": [
+    {
+      "check": "A",
+      "start": 330,
+      "duration": 14,
+      "earliest_start": 288,
+      "latest_start": 330
+    },
+    {
+      "check": "B",
+      "start": 672,
+      "duration": 28,
+      "earliest_start": 625,
+      "latest_start": 695
+    },
+    {
+      "check": "A",
+      "start": 1024,
+      "duration": 14,
+      "earliest_start": 1023,
+      "latest_start": 1065
+    },
+    {
+      "check": "C",
+      "start": 1413,
+      "duration": 84,
+      "earliest_start": 1355,
+      "latest_start": 1425
+    },
+    {
+      "check": "A",
+      "start": 1848,
+      "duration": 14,
+      "earliest_start": 1820,
+      "latest_start": 1862
+    },
+    {
+      "check": "B",
+      "start": 2157,
+      "duration": 28,
+      "earliest_start": 2157,
+      "latest_start": 2227
+    },
+    {
+      "check": "A",
+      "start": 2508,
+      "duration": 14,
+      "earliest_start": 2508,
+      "latest_start": 2550
+    },
+    {
+      "check": "D",
+      "start": 2883,
+      "duration": 126,
+      "earliest_start": 2815,
+      "latest_start": 2885
+    },
+    {
+      "check": "A",
+      "start": 3336,
+      "duration": 14,
+      "earliest_start": 3332,
+      "latest_start": 3374
+    },
+    {
+      "check": "B",
+      "start": 3701,
+      "duration": 28,
+      "earliest_start": 3669,
+      "latest_start": 3739
+    },
+    {
+      "check": "A",
+      "start": 4052,
+      "duration": 14,
+      "earliest_start": 4052,
+      "latest_start": 4094
+    }
+  ],
+  "Aircraft 23": [
+    {
+      "check": "A",
+      "start": 458,
+      "duration": 14,
+      "earliest_start": 416,
+      "latest_start": 458
+    },
+    {
+      "check": "B",
+      "start": 805,
+      "duration": 28,
+      "earliest_start": 753,
+      "latest_start": 823
+    },
+    {
+      "check": "A",
+      "start": 1156,
+      "duration": 14,
+      "earliest_start": 1156,
+      "latest_start": 1198
+    },
+    {
+      "check": "C",
+      "start": 1500,
+      "duration": 84,
+      "earliest_start": 1483,
+      "latest_start": 1553
+    },
+    {
+      "check": "A",
+      "start": 1931,
+      "duration": 14,
+      "earliest_start": 1907,
+      "latest_start": 1949
+    },
+    {
+      "check": "B",
+      "start": 2309,
+      "duration": 28,
+      "earliest_start": 2244,
+      "latest_start": 2314
+    },
+    {
+      "check": "A",
+      "start": 2694,
+      "duration": 14,
+      "earliest_start": 2660,
+      "latest_start": 2702
+    },
+    {
+      "check": "D",
+      "start": 3013,
+      "duration": 126,
+      "earliest_start": 2943,
+      "latest_start": 3013
+    },
+    {
+      "check": "A",
+      "start": 3464,
+      "duration": 14,
+      "earliest_start": 3462,
+      "latest_start": 3504
+    },
+    {
+      "check": "B",
+      "start": 3849,
+      "duration": 28,
+      "earliest_start": 3799,
+      "latest_start": 3869
+    },
+    {
+      "check": "A",
+      "start": 4200,
+      "duration": 14,
+      "earliest_start": 4200,
+      "latest_start": 4242
+    }
+  ],
+  "Aircraft 24": [
+    {
+      "check": "A",
+      "start": 87,
+      "duration": 14,
+      "earliest_start": 45,
+      "latest_start": 87
+    },
+    {
+      "check": "B",
+      "start": 407,
+      "duration": 28,
+      "earliest_start": 382,
+      "latest_start": 452
+    },
+    {
+      "check": "A",
+      "start": 771,
+      "duration": 14,
+      "earliest_start": 758,
+      "latest_start": 800
+    },
+    {
+      "check": "C",
+      "start": 1122,
+      "duration": 84,
+      "earliest_start": 1112,
+      "latest_start": 1182
+    },
+    {
+      "check": "A",
+      "start": 1544,
+      "duration": 14,
+      "earliest_start": 1529,
+      "latest_start": 1571
+    },
+    {
+      "check": "B",
+      "start": 1897,
+      "duration": 28,
+      "earliest_start": 1866,
+      "latest_start": 1936
+    },
+    {
+      "check": "A",
+      "start": 2262,
+      "duration": 14,
+      "earliest_start": 2248,
+      "latest_start": 2290
+    },
+    {
+      "check": "D",
+      "start": 2638,
+      "duration": 126,
+      "earliest_start": 2572,
+      "latest_start": 2642
+    },
+    {
+      "check": "A",
+      "start": 3127,
+      "duration": 14,
+      "earliest_start": 3087,
+      "latest_start": 3129
+    },
+    {
+      "check": "B",
+      "start": 3442,
+      "duration": 28,
+      "earliest_start": 3424,
+      "latest_start": 3494
+    },
+    {
+      "check": "A",
+      "start": 3835,
+      "duration": 14,
+      "earliest_start": 3793,
+      "latest_start": 3835
+    },
+    {
+      "check": "C",
+      "start": 4212,
+      "duration": 84,
+      "earliest_start": 4154,
+      "latest_start": 4224
+    }
+  ],
+  "Blue-1": [
+    {
+      "check": "A",
+      "start": 330,
+      "duration": 14,
+      "earliest_start": 288,
+      "latest_start": 330
+    },
+    {
+      "check": "B",
+      "start": 676,
+      "duration": 28,
+      "earliest_start": 625,
+      "latest_start": 695
+    },
+    {
+      "check": "A",
+      "start": 1027,
+      "duration": 14,
+      "earliest_start": 1027,
+      "latest_start": 1069
+    },
+    {
+      "check": "C",
+      "start": 1425,
+      "duration": 84,
+      "earliest_start": 1355,
+      "latest_start": 1425
+    },
+    {
+      "check": "A",
+      "start": 1837,
+      "duration": 14,
+      "earliest_start": 1832,
+      "latest_start": 1874
+    },
+    {
+      "check": "B",
+      "start": 2174,
+      "duration": 28,
+      "earliest_start": 2169,
+      "latest_start": 2239
+    },
+    {
+      "check": "A",
+      "start": 2528,
+      "duration": 14,
+      "earliest_start": 2525,
+      "latest_start": 2567
+    },
+    {
+      "check": "D",
+      "start": 2882,
+      "duration": 126,
+      "earliest_start": 2815,
+      "latest_start": 2885
+    },
+    {
+      "check": "A",
+      "start": 3331,
+      "duration": 14,
+      "earliest_start": 3331,
+      "latest_start": 3373
+    },
+    {
+      "check": "B",
+      "start": 3668,
+      "duration": 28,
+      "earliest_start": 3668,
+      "latest_start": 3738
+    },
+    {
+      "check": "A",
+      "start": 4019,
+      "duration": 14,
+      "earliest_start": 4019,
+      "latest_start": 4061
+    }
+  ],
+  "Blue-10": [
+    {
+      "check": "A",
+      "start": 194,
+      "duration": 14,
+      "earliest_start": 152,
+      "latest_start": 194
+    },
+    {
+      "check": "B",
+      "start": 552,
+      "duration": 28,
+      "earliest_start": 489,
+      "latest_start": 559
+    },
+    {
+      "check": "A",
+      "start": 945,
+      "duration": 14,
+      "earliest_start": 903,
+      "latest_start": 945
+    },
+    {
+      "check": "C",
+      "start": 1253,
+      "duration": 84,
+      "earliest_start": 1219,
+      "latest_start": 1289
+    },
+    {
+      "check": "A",
+      "start": 1700,
+      "duration": 14,
+      "earliest_start": 1660,
+      "latest_start": 1702
+    },
+    {
+      "check": "B",
+      "start": 2067,
+      "duration": 28,
+      "earliest_start": 1997,
+      "latest_start": 2067
+    },
+    {
+      "check": "A",
+      "start": 2433,
+      "duration": 14,
+      "earliest_start": 2418,
+      "latest_start": 2460
+    },
+    {
+      "check": "D",
+      "start": 2710,
+      "duration": 126,
+      "earliest_start": 2679,
+      "latest_start": 2749
+    },
+    {
+      "check": "A",
+      "start": 3159,
+      "duration": 14,
+      "earliest_start": 3159,
+      "latest_start": 3201
+    },
+    {
+      "check": "B",
+      "start": 3496,
+      "duration": 28,
+      "earliest_start": 3496,
+      "latest_start": 3566
+    },
+    {
+      "check": "A",
+      "start": 3886,
+      "duration": 14,
+      "earliest_start": 3847,
+      "latest_start": 3889
+    },
+    {
+      "check": "C",
+      "start": 4296,
+      "duration": 84,
+      "earliest_start": 4226,
+      "latest_start": 4296
+    }
+  ],
+  "Blue-2": [
+    {
+      "check": "A",
+      "start": 195,
+      "duration": 14,
+      "earliest_start": 153,
+      "latest_start": 195
+    },
+    {
+      "check": "B",
+      "start": 496,
+      "duration": 28,
+      "earliest_start": 490,
+      "latest_start": 560
+    },
+    {
+      "check": "A",
+      "start": 867,
+      "duration": 14,
+      "earliest_start": 847,
+      "latest_start": 889
+    },
+    {
+      "check": "C",
+      "start": 1230,
+      "duration": 84,
+      "earliest_start": 1220,
+      "latest_start": 1290
+    },
+    {
+      "check": "A",
+      "start": 1651,
+      "duration": 14,
+      "earliest_start": 1637,
+      "latest_start": 1679
+    },
+    {
+      "check": "B",
+      "start": 2005,
+      "duration": 28,
+      "earliest_start": 1974,
+      "latest_start": 2044
+    },
+    {
+      "check": "A",
+      "start": 2380,
+      "duration": 14,
+      "earliest_start": 2356,
+      "latest_start": 2398
+    },
+    {
+      "check": "D",
+      "start": 2749,
+      "duration": 126,
+      "earliest_start": 2680,
+      "latest_start": 2750
+    },
+    {
+      "check": "A",
+      "start": 3201,
+      "duration": 14,
+      "earliest_start": 3198,
+      "latest_start": 3240
+    },
+    {
+      "check": "B",
+      "start": 3561,
+      "duration": 28,
+      "earliest_start": 3535,
+      "latest_start": 3605
+    },
+    {
+      "check": "A",
+      "start": 3912,
+      "duration": 14,
+      "earliest_start": 3912,
+      "latest_start": 3954
+    },
+    {
+      "check": "C",
+      "start": 4335,
+      "duration": 84,
+      "earliest_start": 4265,
+      "latest_start": 4335
+    }
+  ],
+  "Blue-3": [
+    {
+      "check": "A",
+      "start": 318,
+      "duration": 14,
+      "earliest_start": 276,
+      "latest_start": 318
+    },
+    {
+      "check": "B",
+      "start": 628,
+      "duration": 28,
+      "earliest_start": 613,
+      "latest_start": 683
+    },
+    {
+      "check": "A",
+      "start": 984,
+      "duration": 14,
+      "earliest_start": 979,
+      "latest_start": 1021
+    },
+    {
+      "check": "C",
+      "start": 1374,
+      "duration": 84,
+      "earliest_start": 1343,
+      "latest_start": 1413
+    },
+    {
+      "check": "A",
+      "start": 1815,
+      "duration": 14,
+      "earliest_start": 1781,
+      "latest_start": 1823
+    },
+    {
+      "check": "B",
+      "start": 2188,
+      "duration": 28,
+      "earliest_start": 2118,
+      "latest_start": 2188
+    },
+    {
+      "check": "A",
+      "start": 2544,
+      "duration": 14,
+      "earliest_start": 2539,
+      "latest_start": 2581
+    },
+    {
+      "check": "D",
+      "start": 2863,
+      "duration": 126,
+      "earliest_start": 2803,
+      "latest_start": 2873
+    },
+    {
+      "check": "A",
+      "start": 3315,
+      "duration": 14,
+      "earliest_start": 3312,
+      "latest_start": 3354
+    },
+    {
+      "check": "B",
+      "start": 3649,
+      "duration": 28,
+      "earliest_start": 3649,
+      "latest_start": 3719
+    },
+    {
+      "check": "A",
+      "start": 4000,
+      "duration": 14,
+      "earliest_start": 4000,
+      "latest_start": 4042
+    }
+  ],
+  "Blue-4": [
+    {
+      "check": "A",
+      "start": 10,
+      "duration": 14,
+      "earliest_start": -32,
+      "latest_start": 10
+    },
+    {
+      "check": "B",
+      "start": 364,
+      "duration": 28,
+      "earliest_start": 305,
+      "latest_start": 375
+    },
+    {
+      "check": "A",
+      "start": 715,
+      "duration": 14,
+      "earliest_start": 715,
+      "latest_start": 757
+    },
+    {
+      "check": "C",
+      "start": 1037,
+      "duration": 84,
+      "earliest_start": 1035,
+      "latest_start": 1105
+    },
+    {
+      "check": "A",
+      "start": 1486,
+      "duration": 14,
+      "earliest_start": 1444,
+      "latest_start": 1486
+    },
+    {
+      "check": "B",
+      "start": 1787,
+      "duration": 28,
+      "earliest_start": 1781,
+      "latest_start": 1851
+    },
+    {
+      "check": "A",
+      "start": 2145,
+      "duration": 14,
+      "earliest_start": 2138,
+      "latest_start": 2180
+    },
+    {
+      "check": "D",
+      "start": 2495,
+      "duration": 126,
+      "earliest_start": 2495,
+      "latest_start": 2565
+    },
+    {
+      "check": "A",
+      "start": 2986,
+      "duration": 14,
+      "earliest_start": 2944,
+      "latest_start": 2986
+    },
+    {
+      "check": "B",
+      "start": 3351,
+      "duration": 28,
+      "earliest_start": 3281,
+      "latest_start": 3351
+    },
+    {
+      "check": "A",
+      "start": 3722,
+      "duration": 14,
+      "earliest_start": 3702,
+      "latest_start": 3744
+    },
+    {
+      "check": "C",
+      "start": 4011,
+      "duration": 84,
+      "earliest_start": 4011,
+      "latest_start": 4081
+    }
+  ],
+  "Blue-5": [
+    {
+      "check": "A",
+      "start": 270,
+      "duration": 14,
+      "earliest_start": 228,
+      "latest_start": 270
+    },
+    {
+      "check": "B",
+      "start": 578,
+      "duration": 28,
+      "earliest_start": 565,
+      "latest_start": 635
+    },
+    {
+      "check": "A",
+      "start": 959,
+      "duration": 14,
+      "earliest_start": 929,
+      "latest_start": 971
+    },
+    {
+      "check": "C",
+      "start": 1314,
+      "duration": 84,
+      "earliest_start": 1295,
+      "latest_start": 1365
+    },
+    {
+      "check": "A",
+      "start": 1763,
+      "duration": 14,
+      "earliest_start": 1721,
+      "latest_start": 1763
+    },
+    {
+      "check": "B",
+      "start": 2100,
+      "duration": 28,
+      "earliest_start": 2058,
+      "latest_start": 2128
+    },
+    {
+      "check": "A",
+      "start": 2451,
+      "duration": 14,
+      "earliest_start": 2451,
+      "latest_start": 2493
+    },
+    {
+      "check": "D",
+      "start": 2793,
+      "duration": 126,
+      "earliest_start": 2755,
+      "latest_start": 2825
+    },
+    {
+      "check": "A",
+      "start": 3270,
+      "duration": 14,
+      "earliest_start": 3242,
+      "latest_start": 3284
+    },
+    {
+      "check": "B",
+      "start": 3618,
+      "duration": 28,
+      "earliest_start": 3579,
+      "latest_start": 3649
+    },
+    {
+      "check": "A",
+      "start": 3997,
+      "duration": 14,
+      "earliest_start": 3969,
+      "latest_start": 4011
+    }
+  ],
+  "Blue-6": [
+    {
+      "check": "A",
+      "start": 207,
+      "duration": 14,
+      "earliest_start": 165,
+      "latest_start": 207
+    },
+    {
+      "check": "B",
+      "start": 542,
+      "duration": 28,
+      "earliest_start": 502,
+      "latest_start": 572
+    },
+    {
+      "check": "A",
+      "start": 900,
+      "duration": 14,
+      "earliest_start": 893,
+      "latest_start": 935
+    },
+    {
+      "check": "C",
+      "start": 1274,
+      "duration": 84,
+      "earliest_start": 1232,
+      "latest_start": 1302
+    },
+    {
+      "check": "A",
+      "start": 1681,
+      "duration": 14,
+      "earliest_start": 1681,
+      "latest_start": 1723
+    },
+    {
+      "check": "B",
+      "start": 2032,
+      "duration": 28,
+      "earliest_start": 2018,
+      "latest_start": 2088
+    },
+    {
+      "check": "A",
+      "start": 2419,
+      "duration": 14,
+      "earliest_start": 2383,
+      "latest_start": 2425
+    },
+    {
+      "check": "D",
+      "start": 2720,
+      "duration": 126,
+      "earliest_start": 2692,
+      "latest_start": 2762
+    },
+    {
+      "check": "A",
+      "start": 3172,
+      "duration": 14,
+      "earliest_start": 3169,
+      "latest_start": 3211
+    },
+    {
+      "check": "B",
+      "start": 3540,
+      "duration": 28,
+      "earliest_start": 3506,
+      "latest_start": 3576
+    },
+    {
+      "check": "A",
+      "start": 3929,
+      "duration": 14,
+      "earliest_start": 3891,
+      "latest_start": 3933
+    },
+    {
+      "check": "C",
+      "start": 4236,
+      "duration": 84,
+      "earliest_start": 4236,
+      "latest_start": 4306
+    }
+  ],
+  "Blue-7": [
+    {
+      "check": "A",
+      "start": 319,
+      "duration": 14,
+      "earliest_start": 277,
+      "latest_start": 319
+    },
+    {
+      "check": "B",
+      "start": 634,
+      "duration": 28,
+      "earliest_start": 614,
+      "latest_start": 684
+    },
+    {
+      "check": "A",
+      "start": 1005,
+      "duration": 14,
+      "earliest_start": 985,
+      "latest_start": 1027
+    },
+    {
+      "check": "C",
+      "start": 1404,
+      "duration": 84,
+      "earliest_start": 1344,
+      "latest_start": 1414
+    },
+    {
+      "check": "A",
+      "start": 1853,
+      "duration": 14,
+      "earliest_start": 1811,
+      "latest_start": 1853
+    },
+    {
+      "check": "B",
+      "start": 2216,
+      "duration": 28,
+      "earliest_start": 2148,
+      "latest_start": 2218
+    },
+    {
+      "check": "A",
+      "start": 2567,
+      "duration": 14,
+      "earliest_start": 2567,
+      "latest_start": 2609
+    },
+    {
+      "check": "D",
+      "start": 2873,
+      "duration": 126,
+      "earliest_start": 2804,
+      "latest_start": 2874
+    },
+    {
+      "check": "A",
+      "start": 3322,
+      "duration": 14,
+      "earliest_start": 3322,
+      "latest_start": 3364
+    },
+    {
+      "check": "B",
+      "start": 3680,
+      "duration": 28,
+      "earliest_start": 3659,
+      "latest_start": 3729
+    },
+    {
+      "check": "A",
+      "start": 4031,
+      "duration": 14,
+      "earliest_start": 4031,
+      "latest_start": 4073
+    },
+    {
+      "check": "C",
+      "start": 4396,
+      "duration": 84,
+      "earliest_start": 4389,
+      "latest_start": 4459
+    }
+  ],
+  "Blue-8": [
+    {
+      "check": "A",
+      "start": 73,
+      "duration": 14,
+      "earliest_start": 31,
+      "latest_start": 73
+    },
+    {
+      "check": "B",
+      "start": 401,
+      "duration": 28,
+      "earliest_start": 368,
+      "latest_start": 438
+    },
+    {
+      "check": "A",
+      "start": 788,
+      "duration": 14,
+      "earliest_start": 752,
+      "latest_start": 794
+    },
+    {
+      "check": "C",
+      "start": 1131,
+      "duration": 84,
+      "earliest_start": 1098,
+      "latest_start": 1168
+    },
+    {
+      "check": "A",
+      "start": 1580,
+      "duration": 14,
+      "earliest_start": 1538,
+      "latest_start": 1580
+    },
+    {
+      "check": "B",
+      "start": 1939,
+      "duration": 28,
+      "earliest_start": 1875,
+      "latest_start": 1945
+    },
+    {
+      "check": "A",
+      "start": 2296,
+      "duration": 14,
+      "earliest_start": 2290,
+      "latest_start": 2332
+    },
+    {
+      "check": "D",
+      "start": 2559,
+      "duration": 126,
+      "earliest_start": 2558,
+      "latest_start": 2628
+    },
+    {
+      "check": "A",
+      "start": 3050,
+      "duration": 14,
+      "earliest_start": 3008,
+      "latest_start": 3050
+    },
+    {
+      "check": "B",
+      "start": 3415,
+      "duration": 28,
+      "earliest_start": 3345,
+      "latest_start": 3415
+    },
+    {
+      "check": "A",
+      "start": 3769,
+      "duration": 14,
+      "earliest_start": 3766,
+      "latest_start": 3808
+    },
+    {
+      "check": "C",
+      "start": 4117,
+      "duration": 84,
+      "earliest_start": 4075,
+      "latest_start": 4145
+    }
+  ],
+  "Blue-9": [
+    {
+      "check": "A",
+      "start": 0,
+      "duration": 14,
+      "earliest_start": -42,
+      "latest_start": 0
+    },
+    {
+      "check": "B",
+      "start": 297,
+      "duration": 28,
+      "earliest_start": 295,
+      "latest_start": 365
+    },
+    {
+      "check": "A",
+      "start": 662,
+      "duration": 14,
+      "earliest_start": 648,
+      "latest_start": 690
+    },
+    {
+      "check": "C",
+      "start": 1026,
+      "duration": 84,
+      "earliest_start": 1025,
+      "latest_start": 1095
+    },
+    {
+      "check": "A",
+      "start": 1461,
+      "duration": 14,
+      "earliest_start": 1433,
+      "latest_start": 1475
+    },
+    {
+      "check": "B",
+      "start": 1814,
+      "duration": 28,
+      "earliest_start": 1770,
+      "latest_start": 1840
+    },
+    {
+      "check": "A",
+      "start": 2203,
+      "duration": 14,
+      "earliest_start": 2165,
+      "latest_start": 2207
+    },
+    {
+      "check": "D",
+      "start": 2487,
+      "duration": 126,
+      "earliest_start": 2485,
+      "latest_start": 2555
+    },
+    {
+      "check": "A",
+      "start": 2950,
+      "duration": 14,
+      "earliest_start": 2936,
+      "latest_start": 2978
+    },
+    {
+      "check": "B",
+      "start": 3339,
+      "duration": 28,
+      "earliest_start": 3273,
+      "latest_start": 3343
+    },
+    {
+      "check": "A",
+      "start": 3732,
+      "duration": 14,
+      "earliest_start": 3690,
+      "latest_start": 3732
+    },
+    {
+      "check": "C",
+      "start": 4061,
+      "duration": 84,
+      "earliest_start": 4003,
+      "latest_start": 4073
+    }
+  ]
+}

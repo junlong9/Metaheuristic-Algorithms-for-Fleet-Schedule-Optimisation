@@ -1,0 +1,143 @@
+decision:
+  tuned:
+    worst_day: 18
+    smoothness: 1.3918604434267567
+    average: 21.713010488730195
+    seconds: 115.6
+    timed_out: False
+    name: tuned-baseline
+  candidate:
+    [0]
+      worst_day: 18
+      smoothness: 1.3894533312816402
+      average: 21.713010488730195
+      seconds: 285.5
+      timed_out: False
+      name: candidate-seed-1
+      seed: 1
+    [1]
+      worst_day: 18
+      smoothness: 1.3904166762076178
+      average: 21.713010488730195
+      seconds: 318.4
+      timed_out: True
+      name: candidate-seed-2
+      seed: 2
+    [2]
+      worst_day: 18
+      smoothness: 1.390898098463556
+      average: 21.713010488730195
+      seconds: 306.3
+      timed_out: True
+      name: candidate-seed-3
+      seed: 3
+  tightened:
+    [0]
+      worst_day: 18
+      smoothness: 1.3918604434267567
+      average: 21.713010488730195
+      seconds: 56.4
+      timed_out: False
+      name: tightened-seed-1
+      seed: 1
+    [1]
+      worst_day: 18
+      smoothness: 1.3918604434267567
+      average: 21.713010488730195
+      seconds: 63.5
+      timed_out: False
+      name: tightened-seed-2
+      seed: 2
+    [2]
+      worst_day: 18
+      smoothness: 1.3918604434267567
+      average: 21.713010488730195
+      seconds: 106.3
+      timed_out: False
+      name: tightened-seed-3
+      seed: 3
+  judgement:
+    keep: False
+    median_smoothness: 1.3904166762076178
+    spread: 0.0014447671819157737
+    median_seconds: 306.3
+    holds_worst_day: True
+stagger:
+  [0]
+    name: start-as-loaded
+    kind: as-loaded
+    start:
+      worst_day: 15
+      smoothness: 1.9497670360504062
+      average: 21.713010488730195
+      seconds: 0.0
+      timed_out: False
+      name: start-as-loaded
+      kind: as-loaded
+    tuned:
+      worst_day: 18
+      smoothness: 1.3918604434267567
+      average: 21.713010488730195
+      seconds: 63.3
+      timed_out: False
+      name: tuned-from-as-loaded
+    candidate:
+      worst_day: 18
+      smoothness: 1.3894533312816402
+      average: 21.713010488730195
+      seconds: 306.8
+      timed_out: True
+      name: candidate-from-as-loaded
+      seed: 1
+  [1]
+    name: start-bunched
+    kind: bunched
+    start:
+      worst_day: 15
+      smoothness: 1.9554815115695645
+      average: 21.713010488730195
+      seconds: 0.0
+      timed_out: False
+      name: start-bunched
+      kind: bunched
+    tuned:
+      worst_day: 18
+      smoothness: 1.4046287087806129
+      average: 21.713010488730195
+      seconds: 47.8
+      timed_out: False
+      name: tuned-from-bunched
+    candidate:
+      worst_day: 18
+      smoothness: 1.4012883007067527
+      average: 21.713010488730195
+      seconds: 169.5
+      timed_out: False
+      name: candidate-from-bunched
+      seed: 1
+  [2]
+    name: start-spread
+    kind: spread
+    start:
+      worst_day: 15
+      smoothness: 1.9781743429174279
+      average: 21.713010488730195
+      seconds: 0.0
+      timed_out: False
+      name: start-spread
+      kind: spread
+    tuned:
+      worst_day: 18
+      smoothness: 1.4172819497493274
+      average: 21.713010488730195
+      seconds: 93.2
+      timed_out: False
+      name: tuned-from-spread
+    candidate:
+      worst_day: 18
+      smoothness: 1.4160217136505355
+      average: 21.713010488730195
+      seconds: 224.5
+      timed_out: False
+      name: candidate-from-spread
+      seed: 1
