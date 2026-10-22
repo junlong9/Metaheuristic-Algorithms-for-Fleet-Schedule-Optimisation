@@ -14,9 +14,11 @@ except ImportError as exc:
         "python -m pip install numpy pandas openpyxl matplotlib"
     ) from exc
 
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Sequence
+import argparse
 import copy
 import csv
 import hashlib
@@ -33,12 +35,14 @@ if str(ROOT) not in sys.path:
 
 import vn_priority_based_selection as optimiser
 
-OUTPUT_DIR = ROOT / "docs/reports/2026-10-20-vn-hyperparameter-analysis"
+OUTPUT_DIR = ROOT / "docs/reports/2026-10-22-vn-step-size-study"
 STATE_PATH = ROOT / ".scratch/initial-maintenance-stagger/schedule-data.json"
 FORECAST_START = pd.Timestamp("2026-01-21")
 FORECAST_END = pd.Timestamp("2038-01-18")
 DATASET_KEYS = ("original", "moderate", "wide")
 BUDGETS = (200, 400, 800)
+# Run only for dataset/strategy pairs whose largest-budget trial hit its cap.
+EXTENSION_BUDGET = 1600
 
 
 @dataclass(frozen=True)
@@ -65,10 +69,14 @@ class StudyInputs:
     input_hashes: dict[str, str]
 
 
+def _pairs(*steps: int) -> tuple[tuple[int, int], ...]:
+    return tuple((-step, step) for step in steps)
+
+
 STRATEGIES = (
     Strategy(
         "historical_half_step",
-        "Earlier tuned baseline",
+        "Overlapping half-step sets",
         (
             (-28, -14, 14, 28),
             (-14, -7, 7, 14),
@@ -78,7 +86,7 @@ STRATEGIES = (
     ),
     Strategy(
         "live_wide_to_fine",
-        "Current live ladder",
+        "Wide-to-fine ladder (±56 to ±1)",
         (
             (-56, 56),
             (-42, 42),
@@ -103,7 +111,7 @@ STRATEGIES = (
     ),
     Strategy(
         "half_step_plus_42",
-        "Earlier tuned baseline plus ±42",
+        "Overlapping half-step sets plus ±42",
         (
             (-42, 42),
             (-28, -14, 14, 28),
@@ -112,7 +120,42 @@ STRATEGIES = (
             (-3, -1, 1, 3),
         ),
     ),
+    Strategy(
+        "pairs_28",
+        "Baseline (±28, ±14, ±7, ±3, ±1)",
+        _pairs(28, 14, 7, 3, 1),
+    ),
+    Strategy("pairs_14", "Pairs from ±14 (±14 to ±1)", _pairs(14, 7, 3, 1)),
+    Strategy("pairs_7", "Pairs from ±7 (±7 to ±1)", _pairs(7, 3, 1)),
+    Strategy("pairs_3", "Pairs from ±3 (±3, ±1)", _pairs(3, 1)),
+    Strategy("pairs_1", "±1 only", _pairs(1)),
+    Strategy(
+        "pairs_42",
+        "Pairs from ±42 (±42 to ±1)",
+        _pairs(42, 28, 14, 7, 3, 1),
+    ),
+    Strategy(
+        "pairs_28_fine_first",
+        "Baseline steps, fine first (±1 to ±28)",
+        _pairs(1, 3, 7, 14, 28),
+    ),
+    Strategy(
+        "single_set_28",
+        "Baseline steps in one set",
+        ((-28, -14, -7, -3, -1, 1, 3, 7, 14, 28),),
+    ),
+    Strategy(
+        "overlap_14",
+        "Overlapping sets without ±28",
+        (
+            (-14, -7, 7, 14),
+            (-7, -3, 3, 7),
+            (-3, -1, 1, 3),
+        ),
+    ),
 )
+
+EXPECTED_MATRIX_SIZE = len(DATASET_KEYS) * len(STRATEGIES) * len(BUDGETS)
 
 
 def build_trial_matrix() -> list[tuple[str, Strategy, int]]:
@@ -123,9 +166,32 @@ def build_trial_matrix() -> list[tuple[str, Strategy, int]]:
         for budget in BUDGETS
     ]
     keys = [(dataset, strategy.key, budget) for dataset, strategy, budget in matrix]
-    if len(matrix) != 36 or len(set(keys)) != 36:
-        raise ValueError("Experiment matrix must contain 36 unique trials.")
+    if (
+        len(matrix) != EXPECTED_MATRIX_SIZE
+        or len(set(keys)) != EXPECTED_MATRIX_SIZE
+        or len({strategy.key for strategy in STRATEGIES}) != len(STRATEGIES)
+    ):
+        raise ValueError(
+            f"Experiment matrix must contain {EXPECTED_MATRIX_SIZE} unique trials."
+        )
     return matrix
+
+
+def build_extension_matrix(
+    trials: list[dict[str, object]],
+) -> list[tuple[str, Strategy, int]]:
+    capped = {
+        (item["dataset"], item["strategy_key"])
+        for item in trials
+        if item["max_iters"] == max(BUDGETS)
+        and item["stop_reason"] == "iteration_cap"
+    }
+    return [
+        (dataset, strategy, EXTENSION_BUDGET)
+        for dataset in DATASET_KEYS
+        for strategy in STRATEGIES
+        if (dataset, strategy.key) in capped
+    ]
 
 
 def sha256_file(path: Path) -> str:
@@ -498,46 +564,52 @@ def assign_dataset_ranks(trials: list[dict[str, object]]) -> None:
             item["dataset_rank"] = 1 + sum(other > score for other in scores)
 
 
+def strategy_complexity(strategy: Strategy) -> int:
+    return sum(len(level) for level in strategy.shift_sets)
+
+
 def choose_recommendations(
     trials: list[dict[str, object]],
 ) -> dict[str, object]:
+    strategies = {strategy.key: strategy for strategy in STRATEGIES}
+    strategy_order = {
+        strategy.key: index for index, strategy in enumerate(STRATEGIES)
+    }
     winners = {
         dataset: min(
             (item for item in trials if item["dataset"] == dataset),
             key=lambda item: (
                 item["dataset_rank"],
                 item["max_iters"],
+                strategy_complexity(strategies[item["strategy_key"]]),
                 item["elapsed_seconds"],
-                next(
-                    index
-                    for index, strategy in enumerate(STRATEGIES)
-                    if strategy.key == item["strategy_key"]
-                ),
+                strategy_order[item["strategy_key"]],
             ),
         )["trial_key"]
         for dataset in DATASET_KEYS
     }
-    strategy_order = {
-        strategy.key: index for index, strategy in enumerate(STRATEGIES)
-    }
+    budgets = sorted({int(item["max_iters"]) for item in trials})
     candidates = []
     for strategy in STRATEGIES:
-        for budget in BUDGETS:
+        for budget in budgets:
             rows = [
                 item
                 for item in trials
                 if item["strategy_key"] == strategy.key
                 and item["max_iters"] == budget
             ]
+            if {item["dataset"] for item in rows} != set(DATASET_KEYS):
+                continue
             candidates.append((
                 sum(item["dataset_rank"] for item in rows),
                 max(item["dataset_rank"] for item in rows),
                 budget,
+                strategy_complexity(strategy),
                 sum(item["elapsed_seconds"] for item in rows),
                 strategy_order[strategy.key],
                 strategy.key,
             ))
-    _, _, budget, _, _, strategy_key = min(candidates)
+    _, _, budget, _, _, _, strategy_key = min(candidates)
     return {
         "dataset_winners": winners,
         "shared": {
@@ -569,31 +641,71 @@ CSV_FIELDS = (
 )
 
 
+def _run_trials(
+    matrix: list[tuple[str, Strategy, int]],
+    inputs: StudyInputs,
+    trial_runner: Callable[..., dict[str, object]],
+    workers: int,
+) -> list[dict[str, object]]:
+    datasets = {item.key: item for item in inputs.datasets}
+    kwargs = {
+        "horizon": inputs.horizon,
+        "scoring_start": inputs.scoring_start,
+        "scoring_end": inputs.scoring_end,
+    }
+
+    def fail(dataset_key: str, strategy: Strategy, budget: int, exc: Exception):
+        trial_key = f"{dataset_key}:{strategy.key}:{budget}"
+        raise RuntimeError(f"{trial_key}: trial failed: {exc}") from exc
+
+    results = []
+    if workers <= 1:
+        for dataset_key, strategy, budget in matrix:
+            try:
+                results.append(trial_runner(
+                    datasets[dataset_key], strategy, budget, **kwargs
+                ))
+            except Exception as exc:
+                fail(dataset_key, strategy, budget, exc)
+        return results
+    # Each trial is deterministic and shares no state, so results are
+    # collected in matrix order regardless of completion order.
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        futures = [
+            pool.submit(
+                trial_runner, datasets[dataset_key], strategy, budget, **kwargs
+            )
+            for dataset_key, strategy, budget in matrix
+        ]
+        for (dataset_key, strategy, budget), future in zip(matrix, futures):
+            try:
+                results.append(future.result())
+            except Exception as exc:
+                fail(dataset_key, strategy, budget, exc)
+    return results
+
+
 def run_study(
     inputs: StudyInputs,
     trial_runner: Callable[..., dict[str, object]] = run_trial,
+    *,
+    workers: int = 1,
 ) -> dict[str, object]:
-    datasets = {item.key: item for item in inputs.datasets}
-    trials = []
-    for dataset_key, strategy, budget in build_trial_matrix():
-        try:
-            result = trial_runner(
-                datasets[dataset_key],
-                strategy,
-                budget,
-                horizon=inputs.horizon,
-                scoring_start=inputs.scoring_start,
-                scoring_end=inputs.scoring_end,
-            )
-        except Exception as exc:
-            trial_key = f"{dataset_key}:{strategy.key}:{budget}"
-            raise RuntimeError(f"{trial_key}: trial failed: {exc}") from exc
-        trials.append(result)
-    if len(trials) != 36 or len({item["trial_key"] for item in trials}) != 36:
-        raise ValueError("Study did not produce 36 unique trial records.")
+    matrix = build_trial_matrix()
+    trials = _run_trials(matrix, inputs, trial_runner, workers)
+    extension = build_extension_matrix(trials)
+    trials += _run_trials(extension, inputs, trial_runner, workers)
+    expected = len(matrix) + len(extension)
+    if (
+        len(trials) != expected
+        or len({item["trial_key"] for item in trials}) != expected
+    ):
+        raise ValueError(
+            f"Study did not produce {expected} unique trial records."
+        )
     assign_dataset_ranks(trials)
     return {
-        "study": "VN priority hyperparameter analysis",
+        "study": "VN priority step-size study",
         "forecast_start": str(
             (inputs.origin + pd.Timedelta(days=inputs.scoring_start)).date()
         ),
@@ -611,6 +723,12 @@ def run_study(
             for item in STRATEGIES
         ],
         "budgets": list(BUDGETS),
+        "extension_budget": EXTENSION_BUDGET,
+        "extension_trials": [
+            f"{dataset}:{strategy.key}:{budget}"
+            for dataset, strategy, budget in extension
+        ],
+        "workers": workers,
         "trials": trials,
         "recommendations": choose_recommendations(trials),
     }
@@ -662,8 +780,15 @@ def create_charts(
         "budget_convergence": output_dir / "budget-convergence.png",
         "runtime": output_dir / "runtime.png",
     }
+    rows_per_dataset = max(
+        sum(item["dataset"] == dataset for item in trials)
+        for dataset in DATASET_KEYS
+    )
+    tall = max(5.0, 0.16 * rows_per_dataset + 1.5)
 
-    figure, axes = plt.subplots(1, 3, figsize=(13, 5), constrained_layout=True)
+    figure, axes = plt.subplots(
+        1, 3, figsize=(15, tall), constrained_layout=True
+    )
     for axis, dataset in zip(axes, DATASET_KEYS):
         rows = sorted(
             (item for item in trials if item["dataset"] == dataset),
@@ -688,9 +813,13 @@ def create_charts(
     figure.savefig(paths["ranked_quality"], dpi=180)
     plt.close(figure)
 
-    figure, axes = plt.subplots(1, 3, figsize=(13, 4), constrained_layout=True)
+    colours = plt.get_cmap("tab20")
+    budgets = sorted({int(item["max_iters"]) for item in trials})
+    figure, axes = plt.subplots(
+        1, 3, figsize=(15, 5.5), constrained_layout=True
+    )
     for axis, dataset in zip(axes, DATASET_KEYS):
-        for strategy in STRATEGIES:
+        for strategy_index, strategy in enumerate(STRATEGIES):
             rows = sorted(
                 (
                     item
@@ -704,6 +833,7 @@ def create_charts(
                 [item["max_iters"] for item in rows],
                 [item["accepted_moves"] for item in rows],
                 marker="o",
+                color=colours(strategy_index % colours.N),
                 label=strategy.label,
             )
             for item in rows:
@@ -711,21 +841,30 @@ def create_charts(
                     axis.annotate(
                         "local",
                         (item["max_iters"], item["accepted_moves"]),
-                        fontsize=7,
+                        fontsize=6,
                     )
         axis.set_title(next(
             item["dataset_label"]
             for item in trials
             if item["dataset"] == dataset
         ))
+        axis.set_xscale("log", base=2)
+        axis.set_xticks(budgets, [str(budget) for budget in budgets])
         axis.set_xlabel("max_iters")
         axis.set_ylabel("Accepted moves")
         axis.grid(alpha=0.25)
-    axes[-1].legend(fontsize=7, loc="best")
+    figure.legend(
+        *axes[-1].get_legend_handles_labels(),
+        loc="outside lower center",
+        ncols=5,
+        fontsize=7,
+    )
     figure.savefig(paths["budget_convergence"], dpi=180)
     plt.close(figure)
 
-    figure, axes = plt.subplots(1, 3, figsize=(13, 5), constrained_layout=True)
+    figure, axes = plt.subplots(
+        1, 3, figsize=(15, tall), constrained_layout=True
+    )
     for axis, dataset in zip(axes, DATASET_KEYS):
         rows = [
             item for item in trials if item["dataset"] == dataset
@@ -779,8 +918,9 @@ def validate_generated_outputs(
         encoding="utf-8",
     ) as handle:
         rows = list(csv.DictReader(handle))
-    if len(saved["trials"]) != 36 or len(rows) != 36:
-        raise ValueError("JSON and CSV must each contain 36 trials.")
+    count = len(payload["trials"])
+    if len(saved["trials"]) != count or len(rows) != count:
+        raise ValueError(f"JSON and CSV must each contain {count} trials.")
     expected = {item["trial_key"] for item in payload["trials"]}
     if {row["trial_key"] for row in rows} != expected:
         raise ValueError("CSV trial keys differ from JSON trial keys.")
@@ -819,11 +959,34 @@ def publish_outputs(
         shutil.rmtree(transaction, ignore_errors=True)
 
 
-def main() -> int:
+def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Run the VN priority step-size hyperparameter study."
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=OUTPUT_DIR,
+        help="Folder for results.json, summary.csv and charts.",
+    )
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=os.cpu_count() or 1,
+        help="Parallel trial processes (1 runs serially).",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = parse_args(argv)
     inputs = load_study_inputs(ROOT)
-    payload = run_study(inputs)
-    publish_outputs(payload, OUTPUT_DIR)
-    print(f"Wrote 36 validated trials and analysis outputs to {OUTPUT_DIR}")
+    payload = run_study(inputs, workers=args.workers)
+    publish_outputs(payload, args.output_dir)
+    print(
+        f"Wrote {len(payload['trials'])} validated trials and analysis "
+        f"outputs to {args.output_dir}"
+    )
     return 0
 
 
