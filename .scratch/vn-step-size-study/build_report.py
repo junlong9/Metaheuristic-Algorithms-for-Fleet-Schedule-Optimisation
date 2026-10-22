@@ -266,6 +266,13 @@ def caption(document: Document, text: str) -> None:
 
 def build(payload: dict) -> Document:
     labels = payload["labels"]
+    report_labels = dict(labels)
+    report_labels.update(
+        {
+            "half_step_plus_42": "Half-step sets plus ±42",
+            "live_wide_to_fine": "Wide to fine (±56 to ±1)",
+        }
+    )
     shared = payload["recommendations"]["shared"]
     winners = payload["recommendations"]["dataset_winners"]
     rec_key, rec_budget = shared["strategy_key"], shared["max_iters"]
@@ -314,8 +321,8 @@ def build(payload: dict) -> Document:
         "and ±1 days) with a 400-iteration limit. It gave the strongest "
         "overall result across the three forecasts and was best on the "
         "moderate and wide stagger forecasts. The baseline ladder (±28, ±14, "
-        "±7, ±3 and ±1 days) reached the same minimum availability—18, 19 "
-        "and 20 aircraft—but its day-to-day availability varied slightly "
+        "±7, ±3 and ±1 days) reached the same minimum availability: 18, 19 "
+        "and 20 aircraft, but its day-to-day availability varied slightly "
         "more. The difference in standard deviation was "
         f"{f4(min(sd_gap.values()))} to {f4(max(sd_gap.values()))} aircraft. "
         "The improvement is small, but it is consistent across all three "
@@ -347,7 +354,7 @@ def build(payload: dict) -> Document:
         rows.append(
             [
                 DATASET_LABELS[dataset],
-                labels[item["strategy_key"]],
+                report_labels[item["strategy_key"]],
                 str(item["max_iters"]),
                 str(item["min_availability"]),
                 f4(item["availability_std"]),
@@ -361,14 +368,8 @@ def build(payload: dict) -> Document:
         [3.0, 6.0, 1.8, 1.7, 1.7, 2.0],
     )
     document.add_paragraph(
-        "The forecasts begin from different maintenance states, so their "
-        "availability levels should not be compared directly. The original "
-        "forecast favoured the overlapping half-step ladder with ±42, while "
-        "the wide-to-fine ladder was best on the two staggered forecasts. A "
-        "single shared setting avoids changing the optimiser between forecasts "
-        "for a very small loss on the original forecast: it kept the same "
-        "minimum of 18 aircraft and increased standard deviation by only "
-        "0.0078 aircraft."
+        "The original forecast favoured the half-step ladder with ±42, while "
+        "the wide-to-fine ladder was best on the two staggered forecasts."
     )
 
     table_400 = shared_table(payload, BUDGET)
@@ -380,7 +381,7 @@ def build(payload: dict) -> Document:
     document.add_heading(f"All strategies at {BUDGET} iterations", level=1)
     comparison_rows = []
     for row in table_400:
-        values = [labels[row["key"]]]
+        values = [report_labels[row["key"]]]
         for item in row["cells"]:
             capped = "*" if item["stop_reason"] == "iteration_cap" else ""
             values.append(

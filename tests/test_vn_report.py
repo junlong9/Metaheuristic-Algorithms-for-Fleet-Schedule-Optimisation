@@ -42,8 +42,15 @@ def test_report_is_comparison_focused_and_self_contained():
         for row in document.tables[1].rows
         for cell in row.cells
     )
+    report_labels = dict(payload["labels"])
+    report_labels.update(
+        {
+            "half_step_plus_42": "Half-step sets plus ±42",
+            "live_wide_to_fine": "Wide to fine (±56 to ±1)",
+        }
+    )
     for strategy_key in payload["order"]:
-        assert payload["labels"][strategy_key] in comparison_text
+        assert report_labels[strategy_key] in comparison_text
     for phrase in (
         "first study",
         "previous study",
