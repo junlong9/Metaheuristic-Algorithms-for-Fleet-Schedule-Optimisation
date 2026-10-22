@@ -371,6 +371,49 @@ def build(payload: dict) -> Document:
         "0.0078 aircraft."
     )
 
+    table_400 = shared_table(payload, BUDGET)
+    check(
+        table_400[0]["key"] == rec_key,
+        "recommended ladder ranks first across the three forecasts",
+    )
+    document.add_page_break()
+    document.add_heading(f"All strategies at {BUDGET} iterations", level=1)
+    comparison_rows = []
+    for row in table_400:
+        values = [labels[row["key"]]]
+        for item in row["cells"]:
+            capped = "*" if item["stop_reason"] == "iteration_cap" else ""
+            values.append(
+                f"{item['min_availability']} / "
+                f"{f4(item['availability_std'])}{capped}"
+            )
+        comparison_rows.append(values)
+    add_table(
+        document,
+        ["Strategy", "Original", "Moderate", "Wide"],
+        comparison_rows,
+        [7.0, 3.2, 3.2, 3.2],
+        size=7.5,
+        bold_rows={0},
+    )
+    document.add_paragraph(
+        "Each result is minimum available aircraft / standard deviation. "
+        "Lower standard deviation is better when minimum availability is "
+        "equal. * indicates that the search reached the 400-iteration limit "
+        "and may improve with more passes."
+    )
+    FIGURES.mkdir(exist_ok=True)
+    sd_path = FIGURES / "sd-by-strategy-400.png"
+    sd_chart(payload, sd_path)
+    document.add_picture(str(sd_path), width=Cm(14.5))
+    document.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    caption(
+        document,
+        "Figure 1. Standard deviation at 400 iterations. Point labels show "
+        "minimum available aircraft; filled points reach the best minimum for "
+        "that forecast.",
+    )
+
     document.add_page_break()
     document.add_heading("What the results show", level=1)
     lead_paragraph(
@@ -401,6 +444,17 @@ def build(payload: dict) -> Document:
         "accepted moves on the three forecasts, and its 800-iteration results "
         "were identical. A 400-iteration limit captures its full result "
         "without unnecessary work.",
+    )
+
+    rt_path = FIGURES / "runtime-vs-sd-400.png"
+    runtime_chart(payload, rt_path)
+    document.add_picture(str(rt_path), width=Cm(14.5))
+    document.paragraphs[-1].alignment = WD_ALIGN_PARAGRAPH.CENTER
+    caption(
+        document,
+        "Figure 2. Search time against standard deviation at 400 iterations. "
+        "Timings are single observations and are useful for relative "
+        "comparison only.",
     )
 
     document.add_heading("Limits and next step", level=1)
