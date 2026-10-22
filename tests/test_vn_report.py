@@ -12,8 +12,9 @@ build_report = module_from_spec(spec)
 spec.loader.exec_module(build_report)
 
 
-def test_report_is_concise_and_self_contained():
-    document = build_report.build(build_report.load())
+def test_report_is_comparison_focused_and_self_contained():
+    payload = build_report.load()
+    document = build_report.build(payload)
     paragraph_text = "\n".join(p.text for p in document.paragraphs)
     table_text = "\n".join(
         cell.text
@@ -24,17 +25,25 @@ def test_report_is_concise_and_self_contained():
     text = f"{paragraph_text}\n{table_text}"
     lowered = text.lower()
 
-    assert 600 <= len(text.split()) <= 950
-    assert len(document.tables) == 1
-    assert len(document.inline_shapes) == 0
+    assert 700 <= len(text.split()) <= 1300
+    assert len(document.tables) == 2
+    assert len(document.inline_shapes) == 2
     assert [
         p.text for p in document.paragraphs if p.style.name == "Heading 1"
     ] == [
         "What we tested",
         "Best results",
+        "All strategies at 400 iterations",
         "What the results show",
         "Limits and next step",
     ]
+    comparison_text = "\n".join(
+        cell.text
+        for row in document.tables[1].rows
+        for cell in row.cells
+    )
+    for strategy_key in payload["order"]:
+        assert payload["labels"][strategy_key] in comparison_text
     for phrase in (
         "first study",
         "previous study",
