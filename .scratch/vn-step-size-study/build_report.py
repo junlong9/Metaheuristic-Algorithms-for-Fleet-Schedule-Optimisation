@@ -265,6 +265,166 @@ def caption(document: Document, text: str) -> None:
 
 
 def build(payload: dict) -> Document:
+    labels = payload["labels"]
+    shared = payload["recommendations"]["shared"]
+    winners = payload["recommendations"]["dataset_winners"]
+    rec_key, rec_budget = shared["strategy_key"], shared["max_iters"]
+    check(
+        (rec_key, rec_budget) == ("live_wide_to_fine", BUDGET),
+        "shared recommendation is the wide-to-fine ladder at 400",
+    )
+
+    rec = {dataset: trial(payload, dataset, rec_key, BUDGET) for dataset in DATASETS}
+    baseline = {
+        dataset: trial(payload, dataset, "pairs_28", BUDGET)
+        for dataset in DATASETS
+    }
+    check(
+        all(
+            baseline[dataset]["min_availability"]
+            == rec[dataset]["min_availability"]
+            for dataset in DATASETS
+        ),
+        "baseline and recommendation have equal minimum availability",
+    )
+    check(
+        all(
+            baseline[dataset]["availability_std"]
+            > rec[dataset]["availability_std"]
+            for dataset in DATASETS
+        ),
+        "recommendation has lower variability than baseline",
+    )
+    sd_gap = {
+        dataset: (
+            baseline[dataset]["availability_std"]
+            - rec[dataset]["availability_std"]
+        )
+        for dataset in DATASETS
+    }
+
+    document = Document()
+    style_document(document)
+    document.core_properties.title = "Variable-neighbourhood parameter analysis"
+    document.core_properties.author = "UQ / Northrop Grumman fleet schedule project"
+    document.add_heading("Variable-neighbourhood parameter analysis", level=0)
+
+    document.add_paragraph(
+        "Use the wide-to-fine shift ladder (±56, ±42, ±28, ±14, ±7, ±3 "
+        "and ±1 days) with a 400-iteration limit. It gave the strongest "
+        "overall result across the three forecasts and was best on the "
+        "moderate and wide stagger forecasts. The baseline ladder (±28, ±14, "
+        "±7, ±3 and ±1 days) reached the same minimum availability—18, 19 "
+        "and 20 aircraft—but its day-to-day availability varied slightly "
+        "more. The difference in standard deviation was "
+        f"{f4(min(sd_gap.values()))} to {f4(max(sd_gap.values()))} aircraft. "
+        "The improvement is small, but it is consistent across all three "
+        "forecasts."
+    )
+
+    document.add_heading("What we tested", level=1)
+    document.add_paragraph(
+        "The analysis compared 13 ordered shift strategies on the original, "
+        "moderate stagger and wide stagger forecasts. Each strategy was tested "
+        "at 200, 400 and 800 iterations. The two slowest-converging strategies "
+        "were also tested at 1600 iterations, giving 123 trials in total. A "
+        "shift moves a candidate maintenance event earlier or later, and the "
+        "optimiser accepts the move that gives the best improvement."
+    )
+    document.add_paragraph(
+        "Results were ranked by minimum available aircraft first, then lower "
+        "standard deviation, then higher average availability. Standard "
+        "deviation measures how much daily availability changes across the "
+        "forecast. Availability was measured from 21 January 2026 to "
+        "18 January 2038. All schedules passed the implemented maintenance "
+        "checks."
+    )
+
+    document.add_heading("Best results", level=1)
+    rows = []
+    for dataset in DATASETS:
+        item = payload["by_key"][winners[dataset]]
+        rows.append(
+            [
+                DATASET_LABELS[dataset],
+                labels[item["strategy_key"]],
+                str(item["max_iters"]),
+                str(item["min_availability"]),
+                f4(item["availability_std"]),
+                f4(item["mean_availability"]),
+            ]
+        )
+    add_table(
+        document,
+        ["Forecast", "Best strategy", "Iterations", "Minimum", "SD", "Average"],
+        rows,
+        [3.0, 6.0, 1.8, 1.7, 1.7, 2.0],
+    )
+    document.add_paragraph(
+        "The forecasts begin from different maintenance states, so their "
+        "availability levels should not be compared directly. The original "
+        "forecast favoured the overlapping half-step ladder with ±42, while "
+        "the wide-to-fine ladder was best on the two staggered forecasts. A "
+        "single shared setting avoids changing the optimiser between forecasts "
+        "for a very small loss on the original forecast: it kept the same "
+        "minimum of 18 aircraft and increased standard deviation by only "
+        "0.0078 aircraft."
+    )
+
+    document.add_page_break()
+    document.add_heading("What the results show", level=1)
+    lead_paragraph(
+        document,
+        "Large shifts help.",
+        "Removing the largest shifts progressively increased variability. "
+        "Ladders beginning at ±28, ±14 and ±7 retained the same minimum "
+        "availability at 400 iterations, but ±3 and ±1 lost aircraft on at "
+        "least two forecasts. In the recommended ladder, 36% of accepted "
+        "moves were ±42 or ±56, showing that the larger shifts were actively "
+        "used rather than simply adding search cost.",
+    )
+    lead_paragraph(
+        document,
+        "Search coarse to fine.",
+        "Reversing the baseline ladder so that ±1 was searched first produced "
+        "the same schedules as using ±1 alone through 800 iterations. Small "
+        "improvements kept the search in the first neighbourhood, so it never "
+        "reached the larger shifts. At 400 iterations this reduced the minimum "
+        "availability from 18/19/20 aircraft to 17/18/18. Larger shifts should "
+        "therefore be searched first.",
+    )
+    lead_paragraph(
+        document,
+        "Use 400 iterations.",
+        "Every 200-iteration run reached its limit, so 200 is too short. The "
+        "recommended ladder found no further improving move after 291 to 367 "
+        "accepted moves on the three forecasts, and its 800-iteration results "
+        "were identical. A 400-iteration limit captures its full result "
+        "without unnecessary work.",
+    )
+
+    document.add_heading("Limits and next step", level=1)
+    document.add_paragraph(
+        "The analysis covers three related forecasts and deterministic runs, "
+        "so it does not show variation across repeated trials or establish a "
+        "global optimum. Differences between the leading strategies are only "
+        "hundredths of an aircraft in standard deviation and may change on a "
+        "different fleet or starting schedule. The optimiser also does not "
+        "enforce the separate loose, medium and tight operational scenarios; "
+        "those constraints still need review before deployment."
+    )
+    document.add_paragraph(
+        "Keep the wide-to-fine ladder at 400 iterations as the shared setting. "
+        "If simplicity is more important than the small reduction in "
+        "variability, the ±28 baseline is a reasonable alternative because it "
+        "preserves the same minimum availability. Repeat the comparison when "
+        "the fleet, maintenance rules or starting schedule changes. The "
+        "workbook contains the complete trial results."
+    )
+    return document
+
+
+def _build_detailed_report(payload: dict) -> Document:
     sha = json.loads(SHA_CHECK.read_text(encoding="utf-8"))
     labels = payload["labels"]
     shared = payload["recommendations"]["shared"]
