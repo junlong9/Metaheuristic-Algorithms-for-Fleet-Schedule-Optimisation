@@ -1,0 +1,1249 @@
+from __future__ import annotations
+
+try:
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import openpyxl
+    import pandas as pd
+    from docx import Document
+    from docx.enum.text import WD_BREAK
+    from docx.shared import Inches, Pt
+except ImportError as exc:
+    raise SystemExit(
+        f"Missing analysis dependency: {exc.name}. Install with: "
+        "python -m pip install numpy pandas openpyxl matplotlib python-docx"
+    ) from exc
+
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Callable
+import copy
+import csv
+import hashlib
+import json
+import os
+import shutil
+import sys
+import tempfile
+import time
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+import vn_priority_based_selection as optimiser
+
+OUTPUT_DIR = ROOT / "docs/reports/2026-10-20-vn-hyperparameter-analysis"
+STATE_PATH = ROOT / ".scratch/initial-maintenance-stagger/schedule-data.json"
+FORECAST_START = pd.Timestamp("2026-01-21")
+FORECAST_END = pd.Timestamp("2038-01-18")
+DATASET_KEYS = ("original", "moderate", "wide")
+BUDGETS = (200, 400, 800)
+
+
+@dataclass(frozen=True)
+class Strategy:
+    key: str
+    label: str
+    shift_sets: tuple[tuple[int, ...], ...]
+
+
+@dataclass
+class LoadedDataset:
+    key: str
+    label: str
+    schedule: dict[str, list[dict[str, object]]]
+
+
+@dataclass
+class StudyInputs:
+    datasets: tuple[LoadedDataset, ...]
+    origin: pd.Timestamp
+    horizon: int
+    scoring_start: int
+    scoring_end: int
+    input_hashes: dict[str, str]
+
+
+STRATEGIES = (
+    Strategy(
+        "historical_half_step",
+        "Earlier tuned baseline",
+        (
+            (-28, -14, 14, 28),
+            (-14, -7, 7, 14),
+            (-7, -3, 3, 7),
+            (-3, -1, 1, 3),
+        ),
+    ),
+    Strategy(
+        "live_wide_to_fine",
+        "Current live ladder",
+        (
+            (-56, 56),
+            (-42, 42),
+            (-28, 28),
+            (-14, 14),
+            (-7, 7),
+            (-3, 3),
+            (-1, 1),
+        ),
+    ),
+    Strategy(
+        "dense_pairs",
+        "Dense paired ladder",
+        (
+            (-28, 28),
+            (-21, 21),
+            (-14, 14),
+            (-7, 7),
+            (-3, 3),
+            (-1, 1),
+        ),
+    ),
+    Strategy(
+        "half_step_plus_42",
+        "Earlier tuned baseline plus ±42",
+        (
+            (-42, 42),
+            (-28, -14, 14, 28),
+            (-14, -7, 7, 14),
+            (-7, -3, 3, 7),
+            (-3, -1, 1, 3),
+        ),
+    ),
+)
+
+
+def build_trial_matrix() -> list[tuple[str, Strategy, int]]:
+    matrix = [
+        (dataset, strategy, budget)
+        for dataset in DATASET_KEYS
+        for strategy in STRATEGIES
+        for budget in BUDGETS
+    ]
+    keys = [(dataset, strategy.key, budget) for dataset, strategy, budget in matrix]
+    if len(matrix) != 36 or len(set(keys)) != 36:
+        raise ValueError("Experiment matrix must contain 36 unique trials.")
+    return matrix
+
+
+def sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _attach_saved_opening_state(
+    schedule: dict[str, list[dict[str, object]]],
+    payload: dict[str, object],
+    slug: str,
+    origin: pd.Timestamp,
+) -> None:
+    columns = {
+        name: index
+        for index, name in enumerate(payload["fleet_columns"])
+    }
+    variants = {
+        item["slug"]: item
+        for item in payload["variants"]
+    }
+    if slug not in variants:
+        raise ValueError(f"{slug}: opening-state record missing")
+    variant = variants[slug]
+    rows = {
+        row[columns["Aircraft"]]: row
+        for row in variant["fleet"]
+    }
+    for aircraft, events in schedule.items():
+        row = rows[aircraft]
+        opening = {
+            check: (
+                pd.Timestamp(row[columns[f"Opening_{check}_Due"]]) - origin
+            ).days
+            for check in "ABCD"
+        }
+        sequence_origin = int(row[columns["Opening_Sequence_Index"]])
+        for event in events:
+            event["_origin"] = sequence_origin
+            event["_opening"] = opening
+
+
+def load_study_inputs(root: Path = ROOT) -> StudyInputs:
+    state_path = root / ".scratch/initial-maintenance-stagger/schedule-data.json"
+    if not state_path.is_file():
+        raise FileNotFoundError(f"opening_state: missing input {state_path}")
+    payload = json.loads(state_path.read_text(encoding="utf-8"))
+    forecast_start = pd.Timestamp(payload["forecast_start"])
+    forecast_end = pd.Timestamp(payload["forecast_end"])
+    if forecast_start != FORECAST_START or forecast_end != FORECAST_END:
+        raise ValueError("Saved reporting dates do not match the approved study.")
+
+    paths = {
+        "original": root / "heavy_maintenance_forecast.xlsx",
+        "moderate": root / (
+            "outputs/initial-stagger-20261013/"
+            "heavy_maintenance_forecast_stagger_moderate.xlsx"
+        ),
+        "wide": root / (
+            "outputs/initial-stagger-20261013/"
+            "heavy_maintenance_forecast_stagger_wide.xlsx"
+        ),
+    }
+    labels = {
+        "original": "Original",
+        "moderate": "Moderate stagger",
+        "wide": "Wide stagger",
+    }
+    loaded = {}
+    for key, path in paths.items():
+        if not path.is_file():
+            raise FileNotFoundError(f"{key}: missing input {path}")
+        try:
+            loaded[key] = optimiser.load_selected_schedule(path)
+        except Exception as exc:
+            raise RuntimeError(f"{key}: could not load workbook: {exc}") from exc
+    origin = min(
+        [forecast_start] + [base_date for _, base_date in loaded.values()]
+    )
+    datasets = []
+    for key in DATASET_KEYS:
+        schedule, base_date = loaded[key]
+        offset = int((base_date - origin).days)
+        for events in schedule.values():
+            for event in events:
+                for field in ("start", "earliest_start", "latest_start"):
+                    event[field] = int(event[field]) + offset
+        if key != "original":
+            _attach_saved_opening_state(schedule, payload, key, origin)
+        datasets.append(LoadedDataset(key, labels[key], schedule))
+
+    horizon = max(
+        optimiser.get_forecast_horizon(dataset.schedule)
+        for dataset in datasets
+    )
+    for dataset in datasets:
+        if not optimiser.is_rule_compliant_schedule(dataset.schedule, horizon):
+            raise ValueError(f"{dataset.key}: initial schedule is rule-invalid")
+
+    hashes = {key: sha256_file(path) for key, path in paths.items()}
+    hashes["opening_state"] = sha256_file(state_path)
+    hashes["production"] = sha256_file(root / "vn_priority_based_selection.py")
+    return StudyInputs(
+        datasets=tuple(datasets),
+        origin=origin,
+        horizon=horizon,
+        scoring_start=int((forecast_start - origin).days),
+        scoring_end=int((forecast_end - origin).days),
+        input_hashes=hashes,
+    )
+
+
+SCHEDULE_FIELDS = (
+    "check",
+    "start",
+    "duration",
+    "earliest_start",
+    "latest_start",
+)
+
+
+def visible_score(
+    availability: np.ndarray,
+    scoring_start: int,
+    scoring_end: int,
+) -> tuple[float, float, float]:
+    return optimiser.score_availability(
+        availability[scoring_start:scoring_end + 1]
+    )
+
+
+def priority_groups(
+    schedule: dict[str, list[dict[str, object]]],
+    availability: np.ndarray,
+    scoring_start: int,
+    scoring_end: int,
+) -> list[list[tuple[str, int]]]:
+    rows = []
+    for aircraft in sorted(schedule):
+        for index, event in enumerate(schedule[aircraft]):
+            left = max(int(event["start"]), scoring_start)
+            right = min(
+                int(event["start"]) + int(event["duration"]),
+                scoring_end + 1,
+            )
+            level = (
+                float(np.min(availability[left:right]))
+                if left < right
+                else float("inf")
+            )
+            rows.append((level, int(event["start"]), aircraft, index))
+    rows.sort()
+    grouped: dict[float, list[tuple[str, int]]] = {}
+    for level, _, aircraft, index in rows:
+        grouped.setdefault(level, []).append((aircraft, index))
+    return list(grouped.values())
+
+
+def generate_study_neighbors(
+    schedule: dict[str, list[dict[str, object]]],
+    availability: np.ndarray,
+    horizon: int,
+    scoring_start: int,
+    scoring_end: int,
+    current_score: tuple[float, float, float],
+    shifts: tuple[int, ...],
+) -> list[dict[str, object]]:
+    for group in priority_groups(
+        schedule,
+        availability,
+        scoring_start,
+        scoring_end,
+    ):
+        improving = []
+        for aircraft, index in group:
+            events = schedule[aircraft]
+            event = events[index]
+            if int(event["start"]) < scoring_start:
+                continue
+            for shift in shifts:
+                rebuilt = optimiser.rebuild_aircraft_schedule(
+                    events,
+                    horizon=horizon,
+                    event_index=index,
+                    new_start=int(event["start"]) + shift,
+                )
+                if rebuilt is None or int(rebuilt[index]["start"]) < scoring_start:
+                    continue
+                candidate_availability = (
+                    optimiser.availability_with_rebuilt_aircraft(
+                        availability,
+                        events,
+                        rebuilt,
+                    )
+                )
+                candidate_score = visible_score(
+                    candidate_availability,
+                    scoring_start,
+                    scoring_end,
+                )
+                if candidate_score > current_score:
+                    improving.append({
+                        "aircraft": aircraft,
+                        "event_index": index,
+                        "events": rebuilt,
+                        "availability": candidate_availability,
+                        "score": candidate_score,
+                        "shift": shift,
+                    })
+        if improving:
+            return improving
+    return []
+
+
+def independent_availability(
+    schedule: dict[str, list[dict[str, object]]],
+    horizon: int,
+) -> np.ndarray:
+    occupied_count = np.zeros(horizon + 1, dtype=int)
+    for events in schedule.values():
+        occupied = np.zeros(horizon + 1, dtype=bool)
+        for event in events:
+            start = int(event["start"])
+            end = start + int(event["duration"])
+            occupied[start:end] = True
+        occupied_count += occupied.astype(int)
+    return len(schedule) - occupied_count
+
+
+def schedule_sha256(
+    schedule: dict[str, list[dict[str, object]]],
+) -> str:
+    canonical = {
+        aircraft: [
+            {field: event[field] for field in SCHEDULE_FIELDS}
+            for event in sorted(events, key=lambda item: int(item["start"]))
+        ]
+        for aircraft, events in sorted(schedule.items())
+    }
+    encoded = json.dumps(
+        canonical,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def validate_endpoint(
+    initial: dict[str, list[dict[str, object]]],
+    final: dict[str, list[dict[str, object]]],
+    incremental_availability: np.ndarray,
+    horizon: int,
+    scoring_start: int,
+) -> None:
+    if not optimiser.is_rule_compliant_schedule(final, horizon):
+        raise ValueError("endpoint failed maintenance-rule replay")
+    exact = optimiser.compute_availability(final, horizon)
+    independent = independent_availability(final, horizon)
+    if not np.array_equal(incremental_availability, exact):
+        raise ValueError("incremental availability differs from full rebuild")
+    if not np.array_equal(exact, independent):
+        raise ValueError("full availability differs from occupancy mask")
+    if set(initial) != set(final):
+        raise ValueError("aircraft set changed")
+    for aircraft in sorted(initial):
+        before = initial[aircraft]
+        after = final[aircraft]
+        if len(before) != len(after):
+            raise ValueError(f"{aircraft}: check count changed")
+        for old, new in zip(before, after):
+            if old["check"] != new["check"] or old["duration"] != new["duration"]:
+                raise ValueError(f"{aircraft}: check identity changed")
+            if int(old["start"]) < scoring_start and old != new:
+                raise ValueError(f"{aircraft}: commenced check changed")
+
+
+def run_trial(
+    dataset: LoadedDataset,
+    strategy: Strategy,
+    max_iters: int,
+    *,
+    horizon: int,
+    scoring_start: int,
+    scoring_end: int,
+    clock: Callable[[], float] = time.perf_counter,
+) -> dict[str, object]:
+    initial = copy.deepcopy(dataset.schedule)
+    current = copy.deepcopy(dataset.schedule)
+    availability = optimiser.compute_availability(current, horizon)
+    current_score = visible_score(
+        availability,
+        scoring_start,
+        scoring_end,
+    )
+    trace = [{"iteration": 0, "score": [float(v) for v in current_score]}]
+    accepted_moves = 0
+    outer_passes = 0
+    exhausted = False
+    started = clock()
+    for iteration in range(max_iters):
+        outer_passes += 1
+        accepted = False
+        for shifts in strategy.shift_sets:
+            candidates = generate_study_neighbors(
+                current,
+                availability,
+                horizon,
+                scoring_start,
+                scoring_end,
+                current_score,
+                shifts,
+            )
+            if not candidates:
+                continue
+            best = max(candidates, key=lambda item: item["score"])
+            current[best["aircraft"]] = best["events"]
+            availability = best["availability"]
+            current_score = best["score"]
+            accepted_moves += 1
+            trace.append({
+                "iteration": iteration + 1,
+                "score": [float(v) for v in current_score],
+                "shift": int(best["shift"]),
+            })
+            accepted = True
+            break
+        if not accepted:
+            exhausted = True
+            break
+    elapsed = clock() - started
+    validate_endpoint(
+        initial,
+        current,
+        availability,
+        horizon,
+        scoring_start,
+    )
+    scores = [tuple(item["score"]) for item in trace]
+    if not all(left < right for left, right in zip(scores, scores[1:])):
+        raise ValueError("accepted score trace is not strictly improving")
+    visible = availability[scoring_start:scoring_end + 1]
+    return {
+        "trial_key": f"{dataset.key}:{strategy.key}:{max_iters}",
+        "dataset": dataset.key,
+        "dataset_label": dataset.label,
+        "strategy_key": strategy.key,
+        "strategy_label": strategy.label,
+        "shift_sets": [list(level) for level in strategy.shift_sets],
+        "max_iters": max_iters,
+        "min_availability": int(np.min(visible)),
+        "availability_std": float(np.std(visible)),
+        "mean_availability": float(np.mean(visible)),
+        "lexicographic_score": [float(value) for value in current_score],
+        "accepted_moves": accepted_moves,
+        "outer_passes": outer_passes,
+        "natural_exhaustion": exhausted,
+        "stop_reason": "local_exhaustion" if exhausted else "iteration_cap",
+        "elapsed_seconds": float(elapsed),
+        "rule_compliant": True,
+        "endpoint_sha256": schedule_sha256(current),
+        "trace": trace,
+    }
+
+
+def assign_dataset_ranks(trials: list[dict[str, object]]) -> None:
+    for dataset in DATASET_KEYS:
+        group = [item for item in trials if item["dataset"] == dataset]
+        scores = [tuple(item["lexicographic_score"]) for item in group]
+        for item in group:
+            score = tuple(item["lexicographic_score"])
+            item["dataset_rank"] = 1 + sum(other > score for other in scores)
+
+
+def choose_recommendations(
+    trials: list[dict[str, object]],
+) -> dict[str, object]:
+    winners = {
+        dataset: min(
+            (item for item in trials if item["dataset"] == dataset),
+            key=lambda item: (
+                item["dataset_rank"],
+                item["max_iters"],
+                item["elapsed_seconds"],
+                next(
+                    index
+                    for index, strategy in enumerate(STRATEGIES)
+                    if strategy.key == item["strategy_key"]
+                ),
+            ),
+        )["trial_key"]
+        for dataset in DATASET_KEYS
+    }
+    strategy_order = {
+        strategy.key: index for index, strategy in enumerate(STRATEGIES)
+    }
+    candidates = []
+    for strategy in STRATEGIES:
+        for budget in BUDGETS:
+            rows = [
+                item
+                for item in trials
+                if item["strategy_key"] == strategy.key
+                and item["max_iters"] == budget
+            ]
+            candidates.append((
+                sum(item["dataset_rank"] for item in rows),
+                max(item["dataset_rank"] for item in rows),
+                budget,
+                sum(item["elapsed_seconds"] for item in rows),
+                strategy_order[strategy.key],
+                strategy.key,
+            ))
+    _, _, budget, _, _, strategy_key = min(candidates)
+    return {
+        "dataset_winners": winners,
+        "shared": {
+            "strategy_key": strategy_key,
+            "max_iters": budget,
+        },
+    }
+
+
+CSV_FIELDS = (
+    "trial_key",
+    "dataset",
+    "strategy_key",
+    "strategy_label",
+    "max_iters",
+    "shift_sets",
+    "min_availability",
+    "availability_std",
+    "mean_availability",
+    "accepted_moves",
+    "outer_passes",
+    "natural_exhaustion",
+    "stop_reason",
+    "elapsed_seconds",
+    "lexicographic_score",
+    "dataset_rank",
+    "rule_compliant",
+    "endpoint_sha256",
+)
+
+
+def run_study(
+    inputs: StudyInputs,
+    trial_runner: Callable[..., dict[str, object]] = run_trial,
+) -> dict[str, object]:
+    datasets = {item.key: item for item in inputs.datasets}
+    trials = []
+    for dataset_key, strategy, budget in build_trial_matrix():
+        try:
+            result = trial_runner(
+                datasets[dataset_key],
+                strategy,
+                budget,
+                horizon=inputs.horizon,
+                scoring_start=inputs.scoring_start,
+                scoring_end=inputs.scoring_end,
+            )
+        except Exception as exc:
+            trial_key = f"{dataset_key}:{strategy.key}:{budget}"
+            raise RuntimeError(f"{trial_key}: trial failed: {exc}") from exc
+        trials.append(result)
+    if len(trials) != 36 or len({item["trial_key"] for item in trials}) != 36:
+        raise ValueError("Study did not produce 36 unique trial records.")
+    assign_dataset_ranks(trials)
+    return {
+        "study": "VN priority hyperparameter analysis",
+        "forecast_start": str(
+            (inputs.origin + pd.Timedelta(days=inputs.scoring_start)).date()
+        ),
+        "forecast_end": str(
+            (inputs.origin + pd.Timedelta(days=inputs.scoring_end)).date()
+        ),
+        "selection_policy": "first_priority_level_best_candidate",
+        "input_hashes": inputs.input_hashes,
+        "strategies": [
+            {
+                "key": item.key,
+                "label": item.label,
+                "shift_sets": [list(level) for level in item.shift_sets],
+            }
+            for item in STRATEGIES
+        ],
+        "budgets": list(BUDGETS),
+        "trials": trials,
+        "recommendations": choose_recommendations(trials),
+    }
+
+
+def build_summary_rows(
+    trials: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    rows = []
+    for trial in trials:
+        row = {field: trial[field] for field in CSV_FIELDS}
+        row["shift_sets"] = json.dumps(
+            row["shift_sets"],
+            separators=(",", ":"),
+        )
+        row["lexicographic_score"] = json.dumps(
+            row["lexicographic_score"],
+            separators=(",", ":"),
+        )
+        rows.append(row)
+    return rows
+
+
+def write_machine_outputs(
+    payload: dict[str, object],
+    output_dir: Path,
+) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "results.json"
+    csv_path = output_dir / "summary.csv"
+    json_path.write_text(
+        json.dumps(payload, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    with csv_path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=CSV_FIELDS)
+        writer.writeheader()
+        writer.writerows(build_summary_rows(payload["trials"]))
+    return {"json": json_path, "csv": csv_path}
+
+
+def create_charts(
+    trials: list[dict[str, object]],
+    output_dir: Path,
+) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    paths = {
+        "ranked_quality": output_dir / "ranked-quality.png",
+        "budget_convergence": output_dir / "budget-convergence.png",
+        "runtime": output_dir / "runtime.png",
+    }
+
+    figure, axes = plt.subplots(1, 3, figsize=(13, 5), constrained_layout=True)
+    for axis, dataset in zip(axes, DATASET_KEYS):
+        rows = sorted(
+            (item for item in trials if item["dataset"] == dataset),
+            key=lambda item: (item["dataset_rank"], item["availability_std"]),
+        )
+        labels = [
+            f'{item["strategy_key"]} / {item["max_iters"]} '
+            f'(min {item["min_availability"]})'
+            for item in rows
+        ]
+        positions = np.arange(len(rows))
+        axis.scatter(
+            [item["availability_std"] for item in rows],
+            positions,
+            color="black",
+        )
+        axis.set_yticks(positions, labels, fontsize=7)
+        axis.invert_yaxis()
+        axis.set_title(rows[0]["dataset_label"])
+        axis.set_xlabel("Availability standard deviation (lower is better)")
+        axis.grid(axis="x", alpha=0.25)
+    figure.savefig(paths["ranked_quality"], dpi=180)
+    plt.close(figure)
+
+    figure, axes = plt.subplots(1, 3, figsize=(13, 4), constrained_layout=True)
+    for axis, dataset in zip(axes, DATASET_KEYS):
+        for strategy in STRATEGIES:
+            rows = sorted(
+                (
+                    item
+                    for item in trials
+                    if item["dataset"] == dataset
+                    and item["strategy_key"] == strategy.key
+                ),
+                key=lambda item: item["max_iters"],
+            )
+            axis.plot(
+                [item["max_iters"] for item in rows],
+                [item["accepted_moves"] for item in rows],
+                marker="o",
+                label=strategy.label,
+            )
+            for item in rows:
+                if item["stop_reason"] == "local_exhaustion":
+                    axis.annotate(
+                        "local",
+                        (item["max_iters"], item["accepted_moves"]),
+                        fontsize=7,
+                    )
+        axis.set_title(next(
+            item["dataset_label"]
+            for item in trials
+            if item["dataset"] == dataset
+        ))
+        axis.set_xlabel("max_iters")
+        axis.set_ylabel("Accepted moves")
+        axis.grid(alpha=0.25)
+    axes[-1].legend(fontsize=7, loc="best")
+    figure.savefig(paths["budget_convergence"], dpi=180)
+    plt.close(figure)
+
+    figure, axes = plt.subplots(1, 3, figsize=(13, 5), constrained_layout=True)
+    for axis, dataset in zip(axes, DATASET_KEYS):
+        rows = [
+            item for item in trials if item["dataset"] == dataset
+        ]
+        labels = [
+            f'{item["strategy_key"]} / {item["max_iters"]}'
+            for item in rows
+        ]
+        positions = np.arange(len(rows))
+        axis.barh(
+            positions,
+            [item["elapsed_seconds"] for item in rows],
+            color="#666666",
+        )
+        axis.set_yticks(positions, labels, fontsize=7)
+        axis.invert_yaxis()
+        axis.set_title(rows[0]["dataset_label"])
+        axis.set_xlabel("One observed search run (seconds)")
+        axis.grid(axis="x", alpha=0.25)
+    figure.savefig(paths["runtime"], dpi=180)
+    plt.close(figure)
+    return paths
+
+
+REPORT_SECTIONS = (
+    "Purpose and recommendation",
+    "Method and datasets",
+    "Parameter choices",
+    "Original dataset",
+    "Moderate stagger",
+    "Wide stagger",
+    "Cross-dataset comparison",
+    "Runtime and convergence",
+    "Limitations",
+    "Practical recommendation and reproduction",
+)
+
+
+def _best_for_dataset(
+    payload: dict[str, object],
+    dataset: str,
+) -> dict[str, object]:
+    return min(
+        (item for item in payload["trials"] if item["dataset"] == dataset),
+        key=lambda item: (
+            item["dataset_rank"],
+            item["max_iters"],
+            item["elapsed_seconds"],
+        ),
+    )
+
+
+def _add_table(
+    document: Document,
+    headers: tuple[str, ...],
+    rows: list[tuple[object, ...]],
+) -> None:
+    table = document.add_table(rows=1, cols=len(headers))
+    table.style = "Table Grid"
+    for index, header in enumerate(headers):
+        table.rows[0].cells[index].text = header
+    for values in rows:
+        cells = table.add_row().cells
+        for index, value in enumerate(values):
+            cells[index].text = str(value)
+
+
+def build_report(
+    payload: dict[str, object],
+    charts: dict[str, Path],
+    output_path: Path,
+) -> None:
+    document = Document()
+    document.styles["Normal"].font.name = "Calibri"
+    document.styles["Normal"].font.size = Pt(11)
+    document.add_heading("VN priority hyperparameter analysis", 0)
+    shared = payload["recommendations"]["shared"]
+    strategy_labels = {
+        strategy.key: strategy.label
+        for strategy in STRATEGIES
+    }
+    shared_label = strategy_labels[shared["strategy_key"]]
+    trials = payload["trials"]
+    ties = []
+    for dataset in DATASET_KEYS:
+        for strategy in STRATEGIES:
+            rows = {
+                item["max_iters"]: item
+                for item in trials
+                if item["dataset"] == dataset
+                and item["strategy_key"] == strategy.key
+            }
+            if (
+                400 in rows
+                and 800 in rows
+                and rows[400]["lexicographic_score"]
+                == rows[800]["lexicographic_score"]
+            ):
+                ties.append(f"{rows[400]['dataset_label']} / {strategy.label}")
+    tie_examples = "; ".join(ties)
+    exhausted_count = sum(
+        item["stop_reason"] == "local_exhaustion"
+        for item in trials
+    )
+    capped_count = len(trials) - exhausted_count
+    observed_times = [item["elapsed_seconds"] for item in trials]
+
+    section_text = {
+        "Purpose and recommendation": (
+            (
+                "This study asks a practical configuration question: which "
+                "variable-neighbourhood shift ladder and iteration budget should "
+                "the project use for its priority-based heavy-maintenance "
+                "optimiser? It compares four deliberately grounded ladders at "
+                "200, 400 and 800 outer-loop iterations on three saved forecast "
+                "states. The optimiser, maintenance rules and selection policy "
+                "are unchanged, so the comparison isolates only those two "
+                "hyperparameters."
+            ),
+            (
+                f"The cross-dataset recommendation is {shared_label} with "
+                f"max_iters={shared['max_iters']}. This is a practical choice, "
+                "not a claim that one run proved universal superiority. Several "
+                "400- and 800-iteration results are exactly tied on the complete "
+                "lexicographic quality score. In those cases 400 is selected by "
+                "the approved lower-budget tie-break, because spending the extra "
+                "iterations did not improve the endpoint. Each timing is one "
+                "observed run, while quality is deterministic for the fixed "
+                "inputs."
+            ),
+        ),
+        "Method and datasets": (
+            (
+                "The matrix contains 36 trials: three datasets multiplied by "
+                "four ordered shift strategies and three iteration budgets. "
+                "Every trial begins from a fresh deep copy of its dataset. The "
+                "quality window is 21 January 2026 through 18 January 2038, "
+                "inclusive. Events outside that reporting window remain in the "
+                "full model so that overlaps, sequence rules and due-date resets "
+                "are still checked across the complete maintenance horizon."
+            ),
+            (
+                "The original workbook supplies the unstaggered starting point. "
+                "The moderate- and wide-stagger workbooks are loaded with their "
+                "saved opening due clocks and sequence positions; reconstructing "
+                "those values from the spreadsheets alone would describe a "
+                "different maintenance state. Checks already commenced before "
+                "the reporting window are frozen. After each search, the endpoint "
+                "is replayed through the production rule validator and its daily "
+                "availability is independently rebuilt from aircraft occupancy "
+                "masks."
+            ),
+            (
+                "Quality is ordered lexicographically: maximise minimum fleet "
+                "availability first, then minimise population standard deviation, "
+                "then maximise mean availability. A gain in smoothness or mean "
+                "cannot compensate for losing one aircraft from the minimum. "
+                "Within each dataset, exact score ties share a competition rank. "
+                "Runtime only resolves ties after quality, rank and budget rules; "
+                "it never outranks schedule quality."
+            ),
+        ),
+        "Parameter choices": (
+            (
+                "The earlier tuned baseline uses four half-step neighbourhoods, "
+                "ending with (-3, -1, 1, 3). The current live ladder instead uses "
+                "seven symmetric pairs from ±56 down to ±1. Dense pairs adds ±21 "
+                "while retaining a paired structure, and the fourth strategy adds "
+                "an initial ±42 level to the earlier baseline. These alternatives "
+                "test whether broad first moves, denser intermediate moves or the "
+                "historical mixed-width levels help the deterministic search."
+            ),
+            (
+                "At each outer pass, the search examines shift sets in their "
+                "listed order. Within one shift set it inspects maintenance "
+                "priority levels from worst availability upward, stops at the "
+                "first level containing an improving candidate, and accepts that "
+                "level's best lexicographic candidate. Only one move can be "
+                "accepted per pass. A pass with no improvement records local "
+                "exhaustion; otherwise the run stops when its iteration budget "
+                "is consumed."
+            ),
+            (
+                "The 200 budget is a deliberately short run, 400 is the live "
+                "default, and 800 is a convergence check. There are no random "
+                "seeds, selection-policy variants or repeated quality runs. This "
+                "keeps the experiment interpretable: endpoint differences come "
+                "from the ordered shifts and available number of passes rather "
+                "than from changing several optimiser mechanisms at once."
+            ),
+        ),
+        "Cross-dataset comparison": (
+            (
+                "The ranked-quality chart separates the three datasets because "
+                "their starting states differ. The wide-stagger data reaches the "
+                "highest minimum availability, followed by moderate stagger and "
+                "then the original forecast. That ordering must not be described "
+                "as an optimiser gain: staggering changed the input maintenance "
+                "state before this experiment began. The fair comparison is among "
+                "configurations within each panel, using the displayed minimum "
+                "and horizontal standard-deviation position together."
+            ),
+            (
+                f"Across all datasets, the selected shared setting is "
+                f"{shared_label} at 400 iterations. Its ranks provide the best "
+                "approved compromise when one operational setting is required. "
+                "The original dataset nevertheless has a different dataset-level "
+                "winner, showing why a single recommendation should be framed as "
+                "a robust shared choice rather than the winner of every panel. "
+                "Dataset-specific settings remain reasonable when separate "
+                "configuration and governance are acceptable."
+            ),
+            (
+                f"Exact 400/800 ties occurred for: {tie_examples}. These matches "
+                "cover the full score tuple, not merely the minimum availability. "
+                "The 400 configurations therefore win through the lower-budget "
+                "tie-break whenever all earlier quality and rank criteria remain "
+                "equal. This rule avoids presenting an unchanged 800-iteration "
+                "endpoint as additional evidence of quality."
+            ),
+        ),
+        "Runtime and convergence": (
+            (
+                f"Of the 36 searches, {exhausted_count} ended by local exhaustion "
+                f"and {capped_count} reached their iteration cap. Local exhaustion "
+                "means an entire outer pass found no improving candidate under "
+                "any configured shift set. The convergence chart should therefore "
+                "be read with both accepted moves and the 'local' annotations: a "
+                "flat line caused by exhaustion is different from a run that "
+                "simply stopped at its budget."
+            ),
+            (
+                f"Observed search times ranged from {min(observed_times):.2f} to "
+                f"{max(observed_times):.2f} seconds in this environment. Each bar "
+                "is one observed run; it excludes workbook loading, validation, "
+                "charting and report construction. The values are useful for "
+                "describing practical scale, but they are not averages and do not "
+                "support variance, confidence or significance claims. Machine "
+                "load could change a later timing without changing the "
+                "deterministic endpoint."
+            ),
+            (
+                "The exact 400/800 quality ties are the clearest convergence "
+                "signal in this small study. Where both budgets finish at the same "
+                "score and endpoint, 800 adds work without a measured quality "
+                "return. Some 200-iteration runs remain capped and rank lower, so "
+                "200 is not a safe general replacement. Together these observations "
+                "support 400 as a balanced default while preserving 800 as a "
+                "diagnostic budget for future materially different datasets."
+            ),
+        ),
+        "Limitations": (
+            (
+                "This is a descriptive benchmark over three related forecast "
+                "states, not a statistical experiment over independent samples. "
+                "Determinism justifies one quality run per configuration, but one "
+                "observed runtime cannot quantify timing variability. The matrix "
+                "also covers four motivated ladders rather than every possible "
+                "shift sequence, so the selected setting is the best practical "
+                "choice among those tested and is not proof of a global optimum."
+            ),
+            (
+                "The objective summarises daily fleet availability through its "
+                "minimum, population standard deviation and mean. It does not "
+                "represent every operational preference. In particular, the saved "
+                "loose, medium and tight operational scenarios are not enforced "
+                "inside this optimiser. Those scenarios must be assessed "
+                "separately before an optimised schedule is adopted. Dataset "
+                "differences likewise reflect different opening states and cannot "
+                "be attributed solely to the optimiser."
+            ),
+            (
+                "Rule compliance is strong within the implemented maintenance "
+                "model: legal windows, same-aircraft overlap, check sequence and "
+                "due resets are replayed, and availability is independently "
+                "reconstructed. It does not guarantee that source assumptions are "
+                "complete or that unmodelled engineering and resource constraints "
+                "will be satisfied. Recommendations should therefore be reviewed "
+                "with domain owners rather than applied as an automatic production "
+                "change."
+            ),
+        ),
+        "Practical recommendation and reproduction": (
+            (
+                f"When one setting must serve all three forecasts, use "
+                f"{shared_label} with max_iters={shared['max_iters']}. The choice "
+                "keeps the live wide-to-fine search behaviour and avoids paying "
+                "for 800 iterations where 400 and 800 are exactly tied. If each "
+                "dataset may be configured separately, use its rank-one result "
+                "from the preceding sections, while retaining the same validation "
+                "and change-control process."
+            ),
+            (
+                "Treat 400 as a default rather than a permanent constant. Rerun "
+                "this deterministic matrix when maintenance rules, fleet size, "
+                "opening clocks, reporting dates or the production selection "
+                "policy materially change. Keep runtime secondary to quality, and "
+                "retain the endpoint hashes so that repeated runs can confirm "
+                "deterministic equality. Do not infer extra confidence by "
+                "repeating unchanged deterministic quality runs."
+            ),
+            (
+                "From the repository root, reproduce the study with: python3 "
+                "analysis/vn_hyperparameter_analysis.py. The command loads the "
+                "three approved inputs, runs the exact 36-trial matrix, validates "
+                "all endpoints, and publishes JSON, CSV, three charts and this "
+                "report only after the complete set succeeds. The production "
+                "optimiser and source workbooks are not rewritten."
+            ),
+        ),
+    }
+    dataset_sections = {
+        "Original dataset": "original",
+        "Moderate stagger": "moderate",
+        "Wide stagger": "wide",
+    }
+
+    for index, heading in enumerate(REPORT_SECTIONS):
+        if index:
+            document.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
+        document.add_heading(heading, level=1)
+        if heading in dataset_sections:
+            dataset = dataset_sections[heading]
+            best = _best_for_dataset(payload, dataset)
+            same_strategy_800 = next(
+                (
+                    item
+                    for item in trials
+                    if item["dataset"] == dataset
+                    and item["strategy_key"] == best["strategy_key"]
+                    and item["max_iters"] == 800
+                ),
+                None,
+            )
+            exact_800_tie = (
+                same_strategy_800 is not None
+                and same_strategy_800["lexicographic_score"]
+                == best["lexicographic_score"]
+            )
+            document.add_paragraph(
+                f"For {best['dataset_label']}, the reported winner is "
+                f"{best['strategy_label']} at max_iters={best['max_iters']}. "
+                f"It records minimum availability {best['min_availability']}, "
+                f"population standard deviation {best['availability_std']:.6f}, "
+                f"and mean availability {best['mean_availability']:.6f}. The "
+                "minimum is considered first, so lower-ranked rows with a smoother "
+                "profile cannot displace it if they lose minimum availability."
+            )
+            document.add_paragraph(
+                f"The run accepted {best['accepted_moves']} moves over "
+                f"{best['outer_passes']} outer passes and stopped by "
+                f"{best['stop_reason'].replace('_', ' ')}. "
+                + (
+                    "Its 800-iteration counterpart has the exact same "
+                    "lexicographic score. The 400 result is therefore selected by "
+                    "the lower-budget tie-break, not because 400 produced a "
+                    "singularly stronger endpoint."
+                    if exact_800_tie
+                    else
+                    "No exact 800-iteration tie applies to this selected row; its "
+                    "rank follows directly from the measured quality ordering and "
+                    "the approved tie-break sequence."
+                )
+            )
+            document.add_paragraph(
+                "The table keeps all twelve configurations visible so that the "
+                "recommendation is auditable. Equal competition ranks indicate "
+                "identical full score tuples. Runtime is intentionally omitted "
+                "from the main quality columns because it is only a late "
+                "tie-breaker after dataset rank, worst rank and budget."
+            )
+            ranked = sorted(
+                (
+                    item
+                    for item in payload["trials"]
+                    if item["dataset"] == dataset
+                ),
+                key=lambda item: (
+                    item["dataset_rank"],
+                    item["max_iters"],
+                ),
+            )
+            _add_table(
+                document,
+                ("Rank", "Strategy", "Budget", "Minimum", "Std", "Moves"),
+                [
+                    (
+                        item["dataset_rank"],
+                        item["strategy_label"],
+                        item["max_iters"],
+                        item["min_availability"],
+                        f'{item["availability_std"]:.4f}',
+                        item["accepted_moves"],
+                    )
+                    for item in ranked
+                ],
+            )
+        else:
+            for paragraph in section_text[heading]:
+                document.add_paragraph(paragraph)
+            if heading == "Parameter choices":
+                _add_table(
+                    document,
+                    ("Strategy", "Ordered shift sets"),
+                    [
+                        (
+                            strategy.label,
+                            " | ".join(
+                                ",".join(str(value) for value in level)
+                                for level in strategy.shift_sets
+                            ),
+                        )
+                        for strategy in STRATEGIES
+                    ],
+                )
+
+        if heading == "Cross-dataset comparison":
+            document.add_picture(
+                str(charts["ranked_quality"]),
+                width=Inches(6.4),
+            )
+        elif heading == "Runtime and convergence":
+            document.add_picture(
+                str(charts["budget_convergence"]),
+                width=Inches(6.4),
+            )
+            document.add_picture(
+                str(charts["runtime"]),
+                width=Inches(6.4),
+            )
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    document.save(output_path)
+
+
+ARTIFACT_NAMES = (
+    "results.json",
+    "summary.csv",
+    "ranked-quality.png",
+    "budget-convergence.png",
+    "runtime.png",
+    "vn-hyperparameter-analysis.docx",
+)
+
+
+def validate_generated_outputs(
+    payload: dict[str, object],
+    output_dir: Path,
+) -> None:
+    missing = [
+        name
+        for name in ARTIFACT_NAMES
+        if not (output_dir / name).is_file()
+        or (output_dir / name).stat().st_size == 0
+    ]
+    if missing:
+        raise ValueError(f"Missing or empty artifacts: {', '.join(missing)}")
+    saved = json.loads(
+        (output_dir / "results.json").read_text(encoding="utf-8")
+    )
+    with (output_dir / "summary.csv").open(
+        newline="",
+        encoding="utf-8",
+    ) as handle:
+        rows = list(csv.DictReader(handle))
+    if len(saved["trials"]) != 36 or len(rows) != 36:
+        raise ValueError("JSON and CSV must each contain 36 trials.")
+    expected = {item["trial_key"] for item in payload["trials"]}
+    if {row["trial_key"] for row in rows} != expected:
+        raise ValueError("CSV trial keys differ from JSON trial keys.")
+    if not all(item["rule_compliant"] for item in saved["trials"]):
+        raise ValueError("A saved trial is not rule-compliant.")
+
+
+def publish_outputs(
+    payload: dict[str, object],
+    output_dir: Path = OUTPUT_DIR,
+) -> None:
+    output_dir.parent.mkdir(parents=True, exist_ok=True)
+    transaction = Path(tempfile.mkdtemp(
+        prefix=f".{output_dir.name}-",
+        dir=output_dir.parent,
+    ))
+    staging = transaction / "staged"
+    backup = transaction / "previous"
+    staging.mkdir()
+    try:
+        write_machine_outputs(payload, staging)
+        charts = create_charts(payload["trials"], staging)
+        build_report(
+            payload,
+            charts,
+            staging / "vn-hyperparameter-analysis.docx",
+        )
+        validate_generated_outputs(payload, staging)
+        had_previous = output_dir.exists()
+        if had_previous:
+            os.replace(output_dir, backup)
+        try:
+            os.replace(staging, output_dir)
+        except BaseException:
+            if had_previous and backup.exists():
+                os.replace(backup, output_dir)
+            raise
+    finally:
+        shutil.rmtree(transaction, ignore_errors=True)
+
+
+def main() -> int:
+    inputs = load_study_inputs(ROOT)
+    payload = run_study(inputs)
+    publish_outputs(payload, OUTPUT_DIR)
+    print(f"Wrote 36 validated trials and report to {OUTPUT_DIR}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
