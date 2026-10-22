@@ -10,7 +10,6 @@ from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
-from docx import Document
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -317,69 +316,12 @@ class PresentationOutputTests(unittest.TestCase):
                 self.assertEqual(path.suffix, ".png")
                 self.assertGreater(path.stat().st_size, 1_000)
 
-    def test_report_has_required_sections_charts_and_page_breaks(self):
-        with tempfile.TemporaryDirectory() as directory:
-            folder = Path(directory)
-            charts = study.create_charts(self.payload["trials"], folder)
-            report = folder / "report.docx"
-            study.build_report(self.payload, charts, report)
-            document = Document(report)
-            headings = [
-                paragraph.text
-                for paragraph in document.paragraphs
-                if paragraph.style.name.startswith("Heading")
-            ]
-            self.assertEqual(
-                headings,
-                [
-                    "Purpose and recommendation",
-                    "Method and datasets",
-                    "Parameter choices",
-                    "Original dataset",
-                    "Moderate stagger",
-                    "Wide stagger",
-                    "Cross-dataset comparison",
-                    "Runtime and convergence",
-                    "Limitations",
-                    "Practical recommendation and reproduction",
-                ],
-            )
-            self.assertEqual(len(document.inline_shapes), 3)
-            self.assertEqual(len(document.tables), 4)
-            xml = document._element.xml
-            self.assertEqual(xml.count('w:type="page"'), 9)
-            text_parts = [p.text for p in document.paragraphs]
-            text_parts.extend(
-                cell.text
-                for table in document.tables
-                for row in table.rows
-                for cell in row.cells
-            )
-            text = "\n".join(text_parts)
-            word_count = len(text.split())
-            self.assertGreaterEqual(word_count, 1_800)
-            self.assertLessEqual(word_count, 2_500)
-            lower_text = text.lower()
-            self.assertIn("one observed run", lower_text)
-            self.assertIn("400- and 800-iteration results", lower_text)
-            self.assertIn("exactly tied", lower_text)
-            self.assertIn("lower-budget tie-break", lower_text)
-            self.assertNotIn("statistically significant", lower_text)
-            self.assertNotIn("confidence interval", lower_text)
-
-            section_words = {}
-            current = None
-            for paragraph in document.paragraphs:
-                if paragraph.style.name.startswith("Heading 1"):
-                    current = paragraph.text
-                    section_words[current] = 0
-                elif current:
-                    section_words[current] += len(paragraph.text.split())
-            self.assertEqual(set(section_words), set(headings))
-            self.assertTrue(
-                all(words >= 90 for words in section_words.values()),
-                section_words,
-            )
+    def test_analysis_module_has_no_report_writer(self):
+        self.assertFalse(hasattr(study, "build_report"))
+        self.assertNotIn(
+            "vn-hyperparameter-analysis.docx",
+            study.ARTIFACT_NAMES,
+        )
 
 
 class PublicationTests(unittest.TestCase):
@@ -400,15 +342,15 @@ class PublicationTests(unittest.TestCase):
         ):
             study.run_study(inputs, fail)
 
-    def test_publish_does_not_leave_partial_outputs_on_report_failure(self):
+    def test_publish_does_not_leave_partial_outputs_on_chart_failure(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "published"
             with patch.object(
                 study,
-                "build_report",
-                side_effect=RuntimeError("report failed"),
+                "create_charts",
+                side_effect=RuntimeError("chart failed"),
             ):
-                with self.assertRaisesRegex(RuntimeError, "report failed"):
+                with self.assertRaisesRegex(RuntimeError, "chart failed"):
                     study.publish_outputs(self.payload, output)
             self.assertFalse(output.exists())
 
@@ -456,7 +398,7 @@ class PublicationTests(unittest.TestCase):
                 [],
             )
 
-    def test_publish_writes_exactly_six_valid_artifacts(self):
+    def test_publish_writes_exactly_five_analysis_artifacts(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "published"
             study.publish_outputs(self.payload, output)
@@ -468,10 +410,24 @@ class PublicationTests(unittest.TestCase):
                     "ranked-quality.png",
                     "budget-convergence.png",
                     "runtime.png",
-                    "vn-hyperparameter-analysis.docx",
                 },
             )
             study.validate_generated_outputs(self.payload, output)
+
+    def test_publish_preserves_existing_static_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "published"
+            output.mkdir()
+            report = output / "vn-hyperparameter-analysis.docx"
+            report.write_bytes(b"existing static report")
+
+            study.publish_outputs(self.payload, output)
+
+            self.assertEqual(report.read_bytes(), b"existing static report")
+            self.assertEqual(
+                {path.name for path in output.iterdir()},
+                set(study.ARTIFACT_NAMES) | {report.name},
+            )
 
     def test_main_runs_study_and_publishes_outputs(self):
         with (
