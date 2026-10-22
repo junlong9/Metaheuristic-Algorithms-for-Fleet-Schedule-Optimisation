@@ -1,0 +1,51 @@
+{
+  "results_file_sha256": "9357845adb7b43e1f5e3c5f7061b3cc76cdc751d8c5ecc536a7b2829afc78c5c",
+  "algorithm_file_sha256": "2825c2ff325f55b9842840cc7c70a8f79b881bcb048e6af98983672c35d647ac",
+  "validation": "Independent daily occupancy and clock replay; best-so-far, boundaries, dependency groups and both targets checked",
+  "runs": [
+    {
+      "method": "priority",
+      "seed": null,
+      "valid": true,
+      "busy_minima": [
+        20,
+        20
+      ],
+      "outside_minimum": 15,
+      "maximum_D_early_days": 222
+    },
+    {
+      "method": "annealing",
+      "seed": 1,
+      "valid": true,
+      "busy_minima": [
+        20,
+        20
+      ],
+      "outside_minimum": 15,
+      "maximum_D_early_days": 222
+    },
+    {
+      "method": "annealing",
+      "seed": 2,
+      "valid": true,
+      "busy_minima": [
+        20,
+        20
+      ],
+      "outside_minimum": 16,
+      "maximum_D_early_days": 222
+    },
+    {
+      "method": "annealing",
+      "seed": 3,
+      "valid": true,
+      "busy_minima": [
+        20,
+        20
+      ],
+      "outside_minimum": 16,
+      "maximum_D_early_days": 130
+    }
+  ]
+}

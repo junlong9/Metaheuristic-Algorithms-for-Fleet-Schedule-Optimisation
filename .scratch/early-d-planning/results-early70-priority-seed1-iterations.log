@@ -1,0 +1,578 @@
+Shortfall = total aircraft-days below the busy-period requirements (0 means both are met).
+Search score matches priority simulated annealing: higher minimum availability, then lower standard deviation, then higher mean.
+Initial score: shortfall=172, D early=743 days, outside min=15, std=2.047
+
+Iteration 1
+Current score: shortfall=172, D early=743 days, outside min=15, std=2.047
+Best neighbour score: shortfall=135, D early=736 days, outside min=16, std=1.921
+Best move: aircraft=Blue-1, check=D, start from 2033-10-07 to 2033-12-15
+Best move: aircraft=Blue-4, check=D, start from 2033-01-21 to 2032-11-20
+Improved.
+Busy-period minima: [16, 16] (required: [20, 20])
+
+Iteration 2
+Current score: shortfall=135, D early=736 days, outside min=16, std=1.921
+Best neighbour score: shortfall=92, D early=727 days, outside min=16, std=1.869
+Best move: aircraft=Blue-7, check=D, start from 2033-10-01 to 2033-12-04
+Best move: aircraft=Aircraft 17, check=D, start from 2033-01-24 to 2032-11-30
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 3
+Current score: shortfall=92, D early=727 days, outside min=16, std=1.869
+Best neighbour score: shortfall=91, D early=737 days, outside min=16, std=1.846
+Best move: aircraft=Aircraft 15, check=D, start from 2033-02-27 to 2033-01-20
+Best move: aircraft=Aircraft 22, check=D, start from 2033-10-29 to 2033-11-26
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 4
+Current score: shortfall=91, D early=737 days, outside min=16, std=1.846
+Best neighbour score: shortfall=91, D early=737 days, outside min=17, std=1.834
+Best move: aircraft=Blue-5, check=C, start from 2029-09-18 to 2029-08-21
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 5
+Current score: shortfall=91, D early=737 days, outside min=17, std=1.834
+Best neighbour score: shortfall=91, D early=737 days, outside min=17, std=1.815
+Best move: aircraft=Blue-7, check=C, start from 2029-10-28 to 2029-11-25
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 6
+Current score: shortfall=91, D early=737 days, outside min=17, std=1.815
+Best neighbour score: shortfall=91, D early=829 days, outside min=17, std=1.796
+Best move: aircraft=Blue-9, check=D, start from 2032-12-06 to 2032-11-10
+Best move: aircraft=Aircraft 24, check=D, start from 2033-04-12 to 2033-02-05
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 7
+Current score: shortfall=91, D early=829 days, outside min=17, std=1.796
+Best neighbour score: shortfall=91, D early=746 days, outside min=17, std=1.782
+Best move: aircraft=Aircraft 20, check=D, start from 2034-03-21 to 2034-04-30
+Best move: aircraft=Aircraft 12, check=D, start from 2034-02-15 to 2034-03-30
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 8
+Current score: shortfall=91, D early=746 days, outside min=17, std=1.782
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.773
+Best move: aircraft=Aircraft 18, check=D, start from 2034-07-19 to 2034-08-16
+Best move: aircraft=Blue-3, check=D, start from 2033-11-09 to 2033-12-03
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 9
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.773
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.764
+Best move: aircraft=Blue-3, check=C, start from 2038-01-27 to 2038-02-24
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 10
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.764
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.756
+Best move: aircraft=Blue-4, check=C, start from 2037-03-25 to 2037-02-25
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 11
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.756
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.747
+Best move: aircraft=Blue-3, check=B, start from 2036-02-08 to 2036-03-07
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 12
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.747
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.739
+Best move: aircraft=Blue-5, check=B, start from 2031-11-13 to 2031-10-16
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 13
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.739
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.731
+Best move: aircraft=Blue-4, check=B, start from 2030-12-13 to 2031-01-10
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 14
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.731
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.725
+Best move: aircraft=Blue-7, check=B, start from 2031-12-21 to 2032-01-18
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 15
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.725
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.718
+Best move: aircraft=Aircraft 23, check=B, start from 2028-03-08 to 2028-04-05
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 16
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.718
+Best neighbour score: shortfall=91, D early=694 days, outside min=17, std=1.713
+Best move: aircraft=Blue-4, check=B, start from 2026-11-25 to 2026-12-23
+Improved.
+Busy-period minima: [17, 17] (required: [20, 20])
+
+Iteration 17
+Current score: shortfall=91, D early=694 days, outside min=17, std=1.713
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.708
+Best move: aircraft=Aircraft 13, check=D, start from 2033-10-07 to 2033-10-16
+Best move: aircraft=Blue-6, check=D, start from 2033-06-05 to 2033-07-03
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 18
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.708
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.703
+Best move: aircraft=Aircraft 22, check=C, start from 2029-10-09 to 2029-11-06
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 19
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.703
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.698
+Best move: aircraft=Aircraft 24, check=C, start from 2029-02-26 to 2029-02-12
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 20
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.698
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.693
+Best move: aircraft=Aircraft 14, check=B, start from 2035-08-10 to 2035-07-13
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 21
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.693
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.689
+Best move: aircraft=Blue-9, check=C, start from 2037-03-10 to 2037-02-10
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 22
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.689
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.684
+Best move: aircraft=Aircraft 15, check=C, start from 2037-05-23 to 2037-04-25
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 23
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.684
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.680
+Best move: aircraft=Blue-4, check=B, start from 2026-12-23 to 2027-01-20
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 24
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.680
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.675
+Best move: aircraft=Aircraft 12, check=B, start from 2028-02-25 to 2028-01-28
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 25
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.675
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.671
+Best move: aircraft=Aircraft 15, check=C, start from 2037-04-25 to 2037-03-28
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 26
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.671
+Best neighbour score: shortfall=89, D early=657 days, outside min=17, std=1.667
+Best move: aircraft=Aircraft 12, check=C, start from 2030-02-20 to 2030-01-23
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 27
+Current score: shortfall=89, D early=657 days, outside min=17, std=1.667
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.664
+Best move: aircraft=Blue-8, check=D, start from 2033-03-06 to 2033-03-20
+Best move: aircraft=Blue-5, check=D, start from 2033-09-28 to 2033-08-31
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 28
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.664
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.660
+Best move: aircraft=Blue-2, check=B, start from 2035-09-24 to 2035-10-22
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 29
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.660
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.657
+Best move: aircraft=Aircraft 15, check=A, start from 2032-05-20 to 2032-06-17
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 30
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.657
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.653
+Best move: aircraft=Blue-10, check=C, start from 2037-09-30 to 2037-09-16
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 31
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.653
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.650
+Best move: aircraft=Blue-3, check=C, start from 2038-02-24 to 2038-03-10
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 32
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.650
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.646
+Best move: aircraft=Blue-9, check=C, start from 2037-02-10 to 2037-01-13
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 33
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.646
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.643
+Best move: aircraft=Aircraft 22, check=C, start from 2038-01-20 to 2038-02-17
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 34
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.643
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.640
+Best move: aircraft=Blue-7, check=A, start from 2031-01-06 to 2031-02-03
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 35
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.640
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.636
+Best move: aircraft=Blue-7, check=B, start from 2032-01-18 to 2032-02-01
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 36
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.636
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.633
+Best move: aircraft=Aircraft 24, check=B, start from 2027-03-11 to 2027-02-11
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 37
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.633
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.631
+Best move: aircraft=Aircraft 22, check=A, start from 2028-11-24 to 2028-11-10
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 38
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.631
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.628
+Best move: aircraft=Aircraft 14, check=A, start from 2032-06-07 to 2032-06-21
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 39
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.628
+Best neighbour score: shortfall=103, D early=671 days, outside min=17, std=1.626
+Best move: aircraft=Aircraft 21, check=C, start from 2037-10-31 to 2037-11-14
+Improved.
+Busy-period minima: [17, 18] (required: [20, 20])
+
+Iteration 40
+Current score: shortfall=103, D early=671 days, outside min=17, std=1.626
+Best neighbour score: shortfall=89, D early=671 days, outside min=17, std=1.623
+Best move: aircraft=Aircraft 12, check=A, start from 2033-05-09 to 2033-04-11
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 41
+Current score: shortfall=89, D early=671 days, outside min=17, std=1.623
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.621
+Best move: aircraft=Aircraft 19, check=D, start from 2033-05-20 to 2033-05-06
+Best move: aircraft=Aircraft 23, check=D, start from 2034-04-12 to 2034-04-19
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 42
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.621
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.619
+Best move: aircraft=Aircraft 18, check=B, start from 2032-10-06 to 2032-09-22
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 43
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.619
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.616
+Best move: aircraft=Aircraft 24, check=B, start from 2035-06-11 to 2035-05-14
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 44
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.616
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.614
+Best move: aircraft=Blue-1, check=B, start from 2027-10-31 to 2027-11-14
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 45
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.614
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.612
+Best move: aircraft=Aircraft 23, check=C, start from 2030-03-01 to 2030-03-29
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 46
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.612
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.609
+Best move: aircraft=Blue-8, check=B, start from 2031-05-14 to 2031-04-16
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 47
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.609
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.606
+Best move: aircraft=Blue-8, check=A, start from 2032-05-13 to 2032-04-15
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 48
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.606
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.604
+Best move: aircraft=Blue-4, check=C, start from 2037-02-25 to 2037-02-11
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 49
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.604
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.602
+Best move: aircraft=Aircraft 11, check=C, start from 2037-06-05 to 2037-05-08
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 50
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.602
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.600
+Best move: aircraft=Aircraft 17, check=C, start from 2037-04-04 to 2037-03-07
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 51
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.600
+Best neighbour score: shortfall=94, D early=678 days, outside min=17, std=1.597
+Best move: aircraft=Blue-9, check=C, start from 2037-01-13 to 2037-01-06
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 52
+Current score: shortfall=94, D early=678 days, outside min=17, std=1.597
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.595
+Best move: aircraft=Aircraft 18, check=D, start from 2034-08-16 to 2034-08-30
+Best move: aircraft=Aircraft 21, check=D, start from 2033-08-19 to 2033-08-12
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 53
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.595
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.593
+Best move: aircraft=Aircraft 16, check=A, start from 2029-11-26 to 2029-12-24
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 54
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.593
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.591
+Best move: aircraft=Aircraft 22, check=A, start from 2030-12-18 to 2031-01-15
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 55
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.591
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.588
+Best move: aircraft=Blue-4, check=B, start from 2031-01-10 to 2031-02-07
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 56
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.588
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.586
+Best move: aircraft=Aircraft 11, check=B, start from 2027-04-13 to 2027-04-27
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 57
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.586
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.584
+Best move: aircraft=Blue-8, check=B, start from 2035-06-04 to 2035-06-18
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 58
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.584
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.582
+Best move: aircraft=Blue-2, check=A, start from 2034-10-27 to 2034-11-24
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 59
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.582
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.581
+Best move: aircraft=Blue-3, check=A, start from 2035-03-07 to 2035-03-21
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 60
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.581
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.579
+Best move: aircraft=Blue-8, check=A, start from 2032-04-15 to 2032-04-01
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 61
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.579
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.577
+Best move: aircraft=Blue-10, check=B, start from 2027-06-15 to 2027-07-13
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 62
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.577
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.575
+Best move: aircraft=Blue-10, check=B, start from 2027-07-13 to 2027-07-27
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 63
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.575
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.573
+Best move: aircraft=Aircraft 16, check=A, start from 2036-01-21 to 2036-01-14
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 64
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.573
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.572
+Best move: aircraft=Blue-10, check=C, start from 2029-07-08 to 2029-07-22
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 65
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.572
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.570
+Best move: aircraft=Blue-3, check=B, start from 2027-09-27 to 2027-10-04
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 66
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.570
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.569
+Best move: aircraft=Aircraft 12, check=B, start from 2028-01-28 to 2028-01-21
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 67
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.569
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.567
+Best move: aircraft=Aircraft 15, check=B, start from 2027-02-14 to 2027-01-31
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 68
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.567
+Best neighbour score: shortfall=94, D early=671 days, outside min=17, std=1.566
+Best move: aircraft=Aircraft 16, check=A, start from 2033-12-26 to 2034-01-09
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 69
+Current score: shortfall=94, D early=671 days, outside min=17, std=1.566
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.565
+Best move: aircraft=Aircraft 21, check=D, start from 2033-08-12 to 2033-08-05
+Best move: aircraft=Blue-3, check=D, start from 2033-12-03 to 2033-11-26
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 70
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.565
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.564
+Best move: aircraft=Aircraft 24, check=C, start from 2029-02-12 to 2029-02-09
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 71
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.564
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.563
+Best move: aircraft=Aircraft 24, check=C, start from 2029-02-09 to 2029-02-06
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 72
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.563
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.561
+Best move: aircraft=Blue-9, check=B, start from 2030-12-12 to 2031-01-09
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 73
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.561
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.560
+Best move: aircraft=Blue-7, check=B, start from 2032-02-01 to 2032-02-08
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 74
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.560
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.559
+Best move: aircraft=Blue-3, check=A, start from 2031-01-07 to 2030-12-31
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 75
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.559
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.558
+Best move: aircraft=Aircraft 22, check=B, start from 2036-01-28 to 2036-01-21
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 76
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.558
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.557
+Best move: aircraft=Aircraft 24, check=A, start from 2036-06-10 to 2036-05-13
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 77
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.557
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.556
+Best move: aircraft=Blue-3, check=C, start from 2038-03-10 to 2038-03-17
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 78
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.556
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.555
+Best move: aircraft=Blue-5, check=C, start from 2029-08-21 to 2029-08-14
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 79
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.555
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.554
+Best move: aircraft=Aircraft 13, check=C, start from 2029-09-20 to 2029-09-13
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Iteration 80
+Current score: shortfall=94, D early=685 days, outside min=18, std=1.554
+Best neighbour score: shortfall=94, D early=685 days, outside min=18, std=1.553
+Best move: aircraft=Aircraft 16, check=A, start from 2029-12-24 to 2029-12-31
+Improved.
+Busy-period minima: [18, 18] (required: [20, 20])
+
+Time limit reached.
+Best score: shortfall=94, D early=685 days, outside min=18, std=1.553
+Best busy-period minima: [18, 18]

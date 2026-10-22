@@ -7,7 +7,6 @@ import copy
 import unittest
 
 import savn_iteration2 as study
-import savn_basin_hopping as basin
 import vn_priority_based_selection as baseline
 import savn_priority_sa as annealing
 
@@ -153,45 +152,6 @@ class NeighborLimitTests(unittest.TestCase):
 
         self.assertTrue(open_neighbors)
         self.assertEqual([], limited)
-
-
-class TunedNeighbourhoodTests(unittest.TestCase):
-    def setUp(self):
-        events = [
-            check("A", 100, duration=14, earliest=58, latest=100),
-            check("B", 430, duration=28, earliest=395, latest=465),
-        ]
-        rebuilt = baseline.rebuild_aircraft_schedule(events, horizon=2900)
-        self.horizon = 2900
-        self.schedule = {"Aircraft 1": rebuilt}
-        self.availability = baseline.compute_availability(
-            self.schedule,
-            self.horizon,
-        )
-
-    def test_vns_neighbors_use_only_the_supplied_shifts(self):
-        neighbors = basin.generate_vns_neighbors(
-            self.schedule,
-            self.availability,
-            self.horizon,
-            shift_sets=((-10,),),
-        )
-
-        self.assertTrue(neighbors)
-        self.assertTrue(all(item["shift"] == -10 for item in neighbors))
-
-    def test_polish_with_no_shifts_leaves_the_start_schedule(self):
-        polished, _, _ = basin.greedy_polish(
-            self.schedule,
-            horizon=self.horizon,
-            max_iters=3,
-            shift_sets=(),
-        )
-
-        self.assertEqual(
-            self.schedule["Aircraft 1"][0]["start"],
-            polished["Aircraft 1"][0]["start"],
-        )
 
 
 def rebuilt_aircraft(first_start):

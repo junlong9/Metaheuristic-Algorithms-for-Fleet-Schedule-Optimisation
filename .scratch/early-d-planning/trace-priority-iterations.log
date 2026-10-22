@@ -1,0 +1,326 @@
+
+RUN priority | seed=1 | budget=60s | iteration cap=40 | D early allowance=730 days
+Score maximises, in order: (-busy deficit aircraft-days, -D early days/365, outside minimum - std/100). Higher is better; earlier components take priority.
+Moves rebuild later checks; positive shifts mean later, negative shifts mean earlier.
+As-loaded reference:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 15/20; shortage 30 days, 111 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 15/20; shortage 25 days, 61 aircraft-days
+  Outside minimum 15; global minimum 15; mean 21.713010; std 1.949767; total D earliness 743 days
+Initial rebuilt schedule | score=(-172.0, -2.0356164383561643, 14.979526278805565):
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 15/20; shortage 30 days, 111 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 15/20; shortage 25 days, 61 aircraft-days
+  Outside minimum 15; global minimum 15; mean 21.606784; std 2.047372; total D earliness 743 days
+
+Iteration 1 | elapsed 0.969s | feasible neighbours=2171 | improving=959
+  Current score: (-172.0, -2.0356164383561643, 14.979526278805565)
+  Best neighbour score: (-112.0, -2.208219178082192, 14.979810649252604)
+  Accepted improving | score (-172.0, -2.0356164383561643, 14.979526278805565) -> (-112.0, -2.208219178082192, 14.979810649252604)
+  Blue-4: first D placement D 2033-01-21 -> 2032-12-22 (-30 days); due 2033-01-29
+  Aircraft 17: first D placement D 2033-01-24 -> 2032-12-22 (-33 days); due 2033-02-08
+    Aircraft 17 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-4 rebuilt check counts A/B/C/D: [6, 4, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 15 -> 17/20; shortage 30 days, 51 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 15 -> 15/20; shortage 25 days, 61 aircraft-days
+  Outside minimum 15 -> 15; global minimum 15; mean 21.613033; std 2.018935; total D earliness 806 days
+  Best-so-far UPDATED | score=(-112.0, -2.208219178082192, 14.979810649252604); busy minima=[17, 15]; outside minimum=15; D earliness=806 days
+
+Iteration 2 | elapsed 3.594s | feasible neighbours=2149 | improving=919
+  Current score: (-112.0, -2.208219178082192, 14.979810649252604)
+  Best neighbour score: (-64.0, -2.6164383561643834, 13.979631272857745)
+  Accepted improving | score (-112.0, -2.208219178082192, 14.979810649252604) -> (-64.0, -2.6164383561643834, 13.979631272857745)
+  Aircraft 15: first D placement D 2033-02-27 -> 2032-12-22 (-67 days); due 2033-03-31
+  Aircraft 11: first D placement D 2033-03-14 -> 2032-12-22 (-82 days); due 2033-05-01
+    Aircraft 11 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Aircraft 15 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 17 -> 19/20; shortage 3 days, 3 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 15 -> 15/20; shortage 25 days, 61 aircraft-days
+  Outside minimum 15 -> 14; global minimum 14; mean 21.613033; std 2.036873; total D earliness 955 days
+  Best-so-far UPDATED | score=(-64.0, -2.6164383561643834, 13.979631272857745); busy minima=[19, 15]; outside minimum=14; D earliness=955 days
+
+Iteration 3 | elapsed 6.391s | feasible neighbours=2133 | improving=919
+  Current score: (-64.0, -2.6164383561643834, 13.979631272857745)
+  Best neighbour score: (-23.0, -3.7753424657534245, 11.978305956334625)
+  Accepted improving | score (-64.0, -2.6164383561643834, 13.979631272857745) -> (-23.0, -3.7753424657534245, 11.978305956334625)
+  Blue-10: first D placement D 2033-07-21 -> 2032-12-22 (-211 days); due 2033-08-01
+  Blue-2: first D placement D 2033-07-22 -> 2032-12-22 (-212 days); due 2033-08-02
+    Blue-10 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-2 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 19 -> 19/20; shortage 3 days, 3 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 15 -> 17/20; shortage 13 days, 20 aircraft-days
+  Outside minimum 14 -> 12; global minimum 12; mean 21.613033; std 2.169404; total D earliness 1378 days
+  Best-so-far UPDATED | score=(-23.0, -3.7753424657534245, 11.978305956334625); busy minima=[19, 17]; outside minimum=12; D earliness=1378 days
+
+Iteration 4 | elapsed 9.360s | feasible neighbours=2117 | improving=885
+  Current score: (-23.0, -3.7753424657534245, 11.978305956334625)
+  Best neighbour score: (-5.0, -3.5506849315068494, 11.978633495000091)
+  Accepted improving | score (-23.0, -3.7753424657534245, 11.978305956334625) -> (-5.0, -3.5506849315068494, 11.978633495000091)
+  Blue-7: first D placement D 2033-10-01 -> 2033-12-04 (+64 days); due 2033-12-04
+  Blue-5: first D placement D 2033-09-28 -> 2033-10-16 (+18 days); due 2033-10-16
+    Blue-5 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-7 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 19 -> 19/20; shortage 3 days, 3 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 17 -> 19/20; shortage 2 days, 2 aircraft-days
+  Outside minimum 12 -> 12; global minimum 12; mean 21.613033; std 2.136650; total D earliness 1296 days
+  Best-so-far UPDATED | score=(-5.0, -3.5506849315068494, 11.978633495000091); busy minima=[19, 19]; outside minimum=12; D earliness=1296 days
+
+Iteration 5 | elapsed 12.079s | feasible neighbours=2087 | improving=868
+  Current score: (-5.0, -3.5506849315068494, 11.978633495000091)
+  Best neighbour score: (-2.0, -3.5506849315068494, 11.978651258193851)
+  Accepted improving | score (-5.0, -3.5506849315068494, 11.978633495000091) -> (-2.0, -3.5506849315068494, 11.978651258193851)
+  Aircraft 12: smaller check repair B 2032-04-22 -> 2032-04-08 (-14 days); due 2032-05-14
+    Aircraft 12 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 19 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 19 -> 19/20; shortage 2 days, 2 aircraft-days
+  Outside minimum 12 -> 12; global minimum 12; mean 21.613033; std 2.134874; total D earliness 1296 days
+  Best-so-far UPDATED | score=(-2.0, -3.5506849315068494, 11.978651258193851); busy minima=[20, 19]; outside minimum=12; D earliness=1296 days
+
+Iteration 6 | elapsed 14.766s | feasible neighbours=2084 | improving=837
+  Current score: (-2.0, -3.5506849315068494, 11.978651258193851)
+  Best neighbour score: (-0.0, -3.336986301369863, 11.9788059564591)
+  Accepted improving | score (-2.0, -3.5506849315068494, 11.978651258193851) -> (-0.0, -3.336986301369863, 11.9788059564591)
+  Blue-1: first D placement D 2033-10-07 -> 2033-12-15 (+69 days); due 2033-12-15
+  Aircraft 13: first D placement D 2033-10-07 -> 2033-10-16 (+9 days); due 2033-10-16
+    Aircraft 13 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-1 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 19 -> 21/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 12 -> 12; global minimum 12; mean 21.613925; std 2.119404; total D earliness 1218 days
+  Best-so-far UPDATED | score=(-0.0, -3.336986301369863, 11.9788059564591); busy minima=[20, 21]; outside minimum=12; D earliness=1218 days
+
+Iteration 7 | elapsed 17.500s | feasible neighbours=2071 | improving=818
+  Current score: (-0.0, -3.336986301369863, 11.9788059564591)
+  Best neighbour score: (-0.0, -2.5342465753424657, 12.979920882304178)
+  Accepted improving | score (-0.0, -3.336986301369863, 11.9788059564591) -> (-0.0, -2.5342465753424657, 12.979920882304178)
+  Blue-2: first D placement D 2032-12-22 -> 2033-08-02 (+223 days); due 2033-08-02
+  Aircraft 16: first D placement D 2034-10-11 -> 2034-12-20 (+70 days); due 2034-12-20
+    Aircraft 16 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+    Blue-2 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 21 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 12 -> 13; global minimum 13; mean 21.613925; std 2.007912; total D earliness 925 days
+  Best-so-far UPDATED | score=(-0.0, -2.5342465753424657, 12.979920882304178); busy minima=[20, 20]; outside minimum=13; D earliness=925 days
+
+Iteration 8 | elapsed 20.141s | feasible neighbours=2048 | improving=797
+  Current score: (-0.0, -2.5342465753424657, 12.979920882304178)
+  Best neighbour score: (-0.0, -2.1561643835616437, 12.979831057739869)
+  Accepted improving | score (-0.0, -2.5342465753424657, 12.979920882304178) -> (-0.0, -2.1561643835616437, 12.979831057739869)
+  Blue-6: first D placement D 2033-06-05 -> 2033-08-14 (+70 days); due 2033-08-14
+  Aircraft 18: first D placement D 2034-07-19 -> 2034-09-25 (+68 days); due 2034-09-25
+    Aircraft 18 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+    Blue-6 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 2.016894; total D earliness 787 days
+  Best-so-far UPDATED | score=(-0.0, -2.1561643835616437, 12.979831057739869); busy minima=[20, 20]; outside minimum=13; D earliness=787 days
+
+Iteration 9 | elapsed 22.766s | feasible neighbours=2024 | improving=779
+  Current score: (-0.0, -2.1561643835616437, 12.979831057739869)
+  Best neighbour score: (-0.0, -1.9287671232876713, 12.980037923115916)
+  Accepted improving | score (-0.0, -2.1561643835616437, 12.979831057739869) -> (-0.0, -1.9287671232876713, 12.980037923115916)
+  Aircraft 12: first D placement D 2034-02-15 -> 2034-03-30 (+43 days); due 2034-03-30
+  Aircraft 20: first D placement D 2034-03-21 -> 2034-04-30 (+40 days); due 2034-04-30
+    Aircraft 12 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+    Aircraft 20 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.996208; total D earliness 704 days
+  Best-so-far UPDATED | score=(-0.0, -1.9287671232876713, 12.980037923115916); busy minima=[20, 20]; outside minimum=13; D earliness=704 days
+
+Iteration 10 | elapsed 25.391s | feasible neighbours=2002 | improving=775
+  Current score: (-0.0, -1.9287671232876713, 12.980037923115916)
+  Best neighbour score: (-0.0, -1.7780821917808218, 12.980248084592496)
+  Accepted improving | score (-0.0, -1.9287671232876713, 12.980037923115916) -> (-0.0, -1.7780821917808218, 12.980248084592496)
+  Aircraft 22: first D placement D 2033-10-29 -> 2033-11-26 (+28 days); due 2033-12-15
+  Blue-8: first D placement D 2033-03-06 -> 2033-04-02 (+27 days); due 2033-04-02
+    Aircraft 22 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-8 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.975192; total D earliness 649 days
+  Best-so-far UPDATED | score=(-0.0, -1.7780821917808218, 12.980248084592496); busy minima=[20, 20]; outside minimum=13; D earliness=649 days
+
+Iteration 11 | elapsed 28.172s | feasible neighbours=1992 | improving=766
+  Current score: (-0.0, -1.7780821917808218, 12.980248084592496)
+  Best neighbour score: (-0.0, -1.6684931506849314, 12.98019618028234)
+  Accepted improving | score (-0.0, -1.7780821917808218, 12.980248084592496) -> (-0.0, -1.6684931506849314, 12.98019618028234)
+  Blue-3: first D placement D 2033-11-09 -> 2033-12-03 (+24 days); due 2033-12-03
+  Blue-9: first D placement D 2032-12-06 -> 2032-12-22 (+16 days); due 2033-01-19
+    Blue-3 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-9 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.980382; total D earliness 609 days
+  Best-so-far UPDATED | score=(-0.0, -1.6684931506849314, 12.98019618028234); busy minima=[20, 20]; outside minimum=13; D earliness=609 days
+
+Iteration 12 | elapsed 30.922s | feasible neighbours=1977 | improving=739
+  Current score: (-0.0, -1.6684931506849314, 12.98019618028234)
+  Best neighbour score: (-0.0, -1.6027397260273972, 12.980224372246411)
+  Accepted improving | score (-0.0, -1.6684931506849314, 12.98019618028234) -> (-0.0, -1.6027397260273972, 12.980224372246411)
+  Aircraft 22: first D placement D 2033-11-26 -> 2033-12-10 (+14 days); due 2033-12-15
+  Aircraft 23: first D placement D 2034-04-12 -> 2034-04-22 (+10 days); due 2034-04-22
+    Aircraft 22 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Aircraft 23 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.977563; total D earliness 585 days
+  Best-so-far UPDATED | score=(-0.0, -1.6027397260273972, 12.980224372246411); busy minima=[20, 20]; outside minimum=13; D earliness=585 days
+
+Iteration 13 | elapsed 33.625s | feasible neighbours=1969 | improving=726
+  Current score: (-0.0, -1.6027397260273972, 12.980224372246411)
+  Best neighbour score: (-0.0, -1.558904109589041, 12.980242436214517)
+  Accepted improving | score (-0.0, -1.6027397260273972, 12.980224372246411) -> (-0.0, -1.558904109589041, 12.980242436214517)
+  Aircraft 14: first D placement D 2033-04-26 -> 2033-05-05 (+9 days); due 2033-05-05
+  Blue-4: first D placement D 2032-12-22 -> 2032-12-29 (+7 days); due 2033-01-29
+    Aircraft 14 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-4 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.975756; total D earliness 569 days
+  Best-so-far UPDATED | score=(-0.0, -1.558904109589041, 12.980242436214517); busy minima=[20, 20]; outside minimum=13; D earliness=569 days
+
+Iteration 14 | elapsed 36.219s | feasible neighbours=1976 | improving=736
+  Current score: (-0.0, -1.558904109589041, 12.980242436214517)
+  Best neighbour score: (-0.0, -1.5287671232876712, 12.980270694275358)
+  Accepted improving | score (-0.0, -1.558904109589041, 12.980242436214517) -> (-0.0, -1.5287671232876712, 12.980270694275358)
+  Aircraft 17: first D placement D 2032-12-22 -> 2032-12-29 (+7 days); due 2033-02-08
+  Aircraft 24: first D placement D 2033-04-12 -> 2033-04-16 (+4 days); due 2033-04-16
+    Aircraft 17 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Aircraft 24 rebuilt check counts A/B/C/D: [6, 4, 2, 1] -> [6, 4, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.972931; total D earliness 558 days
+  Best-so-far UPDATED | score=(-0.0, -1.5287671232876712, 12.980270694275358); busy minima=[20, 20]; outside minimum=13; D earliness=558 days
+
+Iteration 15 | elapsed 39.125s | feasible neighbours=1983 | improving=734
+  Current score: (-0.0, -1.5287671232876712, 12.980270694275358)
+  Best neighbour score: (-0.0, -1.5205479452054795, 12.980274087962961)
+  Accepted improving | score (-0.0, -1.5287671232876712, 12.980270694275358) -> (-0.0, -1.5205479452054795, 12.980274087962961)
+  Aircraft 21: first D placement D 2033-08-19 -> 2033-08-21 (+2 days); due 2033-08-21
+  Aircraft 22: first D placement D 2033-12-10 -> 2033-12-11 (+1 days); due 2033-12-15
+    Aircraft 21 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Aircraft 22 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.613925; std 1.972591; total D earliness 555 days
+  Best-so-far UPDATED | score=(-0.0, -1.5205479452054795, 12.980274087962961); busy minima=[20, 20]; outside minimum=13; D earliness=555 days
+
+Iteration 16 | elapsed 41.860s | feasible neighbours=1983 | improving=728
+  Current score: (-0.0, -1.5205479452054795, 12.980274087962961)
+  Best neighbour score: (-0.0, -1.515068493150685, 12.980284401610916)
+  Accepted improving | score (-0.0, -1.5205479452054795, 12.980274087962961) -> (-0.0, -1.515068493150685, 12.980284401610916)
+  Aircraft 22: first D placement D 2033-12-11 -> 2033-12-12 (+1 days); due 2033-12-15
+  Blue-4: first D placement D 2032-12-29 -> 2032-12-30 (+1 days); due 2033-01-29
+    Aircraft 22 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-4 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.614149; std 1.971560; total D earliness 553 days
+  Best-so-far UPDATED | score=(-0.0, -1.515068493150685, 12.980284401610916); busy minima=[20, 20]; outside minimum=13; D earliness=553 days
+
+Iteration 17 | elapsed 44.610s | feasible neighbours=1984 | improving=722
+  Current score: (-0.0, -1.515068493150685, 12.980284401610916)
+  Best neighbour score: (-0.0, -1.5095890410958903, 12.980291194291054)
+  Accepted improving | score (-0.0, -1.515068493150685, 12.980284401610916) -> (-0.0, -1.5095890410958903, 12.980291194291054)
+  Blue-4: first D placement D 2032-12-30 -> 2032-12-31 (+1 days); due 2033-01-29
+  Aircraft 17: first D placement D 2032-12-29 -> 2032-12-30 (+1 days); due 2033-02-08
+    Aircraft 17 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+    Blue-4 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 13; global minimum 13; mean 21.614149; std 1.970881; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 12.980291194291054); busy minima=[20, 20]; outside minimum=13; D earliness=551 days
+
+Iteration 18 | elapsed 47.219s | feasible neighbours=1985 | improving=708
+  Current score: (-0.0, -1.5095890410958903, 12.980291194291054)
+  Best neighbour score: (-0.0, -1.5095890410958903, 13.980488066940092)
+  Accepted improving | score (-0.0, -1.5095890410958903, 12.980291194291054) -> (-0.0, -1.5095890410958903, 13.980488066940092)
+  Blue-5: smaller check repair C 2029-09-18 -> 2029-08-21 (-28 days); due 2029-10-17
+    Blue-5 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 13 -> 14; global minimum 14; mean 21.614149; std 1.951193; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 13.980488066940092); busy minima=[20, 20]; outside minimum=14; D earliness=551 days
+
+Iteration 19 | elapsed 50.016s | feasible neighbours=1985 | improving=708
+  Current score: (-0.0, -1.5095890410958903, 13.980488066940092)
+  Best neighbour score: (-0.0, -1.5095890410958903, 14.980657954758902)
+  Accepted improving | score (-0.0, -1.5095890410958903, 13.980488066940092) -> (-0.0, -1.5095890410958903, 14.980657954758902)
+  Aircraft 16: smaller check repair B 2032-12-18 -> 2032-11-20 (-28 days); due 2033-01-04
+    Aircraft 16 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 4, 1, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 14 -> 15; global minimum 15; mean 21.607900; std 1.934205; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 14.980657954758902); busy minima=[20, 20]; outside minimum=15; D earliness=551 days
+
+Iteration 20 | elapsed 52.469s | feasible neighbours=1990 | improving=699
+  Current score: (-0.0, -1.5095890410958903, 14.980657954758902)
+  Best neighbour score: (-0.0, -1.5095890410958903, 15.980735413054493)
+  Accepted improving | score (-0.0, -1.5095890410958903, 14.980657954758902) -> (-0.0, -1.5095890410958903, 15.980735413054493)
+  Blue-1: smaller check repair A 2033-01-01 -> 2032-12-04 (-28 days); due 2033-01-06
+    Blue-1 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 15 -> 16; global minimum 16; mean 21.607900; std 1.926459; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 15.980735413054493); busy minima=[20, 20]; outside minimum=16; D earliness=551 days
+
+Iteration 21 | elapsed 55.204s | feasible neighbours=1991 | improving=695
+  Current score: (-0.0, -1.5095890410958903, 15.980735413054493)
+  Best neighbour score: (-0.0, -1.5095890410958903, 15.980915812526012)
+  Accepted improving | score (-0.0, -1.5095890410958903, 15.980735413054493) -> (-0.0, -1.5095890410958903, 15.980915812526012)
+  Blue-7: smaller check repair C 2029-10-28 -> 2029-11-25 (+28 days); due 2029-12-05
+    Blue-7 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 16 -> 16; global minimum 16; mean 21.607900; std 1.908419; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 15.980915812526012); busy minima=[20, 20]; outside minimum=16; D earliness=551 days
+
+Iteration 22 | elapsed 58.750s | feasible neighbours=1986 | improving=682
+  Current score: (-0.0, -1.5095890410958903, 15.980915812526012)
+  Best neighbour score: (-0.0, -1.5095890410958903, 15.981070798498727)
+  Accepted improving | score (-0.0, -1.5095890410958903, 15.980915812526012) -> (-0.0, -1.5095890410958903, 15.981070798498727)
+  Aircraft 11: smaller check repair B 2035-04-27 -> 2035-03-30 (-28 days); due 2035-04-27
+    Aircraft 11 rebuilt check counts A/B/C/D: [6, 3, 2, 1] -> [6, 3, 2, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 16 -> 16; global minimum 16; mean 21.607900; std 1.892920; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 15.981070798498727); busy minima=[20, 20]; outside minimum=16; D earliness=551 days
+
+Iteration 23 | elapsed 60.032s | feasible neighbours=853 | improving=172
+  Current score: (-0.0, -1.5095890410958903, 15.981070798498727)
+  Best neighbour score: (-0.0, -1.5095890410958903, 15.981129837712578) (runtime budget reached during neighbour search)
+  Accepted improving | score (-0.0, -1.5095890410958903, 15.981070798498727) -> (-0.0, -1.5095890410958903, 15.981129837712578)
+  Aircraft 23: smaller check repair B 2028-03-08 -> 2028-04-05 (+28 days); due 2028-04-23
+    Aircraft 23 rebuilt check counts A/B/C/D: [6, 3, 1, 1] -> [6, 3, 1, 1]
+  Current schedule:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20 -> 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 16 -> 16; global minimum 16; mean 21.607900; std 1.887016; total D earliness 551 days
+  Best-so-far UPDATED | score=(-0.0, -1.5095890410958903, 15.981129837712578); busy minima=[20, 20]; outside minimum=16; D earliness=551 days
+
+STOP runtime_limit | 23 accepted iterations | 0 worse moves accepted | elapsed 60.047s
+Returned best-so-far | feasible_target_met | maintenance and dependency validation PASSED:
+  Busy 1 [2033-04-27 to 2033-05-26]: minimum 20/20; shortage 0 days, 0 aircraft-days
+  Busy 2 [2033-09-14 to 2033-10-13]: minimum 20/20; shortage 0 days, 0 aircraft-days
+  Outside minimum 16; global minimum 16; mean 21.607900; std 1.887016; total D earliness 551 days
