@@ -35,7 +35,7 @@ if str(ROOT) not in sys.path:
 
 import vn_priority_based_selection as optimiser
 
-OUTPUT_DIR = ROOT / "docs/reports/2026-10-22-vn-step-size-study"
+OUTPUT_DIR = ROOT / "docs/reports/vn-step-size-study"
 STATE_PATH = ROOT / ".scratch/initial-maintenance-stagger/schedule-data.json"
 FORECAST_START = pd.Timestamp("2026-01-21")
 FORECAST_END = pd.Timestamp("2038-01-18")

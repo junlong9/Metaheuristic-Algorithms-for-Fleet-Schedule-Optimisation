@@ -121,7 +121,7 @@ Runtime never outranks schedule quality.
 ## Outputs
 
 All generated artifacts go in
-`docs/reports/2026-10-20-vn-hyperparameter-analysis/`:
+`docs/reports/vn-hyperparameter-analysis/`:
 
 - `results.json` — metadata, source and input SHA-256 hashes, the complete
   matrix, all 36 trial records, and recommendation records;

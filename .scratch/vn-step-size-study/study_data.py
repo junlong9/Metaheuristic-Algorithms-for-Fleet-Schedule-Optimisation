@@ -6,8 +6,8 @@ from pathlib import Path
 import json
 
 ROOT = Path(__file__).resolve().parents[2]
-REPORT_DIR = ROOT / "docs/reports/2026-10-22-vn-step-size-study"
-FIRST_STUDY_DIR = ROOT / "docs/reports/2026-10-20-vn-hyperparameter-analysis"
+REPORT_DIR = ROOT / "docs/reports/vn-step-size-study"
+FIRST_STUDY_DIR = ROOT / "docs/reports/vn-hyperparameter-analysis"
 RESULTS = REPORT_DIR / "results.json"
 SHA_CHECK = Path(__file__).with_name("sha-check.json")
 DATASETS = ("original", "moderate", "wide")

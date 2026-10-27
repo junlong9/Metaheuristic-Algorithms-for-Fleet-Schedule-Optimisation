@@ -101,7 +101,7 @@ git commit -m "test: define concise VN report structure"
 
 **Files:**
 - Modify: `.scratch/vn-step-size-study/build_report.py`
-- Modify: `docs/reports/2026-10-22-vn-step-size-study/vn-hyperparameter-analysis2.docx`
+- Modify: `docs/reports/vn-step-size-study/vn-hyperparameter-analysis2.docx`
 
 **Interfaces:**
 - Consumes: the existing `load`, `trial`, `shared_table`, labels, datasets, and strategy definitions from `study_data.py`
@@ -285,7 +285,7 @@ Expected: `32 passed`.
 
 ```powershell
 git add .scratch/vn-step-size-study/build_report.py `
-  docs/reports/2026-10-22-vn-step-size-study/vn-hyperparameter-analysis2.docx `
+  docs/reports/vn-step-size-study/vn-hyperparameter-analysis2.docx `
   tests/test_vn_report.py `
   docs/superpowers/plans/2026-10-23-vn-report-rewrite.md
 git commit -m "docs: streamline VN parameter report"

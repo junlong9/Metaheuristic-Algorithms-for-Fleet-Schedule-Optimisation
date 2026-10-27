@@ -99,7 +99,7 @@ git commit -m "test: require VN strategy comparisons"
 - Modify: `.scratch/vn-step-size-study/build_report.py`
 - Modify: `.scratch/vn-step-size-study/figures/sd-by-strategy-400.png`
 - Modify: `.scratch/vn-step-size-study/figures/runtime-vs-sd-400.png`
-- Modify: `docs/reports/2026-10-22-vn-step-size-study/vn-hyperparameter-analysis2.docx`
+- Modify: `docs/reports/vn-step-size-study/vn-hyperparameter-analysis2.docx`
 
 **Interfaces:**
 - Consumes: `shared_table(payload, 400)`, `sd_chart(payload, path)` and `runtime_chart(payload, path)`
@@ -206,7 +206,7 @@ git add tests/test_vn_report.py `
   .scratch/vn-step-size-study/build_report.py `
   .scratch/vn-step-size-study/figures/sd-by-strategy-400.png `
   .scratch/vn-step-size-study/figures/runtime-vs-sd-400.png `
-  docs/reports/2026-10-22-vn-step-size-study/vn-hyperparameter-analysis2.docx `
+  docs/reports/vn-step-size-study/vn-hyperparameter-analysis2.docx `
   docs/superpowers/plans/2026-10-23-vn-report-comparisons.md
 git commit -m "docs: restore VN strategy comparisons"
 ```

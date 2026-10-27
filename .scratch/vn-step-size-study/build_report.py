@@ -865,7 +865,7 @@ def _build_detailed_report(payload: dict) -> Document:
     rec_times = [rec[d]["elapsed_seconds"] for d in DATASETS]
     base_times = [base[d]["elapsed_seconds"] for d in DATASETS]
     first = {}
-    with (REPORT_DIR.parent / "2026-10-20-vn-hyperparameter-analysis/summary.csv").open(encoding="utf-8") as handle:
+    with (REPORT_DIR.parent / "vn-hyperparameter-analysis/summary.csv").open(encoding="utf-8") as handle:
         import csv
 
         for row in csv.DictReader(handle):

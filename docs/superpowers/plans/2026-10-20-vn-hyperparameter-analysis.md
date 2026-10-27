@@ -20,7 +20,7 @@
 - Generate only:
   - `analysis/vn_hyperparameter_analysis.py`
   - `tests/test_vn_hyperparameter_analysis.py`
-  - files under `docs/reports/2026-10-20-vn-hyperparameter-analysis/`
+  - files under `docs/reports/vn-hyperparameter-analysis/`
 - Use `python3` for repository commands. The missing-dependency error shown to users must contain the spec-required command `python -m pip install numpy pandas openpyxl matplotlib python-docx`.
 
 ---
@@ -29,12 +29,12 @@
 
 - Create `analysis/vn_hyperparameter_analysis.py`: configuration, input alignment, deterministic search, validation, ranking, serialization, charts, DOCX generation, atomic publication, and CLI.
 - Create `tests/test_vn_hyperparameter_analysis.py`: focused unit and integration tests for every public analysis function and critical failure path.
-- Create `docs/reports/2026-10-20-vn-hyperparameter-analysis/results.json`: complete metadata, matrix, traces, hashes, 36 trial records, and recommendations.
-- Create `docs/reports/2026-10-20-vn-hyperparameter-analysis/summary.csv`: one flat row per trial.
-- Create `docs/reports/2026-10-20-vn-hyperparameter-analysis/ranked-quality.png`: per-dataset ranked smoothness plots labelled with minimum availability.
-- Create `docs/reports/2026-10-20-vn-hyperparameter-analysis/budget-convergence.png`: per-dataset accepted moves and exhaustion by budget.
-- Create `docs/reports/2026-10-20-vn-hyperparameter-analysis/runtime.png`: per-dataset single observed runtime.
-- Create `docs/reports/2026-10-20-vn-hyperparameter-analysis/vn-hyperparameter-analysis.docx`: final 9–11 page report.
+- Create `docs/reports/vn-hyperparameter-analysis/results.json`: complete metadata, matrix, traces, hashes, 36 trial records, and recommendations.
+- Create `docs/reports/vn-hyperparameter-analysis/summary.csv`: one flat row per trial.
+- Create `docs/reports/vn-hyperparameter-analysis/ranked-quality.png`: per-dataset ranked smoothness plots labelled with minimum availability.
+- Create `docs/reports/vn-hyperparameter-analysis/budget-convergence.png`: per-dataset accepted moves and exhaustion by budget.
+- Create `docs/reports/vn-hyperparameter-analysis/runtime.png`: per-dataset single observed runtime.
+- Create `docs/reports/vn-hyperparameter-analysis/vn-hyperparameter-analysis.docx`: final 9–11 page report.
 - Preserve `vn_priority_based_selection.py` byte-for-byte.
 
 ### Shared interfaces
@@ -213,7 +213,7 @@ if str(ROOT) not in sys.path:
 
 import vn_priority_based_selection as optimiser
 
-OUTPUT_DIR = ROOT / "docs/reports/2026-10-20-vn-hyperparameter-analysis"
+OUTPUT_DIR = ROOT / "docs/reports/vn-hyperparameter-analysis"
 STATE_PATH = ROOT / ".scratch/initial-maintenance-stagger/schedule-data.json"
 FORECAST_START = pd.Timestamp("2026-01-21")
 FORECAST_END = pd.Timestamp("2038-01-18")
@@ -1740,12 +1740,12 @@ git commit -m "feat: publish VN analysis artifacts safely"
 ## Task 7: Run the study once and verify all deliverables
 
 **Files:**
-- Create: `docs/reports/2026-10-20-vn-hyperparameter-analysis/results.json`
-- Create: `docs/reports/2026-10-20-vn-hyperparameter-analysis/summary.csv`
-- Create: `docs/reports/2026-10-20-vn-hyperparameter-analysis/ranked-quality.png`
-- Create: `docs/reports/2026-10-20-vn-hyperparameter-analysis/budget-convergence.png`
-- Create: `docs/reports/2026-10-20-vn-hyperparameter-analysis/runtime.png`
-- Create: `docs/reports/2026-10-20-vn-hyperparameter-analysis/vn-hyperparameter-analysis.docx`
+- Create: `docs/reports/vn-hyperparameter-analysis/results.json`
+- Create: `docs/reports/vn-hyperparameter-analysis/summary.csv`
+- Create: `docs/reports/vn-hyperparameter-analysis/ranked-quality.png`
+- Create: `docs/reports/vn-hyperparameter-analysis/budget-convergence.png`
+- Create: `docs/reports/vn-hyperparameter-analysis/runtime.png`
+- Create: `docs/reports/vn-hyperparameter-analysis/vn-hyperparameter-analysis.docx`
 
 **Interfaces:**
 - Consumes: `main()` and all prior functions
@@ -1782,7 +1782,7 @@ python3 analysis/vn_hyperparameter_analysis.py
 Expected final line:
 
 ```text
-Wrote 36 validated trials and report to <repository>/docs/reports/2026-10-20-vn-hyperparameter-analysis
+Wrote 36 validated trials and report to <repository>/docs/reports/vn-hyperparameter-analysis
 ```
 
 Do not rerun completed configurations to create timing repetitions. If the
@@ -1799,7 +1799,7 @@ from pathlib import Path
 import csv
 import json
 
-folder = Path("docs/reports/2026-10-20-vn-hyperparameter-analysis")
+folder = Path("docs/reports/vn-hyperparameter-analysis")
 payload = json.loads((folder / "results.json").read_text(encoding="utf-8"))
 with (folder / "summary.csv").open(newline="", encoding="utf-8") as handle:
     rows = list(csv.DictReader(handle))
@@ -1835,7 +1835,7 @@ rm -rf /tmp/vn-report-check
 mkdir -p /tmp/vn-report-check
 libreoffice --headless --convert-to pdf \
   --outdir /tmp/vn-report-check \
-  docs/reports/2026-10-20-vn-hyperparameter-analysis/vn-hyperparameter-analysis.docx
+  docs/reports/vn-hyperparameter-analysis/vn-hyperparameter-analysis.docx
 pages="$(pdfinfo /tmp/vn-report-check/vn-hyperparameter-analysis.pdf | awk '/^Pages:/ {print $2}')"
 test "$pages" -ge 9
 test "$pages" -le 11
@@ -1865,7 +1865,7 @@ Expected:
 - hash output ends with `OK`;
 - `git diff` exits 0 with no output; and
 - status lists only the six generated artifacts under
-  `docs/reports/2026-10-20-vn-hyperparameter-analysis/`; the script and test
+  `docs/reports/vn-hyperparameter-analysis/`; the script and test
   file were committed in Tasks 1–6.
 
 - [ ] **Step 7: Run final tests after artifact generation**
@@ -1885,7 +1885,7 @@ Expected: all tests pass with final output `OK`; compilation exits 0.
 
 ```bash
 git add \
-  docs/reports/2026-10-20-vn-hyperparameter-analysis
+  docs/reports/vn-hyperparameter-analysis
 git commit -m "docs: add VN hyperparameter analysis report"
 ```
 

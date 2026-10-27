@@ -5,8 +5,8 @@ import csv
 import json
 
 ROOT = Path(__file__).resolve().parents[2]
-OLD = ROOT / "docs/reports/2026-10-20-vn-hyperparameter-analysis/summary.csv"
-NEW = ROOT / "docs/reports/2026-10-22-vn-step-size-study/results.json"
+OLD = ROOT / "docs/reports/vn-hyperparameter-analysis/summary.csv"
+NEW = ROOT / "docs/reports/vn-step-size-study/results.json"
 OUT = Path(__file__).with_name("sha-check.json")
 
 

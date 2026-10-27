@@ -579,7 +579,7 @@ class PublicationTests(unittest.TestCase):
     def test_default_output_dir_is_the_step_size_study_folder(self):
         self.assertEqual(
             study.OUTPUT_DIR,
-            ROOT / "docs/reports/2026-10-22-vn-step-size-study",
+            ROOT / "docs/reports/vn-step-size-study",
         )
         self.assertEqual(study.parse_args([]).output_dir, study.OUTPUT_DIR)
 
