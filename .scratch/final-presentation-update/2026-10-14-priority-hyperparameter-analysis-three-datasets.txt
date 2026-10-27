@@ -2473,8 +2473,8 @@ Operational rules
 91aa0eecb412d7f4ad3a00a1132a5978bad0958b86723839defb75cea8a4bbc9
 
 Original input  heavy_maintenance_forecast.xlsx
-Moderate input  outputs/initial-stagger-20261013/heavy_maintenance_forecast_stagger_moderate.xlsx
-Wide input  outputs/initial-stagger-20261013/heavy_maintenance_forecast_stagger_wide.xlsx
+Moderate input  outputs/initial-stagger/heavy_maintenance_forecast_stagger_moderate.xlsx
+Wide input  outputs/initial-stagger/heavy_maintenance_forecast_stagger_wide.xlsx
 Opening state  .scratch/initial-maintenance-stagger/schedule-data.json
 Frozen opening adapter  .scratch/priority-hyperparameter-analysis/frozen-source/run_priority_optimise.py
 Frozen algorithm  .scratch/priority-hyperparameter-analysis/frozen-source/savn_priority_based_selection.py

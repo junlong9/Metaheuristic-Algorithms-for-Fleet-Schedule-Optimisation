@@ -23,7 +23,7 @@ SHEET_NAME = "MxEvents"
 OUTPUT_FILE = "optimised_heavy_maintenance_output.xlsx"
 
 ROOT = Path(__file__).resolve().parent
-STAGGER_DIR = ROOT / "outputs" / "initial-stagger-20261013"
+STAGGER_DIR = ROOT / "outputs" / "initial-stagger"
 OPENING_STATE_FILE = (
     ROOT / ".scratch" / "initial-maintenance-stagger" / "schedule-data.json"
 )

@@ -96,7 +96,7 @@ with ZipFile(ROOT / data["source"]) as template:
                 row = int(point.get("idx")) + 2
                 point.find('c:v', namespaces=ns).text = cells[f"C{row}"]
             modified["xl/charts/chart1.xml"] = ET.tostring(chart, xml_declaration=True, encoding="UTF-8", standalone=True)
-        output = ROOT / "outputs" / "initial-stagger-20261013" / variant["filename"]
+        output = ROOT / "outputs" / "initial-stagger" / variant["filename"]
         with ZipFile(output, "w") as final:
             for entry in template.infolist():
                 final.writestr(copy.copy(entry), modified.get(entry.filename, template.read(entry.filename)))

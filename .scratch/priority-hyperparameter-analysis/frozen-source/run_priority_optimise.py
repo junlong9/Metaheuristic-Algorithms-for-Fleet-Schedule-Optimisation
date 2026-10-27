@@ -27,7 +27,7 @@ from export import (
 )
 
 DATA = Path(__file__).resolve().parent / "schedule-data.json"
-SOURCE_DIR = ROOT / "outputs" / "initial-stagger-20261013"
+SOURCE_DIR = ROOT / "outputs" / "initial-stagger"
 
 
 def rebuild_from_opening_state(

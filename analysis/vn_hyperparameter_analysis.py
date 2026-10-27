@@ -246,11 +246,11 @@ def load_study_inputs(root: Path = ROOT) -> StudyInputs:
     paths = {
         "original": root / "heavy_maintenance_forecast.xlsx",
         "moderate": root / (
-            "outputs/initial-stagger-20261013/"
+            "outputs/initial-stagger/"
             "heavy_maintenance_forecast_stagger_moderate.xlsx"
         ),
         "wide": root / (
-            "outputs/initial-stagger-20261013/"
+            "outputs/initial-stagger/"
             "heavy_maintenance_forecast_stagger_wide.xlsx"
         ),
     }

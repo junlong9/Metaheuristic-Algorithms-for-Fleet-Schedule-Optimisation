@@ -5,7 +5,7 @@ import { Workbook, SpreadsheetFile } from '@oai/artifact-tool';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '../..');
-const output = path.join(root, 'outputs', 'initial-stagger-20261013');
+const output = path.join(root, 'outputs', 'initial-stagger');
 const data = JSON.parse(await fs.readFile(path.join(here, 'schedule-data.json'), 'utf8'));
 await fs.mkdir(output, { recursive: true });
 await fs.mkdir(path.join(here, 'previews'), { recursive: true });

@@ -17,7 +17,7 @@ SWEEP_ONLY='--sweep-only' in sys.argv
 EXTRA_FINALIST=sys.argv[sys.argv.index('--extra-finalist')+1] if '--extra-finalist' in sys.argv else None
 OUT=WORK/(f'three-dataset-{SELECTED}.json' if SELECTED else 'three-dataset-results.json'); SCHEDULES=WORK/'three-dataset-schedules'; SCHEDULES.mkdir(exist_ok=True)
 FORECAST_START=pd.Timestamp(OPEN['forecast_start']); FORECAST_END=pd.Timestamp(OPEN['forecast_end'])
-PATHS={'original':ROOT/'heavy_maintenance_forecast.xlsx',**{v['slug']:ROOT/'outputs/initial-stagger-20261013'/v['filename'] for v in OPEN['variants']}}
+PATHS={'original':ROOT/'heavy_maintenance_forecast.xlsx',**{v['slug']:ROOT/'outputs/initial-stagger'/v['filename'] for v in OPEN['variants']}}
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def dump(payload):
     pending=OUT.with_suffix('.pending.json');pending.write_text(json.dumps(payload,indent=2));pending.replace(OUT)

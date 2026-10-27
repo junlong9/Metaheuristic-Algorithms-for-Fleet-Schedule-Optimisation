@@ -3,7 +3,7 @@
 Status: ready-for-human
 
 Extend the original report to include the actual moderate stagger and wide
-stagger workbooks under outputs/initial-stagger-20261013. Cross the same
+stagger workbooks under outputs/initial-stagger. Cross the same
 58 neighbourhood and selection combinations with all three datasets.
 
 Score the shared published forecast from 21 January 2026 to 18 January 2038.

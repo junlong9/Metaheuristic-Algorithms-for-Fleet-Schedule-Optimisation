@@ -36,7 +36,7 @@ assert hashlib.sha256((ROOT / "operational_constraints.json").read_bytes()).hexd
 audits = []
 
 for variant in data["variants"]:
-    output = ROOT / "outputs" / "initial-stagger-20261013" / variant["filename"]
+    output = ROOT / "outputs" / "initial-stagger" / variant["filename"]
     xlsx = pd.ExcelFile(output)
     events = pd.read_excel(xlsx, sheet_name="MxEvents")
     history = pd.DataFrame(variant["history"], columns=data["event_columns"])

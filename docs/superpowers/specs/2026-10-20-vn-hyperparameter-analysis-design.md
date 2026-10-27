@@ -17,8 +17,8 @@ wall-clock observation, not a statistical sample.
 
 - The datasets are:
   - `heavy_maintenance_forecast.xlsx`
-  - `outputs/initial-stagger-20261013/heavy_maintenance_forecast_stagger_moderate.xlsx`
-  - `outputs/initial-stagger-20261013/heavy_maintenance_forecast_stagger_wide.xlsx`
+  - `outputs/initial-stagger/heavy_maintenance_forecast_stagger_moderate.xlsx`
+  - `outputs/initial-stagger/heavy_maintenance_forecast_stagger_wide.xlsx`
 - The common reporting window is 21 January 2026 through 18 January 2038,
   inclusive, as recorded in
   `.scratch/initial-maintenance-stagger/schedule-data.json`.
