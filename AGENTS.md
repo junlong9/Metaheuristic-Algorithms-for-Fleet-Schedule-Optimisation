@@ -14,4 +14,4 @@ Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 ### PowerPoint decks
 
-Never regenerate/overwrite live `.pptx` files. Edit in place only. See `.cursor/rules/powerpoint-edit-in-place.mdc`.
+Never regenerate/overwrite live `.pptx` files. Edit in place only.
