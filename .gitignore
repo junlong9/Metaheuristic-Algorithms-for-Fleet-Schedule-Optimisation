@@ -3,5 +3,15 @@ node_modules/
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.superpowers/**/state/
 .worktrees/
+
+# Local working files. Kept on disk, not published.
+archive/
+.scratch/
+.superpowers/
+docs/superpowers/
+docs/agents/
+presentation_preview_iter2/
+others/
+AGENTS.md
+skills-lock.json

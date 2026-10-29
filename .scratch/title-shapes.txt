@@ -1,7 +1,0 @@
-PLACEHOLDER (14) name='Title 1' text=''
-PLACEHOLDER (14) name='Subtitle 2' text=''
-AUTO_SHAPE (1) name='Rectangle 5' text=''
-PICTURE (13) name='Picture 6' text=''
-PICTURE (13) name='Picture 7' text=''
-TEXT_BOX (17) name='TextBox 8' text='Scheduling Algorithm Research.  / Prototype a range of proposed scheduling algorithm improvements with dummy data /  / I'
-PICTURE (13) name='Picture 9' text=''
